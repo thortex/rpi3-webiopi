@@ -1,0 +1,11 @@
+Package: webiopi-doc
+Source: webiopi
+Version: 0.7.1+-1
+Architecture: all
+Maintainer: Thor Watanabe <thormac@gmail.com>
+Installed-Size: 28
+Section: net
+Priority: extra
+Homepage: <https://github.com/thortex/rpi3-webiopi>
+Description: documentation for webiopi
+ clone of WebIOPi by Eric PTAK (trouch).
