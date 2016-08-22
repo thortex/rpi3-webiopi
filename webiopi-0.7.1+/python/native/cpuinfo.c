@@ -39,6 +39,8 @@ char *get_cpuinfo_revision(char *revision)
       sscanf(buffer, "Hardware	: %s", hardware);
       if (strcmp(hardware, "BCM2708") == 0)
          rpi_found = 1;
+      else if (strcmp(hardware, "BCM2709") == 0)
+         rpi_found = 1;
       sscanf(buffer, "Revision	: %s", revision);
    }
    fclose(fp);
@@ -60,6 +62,16 @@ int get_rpi_revision(void)
        (strcmp(revision, "0003") == 0) ||
        (strcmp(revision, "1000003") == 0 ))
       return 1;
-   else // assume rev 2 (0004 0005 0006 1000004 1000005 1000006)
+   else if ((strcmp(revision, "0004") == 0) ||
+            (strcmp(revision, "1000004") == 0 ) ||
+            (strcmp(revision, "0005") == 0) ||
+            (strcmp(revision, "1000005") == 0 ) ||
+            (strcmp(revision, "0006") == 0) ||
+            (strcmp(revision, "1000006") == 0 ))
       return 2;
+   else if ((strcmp(revision, "a01041") == 0) ||
+            (strcmp(revision, "a21041") == 0 ))
+      return 3;
+   else // assume rev 4
+      return 4;
 }

@@ -73,7 +73,7 @@ function WebIOPi() {
 	this.readyCallback = null;
 	this.context = "/";
 	this.GPIO = Array(54);
-	this.PINS = Array(27);
+	this.PINS = Array(41);
 
 	this.TYPE = {
 			DNC: {value: 0, style: "DNC", label: "--"},
@@ -577,7 +577,7 @@ RPiHeader.prototype.getFunctionCell = function (pin) {
 RPiHeader.prototype.createTable = function (containerId) {
 	var table = $("<table>");
 	table.attr("id", "RPiHeader")
-	for (var pin=1; pin<=26; pin++) {
+	for (var pin=1; pin<=40; pin++) {
 		var line = 	$('<tr>');
 		line.append(this.getFunctionCell(pin))
 		line.append(this.getDescriptionCell(pin, "right"))

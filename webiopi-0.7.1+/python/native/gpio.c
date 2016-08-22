@@ -20,6 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,9 +29,12 @@ SOFTWARE.
 #include <time.h>
 #include <pthread.h>
 #include "gpio.h"
+#include "cpuinfo.h"
 
 #define BCM2708_PERI_BASE   0x20000000
-#define GPIO_BASE           (BCM2708_PERI_BASE + 0x200000)
+#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
+#define BCM2709_PERI_BASE   0x3F000000
+#define BCM2709_GPIO_BASE   (BCM2709_PERI_BASE + 0x200000)
 #define FSEL_OFFSET         0   // 0x0000
 #define SET_OFFSET          7   // 0x001c / 4
 #define CLR_OFFSET          10  // 0x0028 / 4
@@ -83,7 +87,10 @@ int setup(void)
     if ((uint32_t)gpio_mem % PAGE_SIZE)
         gpio_mem += PAGE_SIZE - ((uint32_t)gpio_mem % PAGE_SIZE);
 
-    gpio_map = (uint32_t *)mmap( (caddr_t)gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, GPIO_BASE);
+    if (get_rpi_revision() <= 2  || number_of_cores() <= 2)
+       gpio_map = (uint32_t *)mmap( (caddr_t)gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, BCM2708_GPIO_BASE);
+    else
+       gpio_map = (uint32_t *)mmap( (caddr_t)gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, BCM2709_GPIO_BASE);
 
     if ((uint32_t)gpio_map < 0)
         return SETUP_MMAP_FAIL;
@@ -326,4 +333,25 @@ void cleanup(void)
 {
     // fixme - set all gpios back to input
     munmap((caddr_t)gpio_map, BLOCK_SIZE);
+}
+
+int number_of_cores(void)
+{
+char str[256];
+int procCount = 0;
+FILE *fp;
+
+if( (fp = fopen("/proc/cpuinfo", "r")) )
+{
+  while(fgets(str, sizeof str, fp))
+  if( !memcmp(str, "processor", 9) ) procCount++;
+}
+
+if ( !procCount ) 
+{ 
+printf("Unable to get proc count. Defaulting to 2");
+procCount=2;
+}
+
+return procCount;
 }
