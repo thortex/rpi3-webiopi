@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content = "height = device-height, width = 420, user-scalable = no" /> 
+	<title>WebIOPi | Demo</title>
+	<script type="text/javascript" src="/webiopi.js"></script>
+	<script type="text/javascript">
+	webiopi().ready(function() {
+		var content, button;
+		content = $("#content");
+			
+		// create a "SWITCH" labeled button for GPIO 21
+		button = webiopi().createGPIOButton(21, "SWITCH");
+		content.append(button); // append button to content div
+		               
+		// create a "LED" labeled button for GPIO 25
+		button = webiopi().createGPIOButton(25, "LED1");
+		content.append(button); // append button to content div
+		       
+		// create a button that output a single pulse
+		button = webiopi().createPulseButton("pulse", "Pulse", 25);
+		content.append(button); // append button to content div
+		
+		// create a button which output a bit sequence on GPIO 25 with a 100ms period 
+		button = webiopi().createSequenceButton("sos", "S.O.S 1", 25, 100, "01010100110011001100101010");
+		content.append(button); // append button to content div
+		       
+		// the previous button will always output the same sequence
+		// you can also create a simple button with your own function 
+		button = webiopi().createButton("sos2", "S.O.S 2", outputSequence);
+		content.append(button); // append button to content div
+		
+		// create a button which call PrintTime
+		button = webiopi().createMacroButton("macro", "Print Time", "PrintTime");
+		content.append(button); // append button to content div
+		
+		// create a button which call HelloWorld with "User,Name" argument
+		button = webiopi().createMacroButton("macro", "Hello ?", "HelloWorld", ["User", "Name"]);
+		content.append(button); // append button to content div
+		
+		// the previous button will always call HelloWorld with "User,Name" argument
+		// you can also create a simple button with your own function 
+		button = webiopi().createButton("macro2", "Hello !", callMacro);
+		content.append(button); // append button to content div
+		
+		// you can also create a button which calls a different function for mouse down and up events
+		button = webiopi().createButton("hold", "Hold", mousedown, mouseup);
+		content.append(button);
+		
+		// Only for Chrome and Safari, create a slider that pulse out a -45 to +45° angle on GPIO 23
+		button = webiopi().createAngleSlider(23);
+		content.append(button);
+
+		// Only for Chrome and Safari, create a slider that pulse out a 0-100% duty cycle ratio on GPIO 24
+		button = webiopi().createRatioSlider(24);
+		content.append(button);
+		
+		webiopi().refreshGPIO(true);
+	});
+		
+	function mousedown() {
+		webiopi().digitalWrite(25, 1);
+	}
+	
+	function mouseup() {
+		webiopi().digitalWrite(25, 0);
+	}
+	
+	function outputSequence() {
+		var sequence = "01010100110011001100101010" // S.O.S. morse code or whatever you want
+		// output sequence on gpio 25 with a 100ms period
+		webiopi().outputSequence(25, 100, sequence, sequenceCallback);
+	}
+	
+	function sequenceCallback(gpio, data) {
+		alert("sequence on " + gpio + " finished with " + data);
+	}
+	
+	function callMacro() {
+		var args = ["User","Name"] // or whatever you want
+		// call HelloWorld(args)
+		webiopi().callMacro("HelloWorld", args, macroCallback);
+	}
+	
+	function macroCallback(macro, args, data) {
+		alert(data);
+	}
+	
+	</script>
+	<style type="text/css">
+		button {
+			display: block;
+			margin: 5px 5px 5px 5px;
+			width: 160px;
+			height: 45px;
+			font-size: 24pt;
+			font-weight: bold;
+			color: black;
+		}
+		
+		input[type="range"] {
+			display: block;
+			width: 160px;
+			height: 45px;
+		}
+		
+		.LOW {
+			background-color: White;
+		}
+		
+		.HIGH {
+			background-color: Red;
+		}
+	</style>
+</head>
+<body>
+	<div id="content" align="center"></div>
+</body>
+</html>

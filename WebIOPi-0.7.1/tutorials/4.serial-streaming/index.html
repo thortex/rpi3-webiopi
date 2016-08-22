@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>WebIOPi | Arduino Analog</title>
+    <script type="text/javascript" src="/webiopi.js"></script>
+    <script type="text/javascript">
+        webiopi().ready(init);
+        
+        // defines function passed previously to webiopi().ready()
+        function init() {
+                // automatically refresh UI each seconds
+                setInterval(updateUI, 1000);
+        }
+
+        // function called through setInterval
+        function updateUI() {
+                // call getSensor macro for Arduino analog channel 0-3
+                webiopi().callMacro("getSensor", 0, sensorCallback);
+                webiopi().callMacro("getSensor", 1, sensorCallback);
+                webiopi().callMacro("getSensor", 2, sensorCallback);
+                webiopi().callMacro("getSensor", 3, sensorCallback);
+        }       
+
+        // callback function used to display sensor data
+        function sensorCallback(macroName, channel, data) {
+                // use jQuery to change spans content
+                $("#sensor"+channel).text(data);
+        }
+
+    </script>
+</head>
+<body>
+    <div align="center">
+        <div>Sensor 0: <span id="sensor0"></span></div>
+        <div>Sensor 1: <span id="sensor1"></span></div>
+        <div>Sensor 2: <span id="sensor2"></span></div>
+        <div>Sensor 3: <span id="sensor3"></span></div>
+    </div>
+</body>
+</html>
+

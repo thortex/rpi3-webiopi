@@ -1,0 +1,9 @@
+[settings]
+default-encoding=ISO-8859-1
+enable-site-specific-quirks=true
+last-window-width=800
+last-window-height=600
+show-menubar=false
+show-navigationbar=false
+enable-html5-database=true
+user-agent=Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-gb) AppleWebKit/535+ (KHTML, like Gecko) Version/5.0 Safari/535.22+ Midori/0.4

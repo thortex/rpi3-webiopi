@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content = "height = device-height, width = 420, user-scalable = no" /> 
+	<title>WebIOPi | Demo</title>
+	<script type="text/javascript" src="/webiopi.js"></script>
+	<script type="text/javascript">
+	webiopi().ready(function() {
+		webiopi().setFunction(25, "out");
+
+		var content, button;
+		content = $("#content");
+			
+		// create a "LED" labeled button for GPIO 25
+		button = webiopi().createGPIOButton(25, "LED1");
+		content.append(button); // append button to content div
+		       
+		// create a button that output a single pulse
+		button = webiopi().createPulseButton("pulse", "Pulse", 25);
+		content.append(button); // append button to content div
+		
+		// you can also create a button which calls a different function for mouse down and up events
+		button = webiopi().createButton("hold", "Hold", mousedown, mouseup);
+		content.append(button);
+		
+		webiopi().refreshGPIO(true);
+	});
+		
+	function mousedown() {
+		webiopi().digitalWrite(25, 1);
+	}
+	
+	function mouseup() {
+		webiopi().digitalWrite(25, 0);
+	}
+	
+	</script>
+	<style type="text/css">
+		button {
+			display: block;
+			margin: 5px 5px 5px 5px;
+			width: 160px;
+			height: 45px;
+			font-size: 24pt;
+			font-weight: bold;
+			color: black;
+		}
+		
+		input[type="range"] {
+			display: block;
+			width: 160px;
+			height: 45px;
+		}
+		
+		.LOW {
+			background-color: White;
+		}
+		
+		.HIGH {
+			background-color: Red;
+		}
+	</style>
+</head>
+<body>
+	<div id="content" align="center"></div>
+</body>
+</html>

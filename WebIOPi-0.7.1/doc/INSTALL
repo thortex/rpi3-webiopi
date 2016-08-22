@@ -1,0 +1,54 @@
+=Installation=
+WebIOPi is developed and tested on Raspbian. You only need Python, either 2.7 or 3.2. Download, then extract and install WebIOPi. The setup script will automatically download and install required dependencies using apt-get. You may have to manually install GCC and Python development headers if you are not using Raspbian.
+Setup may take a moment.
+
+See downloads page to find latest package, and adapt x.y.z with the version you download.
+$ tar xvzf WebIOPi-x.y.z.tar.gz
+$ cd WebIOPi-x.y.z
+$ sudo ./setup.sh
+
+=Running WebIOPi=
+Finally, use webiopi command :
+$ sudo webiopi [-h] [-c config] [-l log] [-s script] [-d] [port]
+
+    Options:
+      -h, --help           Display this help
+      -c, --config  file   Load config from file
+      -l, --log     file   Log to file
+      -s, --script  file   Load script from file
+      -d, --debug          Enable DEBUG
+
+    Arguments:
+      port                 Port to bind the HTTP Server
+
+For instance, to start with verbose output and the default config file :
+$ sudo webiopi -d -c /etc/webiopi/config
+ 
+You're done, and ready to enjoy WebIOPi ! But the server and GPIO state will be lost when you'll stop the script (CTRL-C) or close the terminal.
+
+=Running WebIOPi (Daemon)=
+You can also start/stop the background service, the configuration will be loaded from /etc/webiopi/config.
+$ sudo /etc/init.d/webiopi start
+$ sudo /etc/init.d/webiopi stop
+
+=Auto start at boot=
+To setup your system to start webiopi at boot :
+$ sudo update-rc.d webiopi defaults
+
+To remove webiopi start from boot :
+$ sudo update-rc.d webiopi remove
+
+=Usage=
+If your are directly using your Raspberry Pi with keyboard/mouse/display plugged,  open a browser to http://localhost:8000/
+
+If your Raspberry Pi is connected to your network, you can open a browser to http://raspberrypi:8000/ with any device of your network. Replace raspberrypi by its IP.
+
+You can even add a port redirection on your router to use WebIOPi over Internet !
+
+Default user is "webiopi" and password is "raspberry"
+
+By choosing the GPIO Header link on the main page, you will be able to control GPIO using a web UI which looks like the board header.
+   Click/Tap the OUT/IN button to change GPIO direction.
+   Click/Tap pins to change the GPIO output state.
+
+http://trouch.com/wp-content/uploads/2012/08/webiopi-chrome.png
