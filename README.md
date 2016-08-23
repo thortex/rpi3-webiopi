@@ -10,7 +10,7 @@ Please refer to https://github.com/doublebind/raspi for more details.
 
 ### BME280
 Bosch BME280 (temperature, humidity, and pressure) sensors driver is written by Mr. Evil Asvachin (https://mrevil.asvachin.eu/).
-Plase refer to https://groups.google.com/d/msg/webiopi/_m71a-AdF8I/Ju_FJ8s4BQAJ or https://mrevil.asvachin.eu/electronics/weather_station/ for the original resources
+Plase refer to https://groups.google.com/d/msg/webiopi/_m71a-AdF8I/Ju_FJ8s4BQAJ or https://mrevil.asvachin.eu/electronics/weather_station/ for the original resources.
 
 
 

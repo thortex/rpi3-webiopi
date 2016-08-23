@@ -1,7 +1,8 @@
 from webiopi.utils.types import toint, signInteger
 from webiopi.devices.i2c import I2C
 from webiopi.devices.sensor import Temperature, Pressure, Humidity
-from webiopi.utils import logger
+#from webiopi.utils import logger
+from webiopi.utils import logger info, exception
 
 class BME280(I2C, Temperature, Pressure, Humidity):
     def __init__(self, altitude=0, external=None, oversampling=0, filter=0, standby=0.5, slave=0x76):
@@ -38,7 +39,7 @@ class BME280(I2C, Temperature, Pressure, Humidity):
             tStandbyBits = standbyValues[standby]
         else:
             tStandbyBits = 0 # Default to 0.5ms t_standby
-            logger.warn('Invalid value for standby: %s' % standby)
+            # logger.warn('Invalid value for standby: %s' % standby)
         spiBits = 0 # No SPI of course.
         filterBits = toint(filter) >> 1
         self.writeRegister(0xF5, (tStandbyBits << 5) | (filterBits << 2) | spiBits)
@@ -126,7 +127,8 @@ class BME280(I2C, Temperature, Pressure, Humidity):
 
     def __getCelsius__(self):
         adc = self.readAdc()
-        t_fine = self.compensateTfine(adc.T)
+        #t_fine = self.compensateTfine(adc.T)
+        t_fine = self.compensateTfine(adc[0])
         return self.compensateT(t_fine)
 
     def __getKelvin__(self):
@@ -137,10 +139,14 @@ class BME280(I2C, Temperature, Pressure, Humidity):
 
     def __getPascal__(self):
         adc = self.readAdc()
-        t_fine = self.compensateTfine(adc.T)
-        return self.compensateP(t_fine, adc.P)
+        #t_fine = self.compensateTfine(adc.T)
+        #return self.compensateP(t_fine, adc.P)
+        t_fine = self.compensateTfine(adc[0])
+        return self.compensateP(t_fine, adc[1])
 
     def __getHumidity__(self):
         adc = self.readAdc()
-        t_fine = self.compensateTfine(adc.T)
-        return self.compensateH(t_fine, adc.H) / 100.0
+#        t_fine = self.compensateTfine(adc.T)
+#        return self.compensateH(t_fine, adc.H) / 100.0
+        t_fine = self.compensateTfine(adc[0])
+        return self.compensateH(t_fine, adc[2]) / 100.0
