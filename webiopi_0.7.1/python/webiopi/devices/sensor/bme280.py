@@ -2,7 +2,7 @@ from webiopi.utils.types import toint, signInteger
 from webiopi.devices.i2c import I2C
 from webiopi.devices.sensor import Temperature, Pressure, Humidity
 #from webiopi.utils import logger
-from webiopi.utils import logger info, exception
+from webiopi.utils.logger import info, exception
 
 class BME280(I2C, Temperature, Pressure, Humidity):
     def __init__(self, altitude=0, external=None, oversampling=0, filter=0, standby=0.5, slave=0x76):

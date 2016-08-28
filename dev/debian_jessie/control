@@ -1,0 +1,24 @@
+Source: webiopi
+Section: python
+Priority: optional
+Maintainer: Thor Watanabe <thormac@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), python, python3, python-dev, python3-dev, python-setuptools, python3-setuptools
+Standards-Version: 3.9.6
+X-Python-Version: >= 2.6
+X-Python3-Version: >= 3.2
+Homepage: http://webiopi.trouch.com/
+
+Package: webiopi
+Architecture: armhf
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Description: The Raspberry Pi Internet of Things Framework
+ Control, debug, and use your Pi's GPIO, sensors and converters from a web browser or any app
+ WebIOPi is the perfect Swiss-knife to make connected things
+ Developed and provided by Eric PTAK (trouch)
+ Runs on Raspberry Pi
+
+Package: python3-webiopi
+Architecture: armhf
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}
+Description: The Raspberry Pi Internet of Things Framework
+ This is the webiopi Python 3 module
