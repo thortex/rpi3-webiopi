@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ -z "$*" ]; then
+	files=`ls`
+else
+	files="$*"
+fi
+
+for file in $files; do
+	echo "Downloading $file..." 
+	wget -q http://webiopi.googlecode.com/svn/wiki/$file.wiki &&
+	echo "Processing $file..." &&
+	mv $file.wiki $file &&
+	sed -i 's/<font color="red">\|<\/font>//g' $file &&
+	sed -i 's/<pre>\|<\/pre>//g' $file &&
+	sed -i 's/[_*]//g' $file &&
+	sed -i '/{{{\|}}}/d' $file &&
+	echo "$file OK" ||
+	echo "$file not on wiki"
+done
+
+echo "Uploading changes on SVN..."
+svn commit -m "updated doc from wiki"

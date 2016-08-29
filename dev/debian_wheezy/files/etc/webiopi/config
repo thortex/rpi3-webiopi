@@ -1,0 +1,140 @@
+[GPIO]
+# Initialize following GPIOs with given function and optional value
+# This is used during WebIOPi start process
+#21 = IN
+#23 = OUT 0
+#24 = OUT 0
+#25 = OUT 1
+
+#------------------------------------------------------------------------#
+
+[~GPIO]
+# Reset following GPIOs with given function and optional value
+# This is used at the end of WebIOPi stop process
+#21 = IN
+#23 = IN
+#24 = IN
+#25 = OUT 0
+
+#------------------------------------------------------------------------#
+
+[SCRIPTS]
+# Load custom scripts syntax :
+# name = sourcefile
+#   each sourcefile may have setup, loop and destroy functions and macros
+#myscript = /home/pi/webiopi/examples/scripts/macros/script.py
+
+#------------------------------------------------------------------------#
+
+[HTTP]
+# HTTP Server configuration
+enabled = true
+port = 8000
+
+# File containing sha256(base64("user:password"))
+# Use webiopi-passwd command to generate it
+passwd-file = /etc/webiopi/passwd
+
+# Change login prompt message
+prompt = "WebIOPi"
+
+# Use doc-root to change default HTML and resource files location
+#doc-root = /home/pi/webiopi/examples/scripts/macros
+
+# Use welcome-file to change the default "Welcome" file
+#welcome-file = index.html
+
+#------------------------------------------------------------------------#
+
+[COAP]
+# CoAP Server configuration
+enabled = true
+port = 5683
+# Enable CoAP multicast
+multicast = true
+
+#------------------------------------------------------------------------#
+
+[DEVICES]
+# Device configuration syntax:
+# name = device [args...]
+#   name   : used in the URL mapping
+#   device : device name
+#   args   : (optional) see device driver doc
+# If enabled, devices configured here are mapped on REST API /device/name
+# Devices are also accessible in custom scripts using deviceInstance(name)
+# See device driver doc for methods and URI scheme available
+
+# Raspberry native UART on GPIO, uncomment to enable
+# Don't forget to remove console on ttyAMA0 in /boot/cmdline.txt
+# And also disable getty on ttyAMA0 in /etc/inittab
+#serial0 = Serial device:ttyAMA0 baudrate:9600
+
+# USB serial adapters
+#usb0 = Serial device:ttyUSB0 baudrate:9600
+#usb1 = Serial device:ttyACM0 baudrate:9600
+
+#temp0 = TMP102
+#temp1 = TMP102 slave:0x49
+#temp2 = DS18B20
+#temp3 = DS18B20 slave:28-0000049bc218
+
+#bmp = BMP085
+
+#gpio0 = PCF8574
+#gpio1 = PCF8574 slave:0x21
+
+#light0 = TSL2561T
+#light1 = TSL2561T slave:0b0101001
+
+#gpio0 = MCP23017
+#gpio1 = MCP23017 slave:0x21
+#gpio2 = MCP23017 slave:0x22
+
+#pwm0 = PCA9685
+#pwm1 = PCA9685 slave:0x41
+
+#adc0 = MCP3008
+#adc1 = MCP3008 chip:1 vref:5
+#dac1 = MCP4922 chip:1
+
+#------------------------------------------------------------------------#
+
+[REST]
+# By default, REST API allows to GET/POST on all GPIOs
+# Use gpio-export to limit GPIO available through REST API  
+#gpio-export = 21, 23, 24, 25
+
+# Uncomment to forbid changing GPIO values 
+#gpio-post-value = false
+
+# Uncomment to forbid changing GPIO functions 
+#gpio-post-function = false 
+
+# Uncomment to disable automatic device mapping
+#device-mapping = false
+
+#------------------------------------------------------------------------#
+
+[ROUTES]
+# Custom REST API route syntax :
+# source = destination
+#   source      : URL to route
+#   destination : Resulting URL
+# Adding routes allows to simplify access with Human comprehensive URLs
+
+# In the next example with have the bedroom light connected to GPIO 25
+# and a temperature sensor named temp2, defined in [DEVICES] section
+#  - GET  /bedroom/light       => GET  /GPIO/25/value, returns the light state
+#  - POST /bedroom/light/0     => POST /GPIO/25/value/0, turn off the light
+#  - POST /bedroom/light/1	   => POST /GPIO/25/value/1, turn on the light
+#  - GET  /bedroom/temperature => GET  /devices/temp2/temperature/c, returns the temperature in celsius
+#/bedroom/light = /GPIO/25/value
+#/bedroom/temperature = /devices/temp2/temperature/c
+
+#/livingroom/light = /devices/expander0/0
+#/livingroom/brightness = /devices/adc/0/float
+#/livingroom/temperature = /devices/temp0/temperature/c
+
+#/weather/temperature = /devices/bmp/temperature/c
+#/weather/pressure = /devices/bmp/pressure/hpa

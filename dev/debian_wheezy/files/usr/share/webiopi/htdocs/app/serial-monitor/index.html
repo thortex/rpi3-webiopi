@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>WebIOPi | Serial Monitor</title>
+	<script type="text/javascript" src="/webiopi.js"></script>
+	<script type="text/javascript">
+	webiopi().ready(function() {
+		$("#inputText").keyup(function(event){
+		    if(event.keyCode == 13){
+		        sendData();
+		    }
+		});
+		$.get("/devices/*", function(data) {
+			var devices = $("#devices");
+			var added = false;
+			for (i in data) {
+				if (data[i].type=="Serial") {
+					added = true;
+					devices.append($("<option>" + data[i].name + "</option>"))
+				}
+			}
+			if (added) {
+				readData();
+			}
+		});
+	});
+	
+	function readData() {
+		webiopi().Serial($("#devices").val()).read(function(data) {
+			if (data.length > 0) {
+				var d = $("#output").text() + data;
+				$("#output").text(d);
+			}
+		});
+		setTimeout(readData, 500);
+	}
+	
+	function sendData() {
+		var data = $("#inputText").val() + "\n";
+		webiopi().Serial($("#devices").val()).write(data);
+		$("#inputText").val("");
+	}
+	
+	function deviceChanged() {
+		$("#output").text("");
+	}
+	
+	</script>
+	<style type="text/css">
+		#inputText {
+			width: 550px;
+		}
+	</style>
+</head>
+<body>
+<h1>Serial Monitor</h1>
+<span>Serial device : </span><select id="devices" onchange="deviceChanged()"></select><br/>
+<span>Input : </span><br/>
+<textarea id="output" rows="30" cols="100" disabled="disabled"></textarea><br/>
+<span>Output : </span><input id="inputText" type="text"/>
+</body>
+</html>

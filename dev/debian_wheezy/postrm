@@ -1,0 +1,14 @@
+#!/bin/sh -x
+
+LSB=`lsb_release -sc`
+
+if [ "$LSB" != "wheezy" ] ; then
+        if [ -f "/etc/systemd/system/webiopi.service" ] ; then 
+               rm -f /etc/systemd/system/webiopi.service
+        fi
+else
+	if [ -f "/etc/init.d/webiopi" ] ; then
+		rm -f /etc/init.d/webiopi 
+	fi
+fi
+ 

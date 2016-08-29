@@ -1,0 +1,112 @@
+==0.7 (03/01/14) ==
+   improved touch device handling (issue #73)
+   updated jQuery library to version 1.11
+
+   added PiFaceDigital driver
+   added PCF8591 ADC/DAC driver
+   added MCP3002 ADC driver
+   added MCP4802, MCP4812, MCP4822 ADC drivers
+   added HYT221 Humidity Sensor driver
+   added BMP180 Temperature & Pressure Sensor driver
+   added support of multiple MCP23Sxx on a single SPI CE line
+   added vref argument for MCP DAC and ADC (issue #48)
+   fixed devices monitor DAC display
+
+   added IPv6 binding support (issue #56)
+   added Content-Length fixed (issue #83)
+   added HTTP and CoAP clients IP and User-Agent in logs (issue #76)
+   added 'prompt' option in [HTTP] section of the config file (issue #69)
+   fixed macro binding with -s switch (issue #52)
+
+   fixed Luminosity.getLux REST mapping (issue #51)
+   fixed Serial monitor (issue #49)
+   fixed Serial low-level/binary handling
+   fixed 1-Wire Temperature sensors error handling (issue #68)
+
+   allows PiClients to run on others platforms than the Pi (issue #46)
+   general webiopi Python library improvements
+
+==0.6 (03/27/13)==
+   Added CoAP ([http://tools.ietf.org/html/draft-ietf-core-coap-14 draft-14]) implementation (Server and Client)
+   Added Python WebIOPi Client class (HTTP or CoAP with HTTP fallback)
+   Added Python WebIOPi MulticastClient class (CoAP)
+   Added Serial, I2C, SPI and 1-Wire  support
+     Python lightweight drivers with no dependency
+     Automatically load required linux modules
+     Added many device drivers, see [DEVICES device support page]
+   Added [Configuration] file
+   Added Serial monitor web app
+   Added Devices monitor web app
+   Added Devices abstractions Javascript class
+   Added GPIO digitalRead/Write and getFunction methods
+   Added Cache-Control REST response header
+   Added Server logging facility
+   Added jQuery-mobile
+   Improved button up/down handling on mobile devices
+   Fixed error fetching python-dev package during setup
+   Fixed webiopi-passwd missing execution flag when installing with PiStore
+   Fixed binary file serving
+   Fixed iOS6 Safari Mobile bug
+
+
+==0.5.3 (01/07/13)==
+   Added board revision REST URI (submitted by Andreas Riegg)
+   Added encrypted passwd file to store credentials used for HTTP authentication
+   Added webiopi-passwd command-line program to generate passwd file
+   Moved demo to examples/custom folder, added examples/basic
+   Changed /dev/mem access to allow webiopi import without root privileges when not using GPIOs
+   Disabled update checker to avoid "Update available" link
+   Improved GPIO error handling
+   Fixed encoding issue with python 2.x giving a blank page
+   Fixed setup script
+
+==0.5.2 (12/21/12 - PiStore only)==
+   Fixed blank page and file handling when server start at boot
+   Improved macros handling to allow zeo, one or more args
+   Added server loop helper
+   Improved setup.sh for the PiStore
+   Added play.sh for the PiStore to open the browser
+
+==0.5.1 (11/16/12)==
+===New Features===
+   REV 2 boards support
+   Added setup script to ease WebIOPi install
+   Use WebIOPi in your own Python scripts
+   Login/Password protection
+   Software PWM
+   Binary sequence output
+
+===Python Server & REST API===
+   Usable as a library
+   Added Python 3 support
+   Removed RPi.GPIO library dependency
+   Improved security
+   Improved file serving
+   Improved REST API
+   Added ability to use custom REST macro
+   Added ability to output a single pulse
+   Added ability to output a binary sequence
+   Added software PWM
+
+===Javascript Library===
+   Improved and simplified
+   Added ability to create custom buttons with one or two callbacks (mousedown and mouseup)
+   Added helpers for new REST functions (macro, pulse, sequence, PWM, ...)
+
+===Other changes===  
+   PHP Server discontinued
+
+
+==0.3 (08/27/12)==
+   Fixed security issue in the Python server
+   Python server general improvements
+   Python server display real IP
+   Allow PHP5 < 5.4 (Works on Debian wheezy)
+   Added update tracking
+   Refactored Javascript code to be used as a library
+   Changed IDs and CSS naming
+   Added expert app
+
+
+==0.2 (08/21/12)==
+   Initial release

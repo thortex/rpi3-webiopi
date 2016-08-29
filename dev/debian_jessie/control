@@ -8,7 +8,7 @@ X-Python-Version: >= 2.7
 X-Python3-Version: >= 3.2
 Homepage: http://webiopi.trouch.com/
 
-Package: webiopi
+Package: python2-webiopi
 Architecture: armhf
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
 Description: The Raspberry Pi Internet of Things Framework
