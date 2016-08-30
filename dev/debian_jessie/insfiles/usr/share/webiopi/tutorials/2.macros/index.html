@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>WebIOPi | Light Control</title>
+        <script type="text/javascript" src="/webiopi.js"></script>
+        <script type="text/javascript">
+        webiopi().ready(function() {
+                // Following function will process data received from set/getLightHours macro.
+                var updateLightHours = function(macro, args, response) {
+                    var hours = response.split(";");
+                    // Following lines use jQuery functions
+                    $("#inputOn").val(hours[0]);
+                    $("#inputOff").val(hours[1]);
+                }
+
+                // Immediately call getLightHours macro to update the UI with current values
+                // "getLightHours" refers to macro name
+                // [] is an empty array, because getLightHours macro does not take any argument
+                // updateLightHours is the callback function, defined above
+                webiopi().callMacro("getLightHours", [], updateLightHours);
+                
+                // Create a button to call setLightHours macro
+                var sendButton = webiopi().createButton("sendButton", "Send", function() {
+                   // Arguments sent to the macro
+                    var hours = [$("#inputOn").val(), $("#inputOff").val()];
+                    // Call the macro
+                    webiopi().callMacro("setLightHours", hours, updateLightHours);
+                });
+
+                // Append the button to the controls box using a jQuery function
+                $("#controls").append(sendButton);
+
+                // Create a "Light" labeled button for GPIO 17
+                var button = webiopi().createGPIOButton(17, "Light");
+
+                // Append the button to the controls box
+                $("#controls").append(button);
+
+                // Refresh GPIO buttons
+                // pass true to refresh repeatedly of false to refresh once
+                webiopi().refreshGPIO(true);
+        });
+                
+        </script>
+        <style type="text/css">
+                button {
+                        display: block;
+                        margin: 5px 5px 5px 5px;
+                        width: 160px;
+                        height: 45px;
+                        font-size: 24pt;
+                        font-weight: bold;
+                        color: white;
+                }
+                
+                #gpio17.LOW {
+                        background-color: Black;
+                }
+                
+                #gpio17.HIGH {
+                        background-color: Blue;
+                }
+        </style>
+</head>
+<body>
+<div align="center">
+Turn On at :<input type="text" id="inputOn" /><br/>
+Turn Off at: <input type="text" id="inputOff" /><br/>
+<div id="controls"></div>
+</div>
+</body>
+</html>
+

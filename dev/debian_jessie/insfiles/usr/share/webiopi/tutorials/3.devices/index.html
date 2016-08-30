@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>WebIOPi | Heater Control</title>
+    <script type="text/javascript" src="/webiopi.js"></script>
+    <script type="text/javascript">
+        // declare few global variables
+        var tmp;
+        var mcp;
+        var heater = 7;
+
+        webiopi().ready(init);
+        
+        // defines function passed to webiopi().ready()
+        function init() {
+                // setup helpers to remotely control devices
+                tmp = new Temperature("tmp");
+                mcp = new GPIOPort("mcp");
+                // automatically refresh UI each seconds
+                setInterval(updateUI, 1000);
+        }
+
+        // function called through setInterval
+        function updateUI() {
+                // call Temperature.getCelsius REST API
+                // result is asynchronously displayed using the callback
+                tmp.getCelsius(temperatureCallback);
+                
+                // call MCP.digitalRead REST API
+                if (mcp.isReady()) {
+                        mcp.digitalRead(heater, gpioPortDigitalCallback);
+                }
+                
+                // call getMode macro
+                webiopi().callMacro("getMode", [], modeCallback);
+        }       
+
+        // callback function used to display the temperature
+        function temperatureCallback(sensorName, data) {
+                // jQuery functions
+                $("#bt_heater").text(data + "°C");
+        }
+        
+        // callback function used to display MCP digital state
+        function gpioPortDigitalCallback(gpioName, channel, value) {
+                // test returned value and set appropriate CSS class on the button
+                if (value == "0") {
+                        // jQuery functions
+                        $("#bt_heater").attr("class", "OFF");
+                }
+                else if (value == "1") {
+                        $("#bt_heater").attr("class", "ON");
+                }
+        }
+
+        // callback function used to display current heater mode
+        function modeCallback(macroName, args, data) {
+                $("#bt_mode").text(data);
+        }
+
+        // called by the heater button
+        function toggleHeater() {
+                if ($("#bt_heater").attr("class") == "OFF") {
+                        mcp.digitalWrite(heater, 1, gpioPortDigitalCallback);
+                }
+                else if ($("#bt_heater").attr("class") == "ON") {
+                        mcp.digitalWrite(heater, 0, gpioPortDigitalCallback);
+                }
+        }
+
+        // called by the mode button
+        function toggleMode() {
+                if ($("#bt_mode").text() == "auto") {
+                        webiopi().callMacro("setMode", "manual", modeCallback);
+                }
+                else if ($("#bt_mode").text() == "manual") {
+                        webiopi().callMacro("setMode", "auto", modeCallback);
+                }
+        }
+   </script>
+        <style type="text/css">
+                button {
+                        display: block;
+                        margin: 5px 5px 5px 5px;
+                        width: 160px;
+                        height: 45px;
+                        font-size: 24pt;
+                        font-weight: bold;
+                        color: white;
+                }
+                
+                button.OFF {
+                        background-color: Black;
+                }
+                
+                button.ON {
+                        background-color: Red;
+                }
+        </style>
+</head>
+<body>
+    <div align="center">
+        <button id="bt_mode" onclick="toggleMode()"/><br>
+        <button id="bt_heater" onclick="toggleHeater()"/>
+    </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>WebIOPi | Arduino UI</title>
+        <script type="text/javascript" src="/webiopi.js"></script>
+        <script type="text/javascript">
+        // Javascript code will go here
+        // declare variable for Serial object
+        var serial;
+
+        webiopi().ready(init);
+        
+        // defines function passed to webiopi().ready()
+        function init() {
+                // define Serial object, must be configured in /etc/webiopi/config
+                serial = new Serial("uno");
+
+                // automatically refresh UI each 5 seconds
+                setInterval(updateUI, 1000);
+
+                // update UI now
+                updateUI();
+        }
+
+        // function called through setInterval
+        function updateUI() {
+                // retrieve Time
+                getTime();
+        }
+
+        // function to use "t" command
+        function getTime() {
+                serial.write("t");
+                serial.read(timeCallback);
+        }
+
+        // function that will process received data from getTime function
+        function timeCallback(data) {
+                // rounds milliseconds to seconds
+                millis = parseInt(data);
+                seconds = parseInt(millis/1000);
+
+                // use jQuery to display seconds elapsed since Arduino reset
+                $("#time").text(seconds+"s");
+                getAnalog();
+        }
+
+        // function to use "a" command
+        function getAnalog() {
+                serial.write("a");
+                serial.read(analogCallback);
+        }
+
+        // function that will process received data from getAnalog function
+        function analogCallback(data) {
+                // scales analog value to percent and to 0-255 range
+                value = parseInt(data);
+                percent = parseInt(value/1024 * 100);
+                red = parseInt(value/1024 * 255);
+
+                // use jQuery to display percent value
+                $("#analog").text(percent+"%");
+
+                // use jQuery to change color from black to red
+                $("#analog").css("background-color", "rgb(" + red + ", 0, 0)");
+                getDigital();
+        }
+
+        // function to use "d" command
+        function getDigital() {
+                serial.write("d");
+                serial.read(digitalCallback);
+        }
+        
+        // function that will process received data from getDigital function
+        function digitalCallback(data) {
+                value = parseInt(data);
+
+                // set appropriate color and text depending on value
+                if (value == 1) {
+                        $("#digital").css("background-color", "Red");
+                        $("#digital").text("ON");
+                }
+                else if (value == 0) {
+                        $("#digital").css("background-color", "Black");
+                        $("#digital").text("OFF");
+                }
+        }
+        </script>
+
+        <style type="text/css">
+        #time, #analog, #digital {
+                margin: 5px 5px 5px 5px;
+                width: 160px;
+                height: 45px;
+                font-size: 24pt;
+                font-weight: bold;
+                color: white;
+                text-align: center;
+                background-color: Blue;
+        }
+        
+        </style>
+</head>
+<body>
+<div align="center">
+        <div id="time"></div>
+        <div id="analog"></div>
+        <div id="digital"></div>
+</div>
+</body>
+</html>
