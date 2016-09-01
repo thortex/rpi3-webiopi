@@ -42,6 +42,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 # ChangeLog
 
 ## master branch
+* Added MCP3424 ADC driver by Justin Miller.
 * Added I2C/SPI Analog Devices Digital Potentionmeter driver by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
 
