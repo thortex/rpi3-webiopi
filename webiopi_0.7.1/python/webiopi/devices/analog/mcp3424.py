@@ -54,7 +54,7 @@ class MCP3424(ADC, I2C):
 
     # local methods
 	def __str__(self):
-		return "MCP3424(__address=0x%02X)" % self.__address	
+		return "MCP3424(slave=0x%02X)" % self.__address	
 
 	def __updatebyte(self, byte, bit, value):
         # internal method for setting the value of a single bit within a byte
