@@ -19,10 +19,30 @@ Plase refer to https://groups.google.com/d/msg/webiopi/_m71a-AdF8I/Ju_FJ8s4BQAJ 
 ### MCP9808 temperature sensor
 Added Microchip MCP9808 high accuracy I2C temperature sensor driver written by Andreas Riegg. Please refer to https://groups.google.com/d/topic/webiopi/Jv4bw9IL-w4/discussion for the original resources.
 
+### MCP3424 ADC driver
+Added Microchip MC3424 ADC driver written by Justin Miller. Please refer to https://groups.google.com/d/topic/webiopi/v8xuijB8yyk/discussion for the original resources.
+
+### Analog Devices Digital Potentionmeter 
+Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg. Please refer to https://groups.google.com/d/topic/webiopi/8NvzHB-4s98/discussion for the original resources.
+
+* Supported: AD5161I, AD5241, AD5242, AD5243, AD5245, AD5246, AD5247, AD5248, AD5263I, AD5280, AD5282
+
+## SPI
+
+### Analog Devivces Digital Potentionmeter
+Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
+
+* Supported: AD5160, AD5161S, AD5162, AD5165, AD5200, AD5201, AD5204, AD5206, AD5263S, AD5290, AD8400, AD8402, AD8403
+
+### Analog Devices 5204 family Digital Potentionmeter
+Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
+
+* Supported: AD5204DC, AD5161DC, AD5263DC, AD5290DC, AD8403DC
 
 # ChangeLog
 
 ## master branch
+* Added I2C/SPI Analog Devices Digital Potentionmeter driver by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
 
 ## Version 0.7.1+deb01 (Thu Sep 1 21:37:39 2016 +0900) 
