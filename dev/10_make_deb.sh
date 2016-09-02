@@ -1,7 +1,7 @@
 #!/bin/sh -x
 # This file is based on 'make_deb' file in RPi.GPIO by Ben Croston
 # Please refer to https://pypi.python.org/pypi/RPi.GPIO for more details.
-
+ORIG_NAME=WebIOPi
 NAME=webiopi
 VERSION=0.7.1
 if [ "$1" != "" ] ; then
@@ -23,17 +23,17 @@ mkdir ${WORKDIR}
 
 cd ..
 
-cp ../dev/${NAME}_${VERSION}.tar.gz \
+cp ./python/dist/${ORIG_NAME}-${VERSION}.tar.gz \
     ${WORKDIR}/${NAME}_${VERSION}.orig.tar.gz
 
 cd ${WORKDIR}
 tar xvfz ${NAME}_${VERSION}.orig.tar.gz
-cp -a ${SCRIPTPATH}/debian_${DISTRO} ${WORKDIR}/${NAME}_${VERSION}/debian
+cp -a ${SCRIPTPATH}/debian_${DISTRO} ${WORKDIR}/${ORIG_NAME}-${VERSION}/debian
 mkdir -p ${WORKDIR}/doc
 cp ${SCRIPTPATH}/../${NAME}_${VERSION}/doc/README ${WORKDIR}/doc
 
 ## build .deb files
-cd ${WORKDIR}/${NAME}_$VERSION
+cd ${WORKDIR}/${ORIG_NAME}-$VERSION
 debuild -us -uc
 ##debuild clean
 
