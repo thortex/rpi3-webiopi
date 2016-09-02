@@ -1,4 +1,4 @@
-#   Copyright 2013 Andreas Riegg
+#   Copyright 2013 - 2014 Andreas Riegg
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -16,11 +16,16 @@
 #   Changelog
 #
 #   1.0    2013/02/28    Initial release
+#   1.1    2014/04/03    Fixed issue 90, applied same update to __setTime__
+#                        Corrected typo channel1value to channel1_value
+#                        Corrected typo channelRatio to channel_ratio
+#                        Moved robustness checks to avoid division by zero
 #                        
 
 from webiopi.utils.types import toint
 from webiopi.devices.i2c import I2C
 from webiopi.devices.sensor import Luminosity
+
 
 class TSL_LIGHT_X(I2C, Luminosity):
     VAL_COMMAND = 0x80
@@ -78,11 +83,8 @@ class TSL2561X(TSL_LIGHT_X):
         ch1_bytes = self.readRegisters(self.REG_CHANNEL_1_LOW, 2)
         ch0_word = ch0_bytes[1] << 8 | ch0_bytes[0]
         ch1_word = ch1_bytes[1] << 8 | ch1_bytes[0]
-        if ch0_word == 0 | ch1_word == 0:
-            return self.VAL_INVALID # Driver security, avoid crash in lux calculation
-        else:
-            scaling = self.time_multiplier * self.gain_multiplier
-            return self.__calculateLux__(scaling * ch0_word, scaling * ch1_word)
+        scaling = self.time_multiplier * self.gain_multiplier
+        return self.__calculateLux__(scaling * ch0_word, scaling * ch1_word)
 
     def setGain(self, gain):
         if gain == 1:
@@ -114,10 +116,10 @@ class TSL2561X(TSL_LIGHT_X):
             self.time_multiplier = 1
         elif time == 101:
             bits_time = self.VAL_TIME_101_MS
-            self.time_multiplier = 322 / 81
+            self.time_multiplier = 322 / 81.0
         elif time == 14:
             bits_time = self.VAL_TIME_14_MS
-            self.time_multiplier = 322 / 11
+            self.time_multiplier = 322 / 11.0
         new_byte_time = bits_time & self.MASK_TIME
 
         current_byte_config = self.readRegister(self.REG_CONFIG)
@@ -142,17 +144,20 @@ class TSL2561CS(TSL2561X):
     def __init__(self, slave=0x39, time=402,  gain=1):
         TSL2561X.__init__(self, slave, time, gain, "TSL2561CS")
 
-    def __calculateLux__(self, channel0_value, channel1value):
-        channelRatio = channel1value / channel0_value
-        if 0 < channelRatio <= 0.52:
-            lux = 0.0315 * channel0_value - 0.0593 * channel0_value *(channelRatio**1.4)
-        elif 0.52 < channelRatio <= 0.65:
-            lux = 0.0229 * channel0_value - 0.0291 * channel1value
-        elif 0.65 < channelRatio <= 0.80:
-            lux = 0.0157 * channel0_value - 0.0180 * channel1value
-        elif 0.80 < channelRatio <= 1.30:
-            lux = 0.00338 * channel0_value - 0.00260 * channel1value
-        else: # if channelRatio > 1.30
+    def __calculateLux__(self, channel0_value, channel1_value):
+        if float(channel0_value) == 0.0:      # driver robustness, avoid division by zero
+            return self.VAL_INVALID
+
+        channel_ratio = channel1_value / float(channel0_value)
+        if 0 < channel_ratio <= 0.52:
+            lux = 0.0315 * channel0_value - 0.0593 * channel0_value *(channel_ratio**1.4)
+        elif 0.52 < channel_ratio <= 0.65:
+            lux = 0.0229 * channel0_value - 0.0291 * channel1_value
+        elif 0.65 < channel_ratio <= 0.80:
+            lux = 0.0157 * channel0_value - 0.0180 * channel1_value
+        elif 0.80 < channel_ratio <= 1.30:
+            lux = 0.00338 * channel0_value - 0.00260 * channel1_value
+        else: # if channel_ratio > 1.30
             lux = 0
         return lux
             
@@ -162,7 +167,10 @@ class TSL2561T(TSL2561X):
         TSL2561X.__init__(self, slave, time, gain, "TSL2561T")
         
     def __calculateLux__(self, channel0_value, channel1_value):
-        channel_ratio = channel1_value / channel0_value
+        if float(channel0_value) == 0.0:      # driver robustness, avoid division by zero
+            return self.VAL_INVALID
+
+        channel_ratio = channel1_value / float(channel0_value)
         if 0 < channel_ratio <= 0.50:
             lux = 0.0304 * channel0_value - 0.062 * channel0_value * (channel_ratio**1.4)
         elif 0.50 < channel_ratio <= 0.61:
