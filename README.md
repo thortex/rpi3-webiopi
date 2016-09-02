@@ -45,6 +45,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Added MCP3424 ADC driver by Justin Miller.
 * Added I2C/SPI Analog Devices Digital Potentionmeter driver by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
+* Updated TSL2561 driver to v1.1 written by Andreas Riegg.
 
 ## Version 0.7.1+deb01 (Thu Sep 1 21:37:39 2016 +0900) 
 * Merged a patch for B+, Pi 2, and Pi 3 written by Keisuke Seya (doublebind).
