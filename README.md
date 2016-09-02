@@ -27,6 +27,8 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg. Ple
 
 * Supported: AD5161I, AD5241, AD5242, AD5243, AD5245, AD5246, AD5247, AD5248, AD5263I, AD5280, AD5282
 
+### PCA953X/PCA9555 IO Expander driver
+Added PCA953X series IO Expaner driver written by Andreas Riegg. Plase refer to http://webiopi.trouch.com/issues/122/ for the original resources.
 ## SPI
 
 ### Analog Devivces Digital Potentionmeter
@@ -46,6 +48,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Added I2C/SPI Analog Devices Digital Potentionmeter driver by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
 * Updated TSL2561 driver to v1.1 written by Andreas Riegg.
+* Added I2C PCA953x series IO Expander driver written by Andreas Riegg.
 
 ## Version 0.7.1+deb01 (Thu Sep 1 21:37:39 2016 +0900) 
 * Merged a patch for B+, Pi 2, and Pi 3 written by Keisuke Seya (doublebind).

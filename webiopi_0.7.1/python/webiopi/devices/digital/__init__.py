@@ -22,8 +22,10 @@ class GPIOPort():
     LOW  = False
     HIGH = True
     
-    def __init__(self, channelCount):
+    def __init__(self, channelCount, bankCount=0):
         self.digitalChannelCount = channelCount
+        self.checkDigitalBanks(bankCount)
+        self.digitalBanksCount = bankCount
         
     def checkDigitalChannel(self, channel):
         if not 0 <= channel < self.digitalChannelCount:
@@ -32,12 +34,20 @@ class GPIOPort():
     def checkDigitalValue(self, value):
         if not (value == 0 or value == 1):
             raise ValueError("Value %d not in {0, 1}")
-    
 
+    def checkDigitalBanks(self, banks):
+        if not 0 <= banks < self.digitalChannelCount:
+            raise ValueError("Banks %d out of range [%d..%d]" % (banks, 0, self.digitalChannelCount))
+    
     @request("GET", "count")
     @response("%d")
     def digitalCount(self):
         return self.digitalChannelCount
+
+    @request("GET", "banks")
+    @response("%d")
+    def bankCount(self):
+        return self.digitalBanksCount
 
     def __family__(self):
         return "GPIOPort"
@@ -142,3 +152,4 @@ DRIVERS = {}
 DRIVERS["mcp23XXX"] = ["MCP23008", "MCP23009", "MCP23017", "MCP23018", "MCP23S08", "MCP23S09", "MCP23S17", "MCP23S18"]
 DRIVERS["pcf8574" ] = ["PCF8574", "PCF8574A"]
 DRIVERS["ds2408" ] = ["DS2408"]
+DRIVERS["pca9555" ] = ["PCA9555", "PCA9535"]
