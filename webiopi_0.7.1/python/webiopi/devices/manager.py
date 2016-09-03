@@ -3,9 +3,9 @@ from webiopi.utils import logger
 from webiopi.utils import types
 from webiopi.devices.instance import DEVICES
 
-from webiopi.devices import serial, digital, analog, sensor, shield
+from webiopi.devices import serial, digital, analog, sensor, shield, clock, memory
 
-PACKAGES = [serial, digital, analog, sensor, shield]
+PACKAGES = [serial, digital, analog, sensor, shield, clock, memory]
 def findDeviceClass(name):
     for package in PACKAGES:
         if hasattr(package, name):

@@ -30,7 +30,9 @@ setup(name             = 'WebIOPi',
                           "webiopi.devices.digital",
                           "webiopi.devices.analog",
                           "webiopi.devices.sensor",
-                          "webiopi.devices.shield"
+                          "webiopi.devices.clock", 
+			  "webiopi.devices.memory", 
+			  "webiopi.devices.shield"
                           ],
       ext_modules      = [Extension(name='_webiopi.GPIO', sources=['native/bridge.c', 'native/gpio.c', 'native/cpuinfo.c'], include_dirs=['native/'])],
       headers          = ['native/cpuinfo.h', 'native/gpio.h'],   

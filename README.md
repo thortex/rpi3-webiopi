@@ -29,6 +29,10 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg. Ple
 
 ### PCA953X/PCA9555 IO Expander driver
 Added PCA953X series IO Expaner driver written by Andreas Riegg. Plase refer to http://webiopi.trouch.com/issues/122/ for the original resources.
+
+### DS1307 series / MCP7940 RTC driver
+Added DS1307, DS1337, DS1338, DS3231 and MCP7940 RTC driver written by Andreas Riegg. Please refer to http://webiopi.trouch.com/issues/116/ for the original resources.
+
 ## SPI
 
 ### Analog Devivces Digital Potentionmeter
@@ -49,6 +53,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
 * Updated TSL2561 driver to v1.1 written by Andreas Riegg.
 * Added I2C PCA953x series IO Expander driver written by Andreas Riegg.
+* Added I2C DS1307 series and MCP7940 RTC driver written by Andreas Riegg.
 
 ## Version 0.7.1+deb01 (Thu Sep 1 21:37:39 2016 +0900) 
 * Merged a patch for B+, Pi 2, and Pi 3 written by Keisuke Seya (doublebind).
