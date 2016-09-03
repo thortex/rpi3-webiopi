@@ -1,4 +1,4 @@
-ï»¿/*
+/*
    Copyright 2012-2013 Eric Ptak - trouch.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -714,16 +714,11 @@ function GPIOPort(name) {
 	this.url = "/devices/" + name;
 	this.onready = null;
 	this.channelCount = 0;
-	this.bankCount = 0;
 	this.refreshTime = 1000;
 
 	var port = this;
 	$.get(this.url + "/count", function(data) {
 		port.channelCount = parseInt(data);
-	});
-
-	$.get(this.url + "/banks", function(data) {
-		port.bankCount = parseInt(data);
 	});
 
 }
@@ -1206,7 +1201,7 @@ PWM.prototype.refreshUI = function() {
 				if ($(this).attr("servo") == "true") {
 					pwm.writeAngle($(this).attr("channel"), $(this).val(), function(name, channel, data) {
 						var val = data;
-						$("#span_" + name + "_" + channel).text(val + "Â°");
+						$("#span_" + name + "_" + channel).text(val + "°");
 						$("#slider_" + name + "_" + channel).val(val);
 					});
 				}
@@ -1233,7 +1228,7 @@ PWM.prototype.refreshUI = function() {
 				slider.attr("min", -45);
 				slider.attr("max", 45);
 				val = data[i]["angle"];
-				span.text(val + "Â°");
+				span.text(val + "°");
 			}
 			else {
 				slider.attr("min", 0);
@@ -1286,7 +1281,7 @@ Temperature.prototype.refreshUI = function() {
 	
 	this.getCelsius(function(name, data){
 		if (element != undefined) {
-			element.header.text(temp + ": " + data + "Â°C");
+			element.header.text(temp + ": " + data + "°C");
 		}
 		setTimeout(function(){temp.refreshUI()}, temp.refreshTime);
 	});
