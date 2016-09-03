@@ -18,18 +18,31 @@
 #   1.1    2014-08-28    Added bit access.
 #   1.2    2014-08-31    Added NON-REST multiple read/write byte methods 
 #                        to speed up direct Python access.
+#   1.3    2014-11-13    Changed parameter order for writeMemoryBytes and
+#                        optimized it.
+#   1.4    2014-12-08    Simplified multiple read/write byte methods and
+#                        made start/stop bounds checking more strict.
+#                        Added REST mapping for multiple bytes reading.
+#                        Made addressing scheme uniform for all slot types.
 #
 #   Usage remarks
 #
-#   - Memory address slots are mapped like channel numbers staring at 0
-#     but MSB is kept left as normal Python integer numbers. For byte
-#     0x79 (0b01111001) at address 0 acessing /bit/0 = 1 and /bit/7 = 0.
-#   - The smallest possible memory unit is 1 byte
-#   - Currently values can be
+#   - The smallest possible memory unit is 1 byte (8 bits)
+#   - Addressed slots can be
 #     - bits  ( 1 bit)
 #     - bytes ( 8 bits)
 #     - words (16 bits)
 #     - longs (32 bits)
+#   - All memory address slots are mapped strictly sequential in ascending
+#     order like channel numbers starting at 0 with MSB first for non
+#     single-bit slots. This results in the following address slot mapping:
+#     |<- bit 0             bit 31 ->|
+#     01010101010101010101010101010101
+#     |byte 0| byte 1| byte 2| byte 3|
+#     | -- word 0 -- | -- word 1 --  |
+#     | ---------- long 0 ---------- |
+#   - Where applicable, start and stop have the same meaning as range and
+#     list slices in Python. Start is included, stop is excluded.
 #
 
 from webiopi.decorators.rest import request, response
@@ -55,14 +68,19 @@ class Memory():
         for i in range(self.byteCount()):
             valbyte = self.readMemoryByte(i)
             for j in range(8):
-                values[i*8 + j] = "%d" % ((valbyte & (1 << j)) >> j)
+                position = 7 - j
+                values[i*8 + j] = "%d" % ((valbyte & (1 << position)) >> position)
         return values
 
         # {
         #  "0": "0",
-        #  "1": "1",
+        #  "1": "0",
         #  "2": "0",
-        #  "3": "0"
+        #  "3": "1"
+        #  "4": "0"
+        #  "5": "0"
+        #  "6": "1"
+        #  "7": "0"
         #  ...
         # }
 
@@ -80,6 +98,23 @@ class Memory():
         #  "1": "0x34",
         #  "2": "0xDE",
         #  "3": "0xFF"
+        # }
+
+    @request("GET", "memory/bytes/%(bounds)s")
+    @response(contentType=M_JSON)
+    def memoryBytes(self, bounds):
+        (start, stop) = bounds.split(",")
+        start = toint(start)
+        stop = toint(stop)
+        values = {}
+        byteValues = self.readMemoryBytes(start, stop)
+        for i in range(start, stop):
+            values[i] = "0x%02X" % byteValues[i - start]
+        return values
+
+        # {
+        #  "1": "0x34",
+        #  "2": "0xDE",
         # }
 
     @request("GET", "memory/word/*")
@@ -198,31 +233,26 @@ class Memory():
 #---------- Memory abstraction NON-REST implementation ----------
 
     def readMemoryBytes(self, start=0, stop=None):
-        count = self.byteCount()
-        byteValues = []
-        if start >= count:
-            return byteValues # empty result
-        if start < 0:
-            start = 0 # truncate silent
+        maxCount = self.byteCount()
         if stop is None:
-            stop = count # adjust silent
-        if (stop - start) > count:
-            stop = count # adjust silent
+            stop = maxCount
+        self.checkByteAddress(start)
+        self.checkStopByteAddress(stop)
+        byteValues = []
+        if start > stop:
+            raise ValueError("Stop address must be >= start address")
         for i in range(start, stop):
             byteValues.append(self.readMemoryByte(i))
         return byteValues
 
-    def writeMemoryBytes(self, byteValues, start=0):
-        count = self.byteCount()
+    def writeMemoryBytes(self, start=0, byteValues=[]):
+        self.checkByteAddress(start)
+        stop = start + len(byteValues)
+        self.checkStopByteAddress(stop)
         i = 0
         for byte in byteValues: # do nothing if list is empty
             position = i + start
-            if position >= count:
-                return # truncate silent
-            if position < 0:
-                pass # adjust silent
-            else:
-                self.writeMemoryByte(i + start, byte)
+            self.writeMemoryByte(position, byte)
             i += 1
 
 
@@ -234,14 +264,16 @@ class Memory():
     def __writeMemoryByte__(self, address, value):
         raise NotImplementedError
 
-#---------- Memory abstraction contracts default implementations
+#---------- Memory abstraction contracts with default implementations ---------
 
     def __readMemoryBit__(self, address):
-        byteAddress, bitPosition = divmod(address, 8)
+        byteAddress, rawPosition = divmod(address, 8)
+        bitPosition = 7 - rawPosition
         return (self.__readMemoryByte__(byteAddress) & (1 << bitPosition)) >> bitPosition
 
     def __writeMemoryBit__(self, address, value):
-        byteAddress, bitPosition = divmod(address, 8)
+        byteAddress, rawPosition = divmod(address, 8)
+        bitPosition = 7 - rawPosition
         changeMask = 1 << bitPosition
         byteValue = self.__readMemoryByte__(byteAddress)       
         if value:
@@ -293,6 +325,10 @@ class Memory():
         if not 0 <= address < self.byteCount():
             raise ValueError("Byte address [%d] out of range [%d..%d]" % (address, 0, self.byteCount() - 1))
 
+    def checkStopByteAddress(self, address):
+        if not 0 <= address <= self.byteCount():
+            raise ValueError("Stop byte address [%d] out of range [%d..%d]" % (address, 0, self.byteCount()))
+
     def checkByteValue(self, value):
         if not value in range(0x00,0xFF + 1):
             raise ValueError("Byte value [0x%02X] out of range [0x%02X..0x%02X]" % (value, 0x00,0xFF))
@@ -318,3 +354,5 @@ class Memory():
         
 DRIVERS = {}
 DRIVERS["filememory"] = ["PICKLEFILE"]
+DRIVERS["at24"] = ["EE24BASIC", "EE24X32", "EE24X64", "EE24X128", "EE24X256", "EE24X512", "EE24X1024_2"]
+

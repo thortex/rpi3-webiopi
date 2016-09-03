@@ -17,6 +17,9 @@
 #   1.0    2014-08-25    Initial release.
 #   1.1    2014-09-04    Improved file open/close handling.
 #                        Reimplemented writeMemoryBytes().
+#   1.2    2014-11-13    Updated to match v1.3 of __init__.py
+#                        plus some optimizations
+#   1.3    2014-12-08    Updated to match v1.4 of Memory implementation
 #
 #   Config parameters
 #
@@ -55,7 +58,7 @@ class PICKLEFILE(Memory):
     BYTES = []
     
     FILENAME_DEFAULT = "webiopimem.pkl" # Local memory default name
-    MAXSLOT_VALUE    = 1024
+    MAXSLOT_VALUE    = 10000
 
 #---------- Class initialisation ----------
 
@@ -72,7 +75,7 @@ class PICKLEFILE(Memory):
             self.filename = self.FILENAME_DEFAULT
         
         Memory.__init__(self, slots)
-        self.BYTES = [0 for i in range (0, slots )]
+        self.BYTES = [0 for i in range(slots)]
 
         if os.path.exists(self.filename):
             self.__readFile__()
@@ -101,17 +104,14 @@ class PICKLEFILE(Memory):
 #---------- Memory abstraction NON-REST re-implementation ----------
 # Avoid file writing for every byte, do this for all bytes at the end
 
-    def writeMemoryBytes(self, byteValues, start=0):
-        count = self.byteCount()
+    def writeMemoryBytes(self, start=0, byteValues=[]):
+        self.checkByteAddress(start)
+        stop = start + len(byteValues)
+        self.checkStopByteAddress(stop)
         i = 0
         for byte in byteValues: # do nothing if list is empty
             position = i + start
-            if position >= count:
-                break # truncate silent
-            if position < 0:
-                pass # adjust silent
-            else:
-                self.BYTES[i + start] = byte
+            self.BYTES[position] = byte
             i += 1
         self.__writeFile__()
 
@@ -127,7 +127,7 @@ class PICKLEFILE(Memory):
             slots = self.byteCount()
         else:
             slots = byteCountFile
-        for i in range (0, slots ):
+        for i in range(slots):
             self.BYTES[i] = filebytes[i]
 
     def __writeFile__(self):

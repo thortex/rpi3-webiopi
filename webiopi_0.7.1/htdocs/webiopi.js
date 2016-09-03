@@ -1,4 +1,4 @@
-/*
+ï»¿/*
    Copyright 2012-2013 Eric Ptak - trouch.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -1201,7 +1201,7 @@ PWM.prototype.refreshUI = function() {
 				if ($(this).attr("servo") == "true") {
 					pwm.writeAngle($(this).attr("channel"), $(this).val(), function(name, channel, data) {
 						var val = data;
-						$("#span_" + name + "_" + channel).text(val + "°");
+						$("#span_" + name + "_" + channel).text(val + "Â°");
 						$("#slider_" + name + "_" + channel).val(val);
 					});
 				}
@@ -1228,7 +1228,7 @@ PWM.prototype.refreshUI = function() {
 				slider.attr("min", -45);
 				slider.attr("max", 45);
 				val = data[i]["angle"];
-				span.text(val + "°");
+				span.text(val + "Â°");
 			}
 			else {
 				slider.attr("min", 0);
@@ -1281,7 +1281,7 @@ Temperature.prototype.refreshUI = function() {
 	
 	this.getCelsius(function(name, data){
 		if (element != undefined) {
-			element.header.text(temp + ": " + data + "°C");
+			element.header.text(temp + ": " + data + "Â°C");
 		}
 		setTimeout(function(){temp.refreshUI()}, temp.refreshTime);
 	});
@@ -1545,6 +1545,79 @@ Clock.prototype.getDateTime = function(callback) {
 	});
 }
 
+
+Clock.prototype.getDate = function(callback) {
+	$.get(this.url + "/date", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getTime = function(callback) {
+	$.get(this.url + "/time", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getSec = function(callback) {
+	$.get(this.url + "/second", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getMin = function(callback) {
+	$.get(this.url + "/minute", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getHrs = function(callback) {
+	$.get(this.url + "/hour", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getDow = function(callback) {
+	$.get(this.url + "/dow", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getDay = function(callback) {
+	$.get(this.url + "/day", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getMon = function(callback) {
+	$.get(this.url + "/month", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getYrs = function(callback) {
+	$.get(this.url + "/year", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setDate = function(value, callback) {
+	$.post(this.url + "/date/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setTime = function(value, callback) {
+	$.post(this.url + "/time/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setDow = function(value, callback) {
+	$.post(this.url + "/dow/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
 Clock.prototype.refreshUI = function() {
 	var clock = this;
 	var element = this.element;
@@ -1615,7 +1688,7 @@ Memory.prototype.refreshUI = function() {
 
 		for (var i = 0; i<columns; i++) {
 			var cell = $("<th>");
-			cell.text(i.toString(16));
+			cell.text(i.toString(16).toUpperCase());
 			cell.attr("align", "right");
 			headerLine.append(cell);
 		}
@@ -1625,7 +1698,9 @@ Memory.prototype.refreshUI = function() {
 			var dataLine= $("<tr>");
 			var firstCell = $("<th>");
 			firstCell.attr("align", "right");
-			firstCell.text(("0" + (i*maxColumns).toString(16)).substr(-2) + ":");
+                        firstCell.attr("font", "monospace");
+			firstCell.text("0x" + ("000" + (i*maxColumns).toString(16).toUpperCase()).substr(-4) + ":");
+
 			dataLine.append(firstCell);
 			for (var k = 0; k<maxColumns; k++) {
 				var cell = $("<td>");
@@ -1642,11 +1717,12 @@ Memory.prototype.refreshUI = function() {
 	this.memoryByteWildcard(function(name, data) {
 		for (i in data) {
 			var span = $("#span_" + name + "_" + i);
-			val = parseInt(data[i]).toString(16);
+			val = parseInt(data[i]).toString(16).toUpperCase();
 			span.text(("0" + val).substr(-2));
 		}
 		setTimeout(function(){memory.refreshUI()}, memory.refreshTime);
 	});
 }
+
 
 
