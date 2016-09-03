@@ -69,5 +69,29 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Not supported Raspberry Pi Model A and B (26-pin type). 
 
 
+# Issues
+
+## Closed
+
+* Issue #041 [Accepted/open] - Create debian packages -> Closed by Thor.
+
+## Open
+
+* Issue #040 [Accepted/open] - Improve HTTP request handling
+* Issue #042 [Accepted/open] - Improve software PWM to use DMA instead of Threads
+* Issue #044 [Accepted/open] - Java (partly Python) client improvement possibilities
+* Issue #057 [Accepted/open] - Make macros more RESTful
+* Issue #062 [Accepted/open] - Update wiki for missing Serial docs
+* Issue #070 [Accepted/open] - Add synchronization/lock to drivers functions call
+* Issue #071 [Accepted/open] - Allows Reverse Proxying / custom URL root 
+* Issue #074 [Accepted/open] - GPIO Expander Port Write REST Error
+* Issue #080 [Accepted/open] - Add Exception handling
+* Issue #081 [New/open] - Problems in normal Startup but not in the Debug mode
+* Issue #082 [New/open] - Integration of DHT11 Humidity sensors
+* Issue #084 [Accepted/open] - Add logout option
+* Issue #086 [New/open] - Custard Pi Interface
+* Issue #086 [New/open] - Custard Pi Interface
+* Issue #087 [New/open] - Some results miss "Content-Type" header
+* Issue #089 through #161
 
 
