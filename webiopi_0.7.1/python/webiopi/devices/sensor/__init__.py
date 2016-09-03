@@ -195,7 +195,7 @@ DRIVERS["vcnl4000"] = ["VCNL4000"]
 DRIVERS["hytXXX"] = ["HYT221"]
 DRIVERS["bme280"] = ["BME280"]
 DRIVERS["mcptmp"] = ["MCP9808"]
-
+DRIVERS["htu21d"] = ["HTU21D"]
 
 
 

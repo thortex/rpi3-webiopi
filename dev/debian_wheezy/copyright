@@ -63,13 +63,17 @@ Files: python/webiopi/devices/sensor/mcptmp.py python/webiopi/devices/analog/adv
 Copyright: Copyright (c) 2016 Andreas Riegg - t-h-i-n-x.net
 License: Apache 2.0 
 
-Files: python/webiopi/devices/analo/gmcp3424.py
+Files: python/webiopi/devices/analog/mcp3424.py
 Copyright: Copyright (c) 2015 Justin Miller
 License: 
     Copying and distribution of this patch, with or without
     modification, are permitted in any medium without royalty
     provided the copyright notice and this notice are
     preserved.
+
+Files: python/webiopi/devices/sensors/htu21d.py
+Copyright: Copyright (c) 2014 Zoltán Zörgő <soltan.zorgo@gmail.com>
+License: Apache 2.0 
 
 
 

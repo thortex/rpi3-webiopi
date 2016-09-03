@@ -36,6 +36,10 @@ Added DS1307, DS1337, DS1338, DS3231 and MCP7940 RTC driver written by Andreas R
 ### AT24C compatible 16-bit addressing EEPROM driver 
 Added AT24C copatible 16-bit addressing EEPROM driver written by Andreas Riegg. Please refer to http://webiopi.trouch.com/issues/132/ for the original resources.
 
+### HTU21D Temperature/Humidity sensors
+Added HTU21D temperature/humidity sensors driver written by Zoltán Zörgő. Please refer to http://webiopi.trouch.com/issues/92/ for original resources.
+
+
 ## SPI
 
 ### Analog Devivces Digital Potentionmeter
@@ -58,6 +62,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Added I2C PCA953x series IO Expander driver written by Andreas Riegg.
 * Added I2C DS1307 series and MCP7940 RTC driver written by Andreas Riegg.
 * Added I2C AT24C compatible 16-bit addressing EEPROM driver written by Andreas Riegg.
+* Added I2C HTU21D Temperature/Humidity sensors driver written by Zoltán Zörgő. 
 
 ## Version 0.7.1+deb01 (Thu Sep 1 21:37:39 2016 +0900) 
 * Merged a patch for B+, Pi 2, and Pi 3 written by Keisuke Seya (doublebind).
@@ -74,6 +79,9 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 ## Closed
 
 * Issue #041 [Accepted/open] - Create debian packages -> Closed by Thor.
+* Issue #090 [New/open] - TSL2561 sensor lux value not changing -> Closed by Andreas. 
+* Issue #091 [New/open] - New Device: BMP180 -> Closed by Andreas.
+* Issue #092 [New/open] - Support for HTU21D -> Closed by Zoltan&Andreas.
 
 ## Open
 
