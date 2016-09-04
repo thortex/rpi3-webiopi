@@ -15,7 +15,7 @@ WORKDIR=~/build.${NAME}
 set -e
 
 cd ../${NAME}_${VERSION}/python
-
+rm -fr ./WebIOPi.egg-info  
 python setup.py sdist
 
 rm -rf ${WORKDIR}
