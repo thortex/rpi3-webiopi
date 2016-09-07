@@ -55,6 +55,10 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 # ChangeLog
 
 ## master branch
+* Will include DS2413 (Issue #095) 
+* Will provide (automatically generated) WebIOPi API documentation. 
+
+## Version 0.7.1+deb02 (Wed Sep 7 22:29:16 +0900) 
 * Added MCP3424 ADC driver by Justin Miller.
 * Added I2C/SPI Analog Devices Digital Potentionmeter driver by Andreas Riegg.
 * Added I2C MCP9808 temperature sensor written by Andreas Riegg. 
@@ -100,6 +104,7 @@ Added Analog Devices Digital Potentionmeter driver written by Andreas Riegg.
 * Issue #086 [New/open] - Custard Pi Interface
 * Issue #086 [New/open] - Custard Pi Interface
 * Issue #087 [New/open] - Some results miss "Content-Type" header
-* Issue #089 through #161
+* Issue #089 [New/open] - Add exception details to http 500 error
+* Issue #093 through #161
 
 
