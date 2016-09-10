@@ -1,0 +1,9 @@
+digraph "python/native" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_7837fde3ab9c1fb2fc5be7b717af8d79 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="python" fontname="Helvetica", fontsize="10", URL="dir_7837fde3ab9c1fb2fc5be7b717af8d79.html"]
+  dir_16e22eebe4633580bb34cb6c6535bd36 [shape=box, label="native", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_16e22eebe4633580bb34cb6c6535bd36.html"];
+  }
+}

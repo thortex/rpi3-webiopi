@@ -1,0 +1,19 @@
+digraph "webiopi.protocols.coap.COAPMessage"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="webiopi.protocols.coap.COAPMessage",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="webiopi.protocols.coap.COAPRequest",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPRequest.html"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="webiopi.protocols.coap.COAPDelete",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPDelete.html"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="webiopi.protocols.coap.COAPGet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPGet.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="webiopi.protocols.coap.COAPPost",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPPost.html"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="webiopi.protocols.coap.COAPPut",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPPut.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="webiopi.protocols.coap.COAPResponse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html"];
+}

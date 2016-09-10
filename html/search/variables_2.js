@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['b1',['b1',['../classwebiopi_1_1devices_1_1sensor_1_1bmp085_1_1BMP085.html#a8cc8c34efe5a00e5e00a4fcc8e48f516',1,'webiopi::devices::sensor::bmp085::BMP085']]],
+  ['b2',['b2',['../classwebiopi_1_1devices_1_1sensor_1_1bmp085_1_1BMP085.html#a37dcd5083ae7d0f65bc3a5f1fe1620ad',1,'webiopi::devices::sensor::bmp085::BMP085']]],
+  ['bad_5fgateway',['BAD_GATEWAY',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#a61ed01d4cc2799db23d8329ebb4e0c60',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['bad_5foption',['BAD_OPTION',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#abc0ea4cda003bd3e3d3c47dc16af5d28',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['bad_5frequest',['BAD_REQUEST',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#a2681167f0bb9bc5b964284731a7d5cb7',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['banks',['banks',['../classwebiopi_1_1devices_1_1digital_1_1mcp23XXX_1_1MCP23XXX.html#a7c82ce27f1b22140fb3cfddcd4d69b9c',1,'webiopi.devices.digital.mcp23XXX.MCP23XXX.banks()'],['../namespacewebiopi_1_1devices_1_1digital_1_1pca9555.html#a6d314bfa4245a7269e8e4017c27871c1',1,'webiopi.devices.digital.pca9555.BANKS()']]],
+  ['baudrate',['baudrate',['../classwebiopi_1_1devices_1_1serial_1_1Serial.html#a4fd268f5e62852ea1ef82b16bbef26e3',1,'webiopi::devices::serial::Serial']]],
+  ['bits',['bits',['../classwebiopi_1_1devices_1_1spi_1_1SPI.html#a9fc8045b5d289498f3dc1a8d31fc6c5b',1,'webiopi::devices::spi::SPI']]],
+  ['bits_5fper_5fencoded_5fbyte',['BITS_PER_ENCODED_BYTE',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a4fe561d83ae6c3004f173843896e1f05',1,'org::apache::commons::codec::binary::Base64']]],
+  ['board',['board',['../classwebiopi_1_1devices_1_1shield_1_1piface_1_1PiFaceDigital.html#aed01b971788e573145cddb2355af53b1',1,'webiopi::devices::shield::piface::PiFaceDigital']]],
+  ['board_5frevision',['BOARD_REVISION',['../namespacewebiopi_1_1utils_1_1version.html#a5844aad80e6fe0857078fa21c991872e',1,'webiopi::utils::version']]],
+  ['buffer',['buffer',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1BaseNCodec_1_1Context.html#ab30f47a37f8277855252823adf7408ff',1,'org::apache::commons::codec::binary::BaseNCodec::Context']]],
+  ['buffered',['buffered',['../classwebiopi_1_1devices_1_1analog_1_1mcp48XX_1_1MCP48XX.html#a62f451013e76b9b9a388f999eb7b3a7e',1,'webiopi.devices.analog.mcp48XX.MCP48XX.buffered()'],['../classwebiopi_1_1devices_1_1analog_1_1mcp492X_1_1MCP492X.html#a5a70c7b5487cc74c75bda9446dc2a7cb',1,'webiopi.devices.analog.mcp492X.MCP492X.buffered()']]],
+  ['buslist',['BUSLIST',['../namespacewebiopi_1_1devices_1_1bus.html#a38295527d10f6d4cc8da636cceb044c8',1,'webiopi::devices::bus']]],
+  ['busname',['busName',['../classwebiopi_1_1devices_1_1bus_1_1Bus.html#a570de77aa9d9f0d87b995b06968f625b',1,'webiopi::devices::bus::Bus']]],
+  ['bytecount',['byteCount',['../classwebiopi_1_1devices_1_1analog_1_1mcp3424_1_1MCP3424.html#ae983257ffa367664bc0baaa8532a22e9',1,'webiopi::devices::analog::mcp3424::MCP3424']]],
+  ['bytes',['BYTES',['../namespacewebiopi_1_1devices_1_1memory_1_1filememory.html#a75f26dc0f48c981b6d8c95257f4d6025',1,'webiopi::devices::memory::filememory']]],
+  ['bytes_5fper_5fencoded_5fblock',['BYTES_PER_ENCODED_BLOCK',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#aff5a5bc134ee520593f03a3cf7b1ae2d',1,'org::apache::commons::codec::binary::Base64']]],
+  ['bytes_5fper_5funencoded_5fblock',['BYTES_PER_UNENCODED_BLOCK',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a383be0a0f596d594f3821dcfeb5fdcc7',1,'org::apache::commons::codec::binary::Base64']]]
+];

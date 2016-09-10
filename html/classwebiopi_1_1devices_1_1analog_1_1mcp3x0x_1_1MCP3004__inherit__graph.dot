@@ -1,0 +1,16 @@
+digraph "webiopi.devices.analog.mcp3x0x.MCP3004"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="webiopi.devices.analog.mcp3x0x.\lMCP3004",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="webiopi.devices.analog.mcp3x0x.\lMCP300X",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1analog_1_1mcp3x0x_1_1MCP300X.html"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="webiopi.devices.analog.mcp3x0x.\lMCP3X0X",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1analog_1_1mcp3x0x_1_1MCP3X0X.html"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="webiopi.devices.spi.SPI",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1spi_1_1SPI.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="webiopi.devices.bus.Bus",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1bus_1_1Bus.html"];
+  Node6 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="webiopi.devices.analog.ADC",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1analog_1_1ADC.html"];
+}

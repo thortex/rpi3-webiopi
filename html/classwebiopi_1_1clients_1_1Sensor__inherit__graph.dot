@@ -1,0 +1,19 @@
+digraph "webiopi.clients.Sensor"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="webiopi.clients.Sensor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="webiopi.clients.Device",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1Device.html"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="webiopi.clients.RESTAPI",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1RESTAPI.html"];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="webiopi.clients.Distance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1Distance.html"];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="webiopi.clients.Luminosity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1Luminosity.html"];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="webiopi.clients.Pressure",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1Pressure.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="webiopi.clients.Temperature",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1clients_1_1Temperature.html"];
+}

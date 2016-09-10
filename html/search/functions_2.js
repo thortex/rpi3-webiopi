@@ -1,0 +1,9 @@
+var searchData=
+[
+  ['bankcount',['bankCount',['../classwebiopi_1_1devices_1_1digital_1_1GPIOPort.html#aee05f3527b9ebda099af03ea19f41b94',1,'webiopi::devices::digital::GPIOPort']]],
+  ['base64',['Base64',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a12315c3a7e2ff20e334fcf4b8158c18d',1,'org.apache.commons.codec.binary.Base64.Base64()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a26de8925bf5c094afde90a06f77a4a03',1,'org.apache.commons.codec.binary.Base64.Base64(final boolean urlSafe)'],['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a8361f46c8c12c8f7bbc5edb4b3ccf6f8',1,'org.apache.commons.codec.binary.Base64.Base64(final int lineLength)'],['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#ab826627e0f102b439e5f9a10b99db134',1,'org.apache.commons.codec.binary.Base64.Base64(final int lineLength, final byte[] lineSeparator)'],['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a786978d2cd3a443c7cd8ba037850486d',1,'org.apache.commons.codec.binary.Base64.Base64(final int lineLength, final byte[] lineSeparator, final boolean urlSafe)']]],
+  ['basencodec',['BaseNCodec',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1BaseNCodec.html#aac2fc8559cf5e35c37feda329846d40c',1,'org::apache::commons::codec::binary::BaseNCodec']]],
+  ['bcdbits2int',['BcdBits2Int',['../classwebiopi_1_1devices_1_1clock_1_1Clock.html#a3be19d11468758243f0fc5b173cfa8e5',1,'webiopi::devices::clock::Clock']]],
+  ['bitcount',['bitCount',['../classwebiopi_1_1devices_1_1memory_1_1Memory.html#a6db88b490f6946f892828c47a16c29a1',1,'webiopi::devices::memory::Memory']]],
+  ['bytecount',['byteCount',['../classwebiopi_1_1devices_1_1memory_1_1Memory.html#a69f030caeb09825a7836ed320c5d5bf2',1,'webiopi::devices::memory::Memory']]]
+];

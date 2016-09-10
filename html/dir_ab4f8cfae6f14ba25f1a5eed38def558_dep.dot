@@ -1,0 +1,9 @@
+digraph "python/webiopi/devices/shield" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_057d0b970b2631602d36df3d4c352168 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="devices" fontname="Helvetica", fontsize="10", URL="dir_057d0b970b2631602d36df3d4c352168.html"]
+  dir_ab4f8cfae6f14ba25f1a5eed38def558 [shape=box, label="shield", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_ab4f8cfae6f14ba25f1a5eed38def558.html"];
+  }
+}

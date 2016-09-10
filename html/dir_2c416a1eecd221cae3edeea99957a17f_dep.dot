@@ -1,0 +1,9 @@
+digraph "java/client/src/com/trouch/webiopi/client/devices/sensor" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_a65a3d93fdf84fce757248625417eff2 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="devices" fontname="Helvetica", fontsize="10", URL="dir_a65a3d93fdf84fce757248625417eff2.html"]
+  dir_2c416a1eecd221cae3edeea99957a17f [shape=box, label="sensor", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_2c416a1eecd221cae3edeea99957a17f.html"];
+  }
+}

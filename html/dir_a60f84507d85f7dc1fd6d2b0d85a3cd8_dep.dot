@@ -1,0 +1,9 @@
+digraph "python/webiopi/protocols" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_55d8687928f7b3ee523bd828d976b84f {
+    graph [ bgcolor="#ddddee", pencolor="black", label="webiopi" fontname="Helvetica", fontsize="10", URL="dir_55d8687928f7b3ee523bd828d976b84f.html"]
+  dir_a60f84507d85f7dc1fd6d2b0d85a3cd8 [shape=box, label="protocols", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_a60f84507d85f7dc1fd6d2b0d85a3cd8.html"];
+  }
+}

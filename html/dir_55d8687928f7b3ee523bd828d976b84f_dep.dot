@@ -1,0 +1,18 @@
+digraph "python/webiopi" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_7837fde3ab9c1fb2fc5be7b717af8d79 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="python" fontname="Helvetica", fontsize="10", URL="dir_7837fde3ab9c1fb2fc5be7b717af8d79.html"]
+  subgraph clusterdir_55d8687928f7b3ee523bd828d976b84f {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_55d8687928f7b3ee523bd828d976b84f.html"];
+    dir_55d8687928f7b3ee523bd828d976b84f [shape=plaintext label="webiopi"];
+    dir_bd75201778bf57e5e6a79a05f51c2065 [shape=box label="clients" color="black" fillcolor="white" style="filled" URL="dir_bd75201778bf57e5e6a79a05f51c2065.html"];
+    dir_15f28ab06157c413865ebd2e702b2651 [shape=box label="decorators" color="black" fillcolor="white" style="filled" URL="dir_15f28ab06157c413865ebd2e702b2651.html"];
+    dir_057d0b970b2631602d36df3d4c352168 [shape=box label="devices" color="red" fillcolor="white" style="filled" URL="dir_057d0b970b2631602d36df3d4c352168.html"];
+    dir_a60f84507d85f7dc1fd6d2b0d85a3cd8 [shape=box label="protocols" color="black" fillcolor="white" style="filled" URL="dir_a60f84507d85f7dc1fd6d2b0d85a3cd8.html"];
+    dir_9b1ef9db4e0e94adebce3e2754bac4f1 [shape=box label="server" color="black" fillcolor="white" style="filled" URL="dir_9b1ef9db4e0e94adebce3e2754bac4f1.html"];
+    dir_73335d573df896ecc27176b145295c7f [shape=box label="utils" color="black" fillcolor="white" style="filled" URL="dir_73335d573df896ecc27176b145295c7f.html"];
+  }
+  }
+}

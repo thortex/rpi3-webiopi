@@ -1,0 +1,9 @@
+digraph "python/webiopi/devices/memory" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_057d0b970b2631602d36df3d4c352168 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="devices" fontname="Helvetica", fontsize="10", URL="dir_057d0b970b2631602d36df3d4c352168.html"]
+  dir_313476639bc69fcecdb99a317af2a51e [shape=box, label="memory", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_313476639bc69fcecdb99a317af2a51e.html"];
+  }
+}

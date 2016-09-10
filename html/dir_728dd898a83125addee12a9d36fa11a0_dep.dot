@@ -1,0 +1,9 @@
+digraph "python/webiopi/devices/analog" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_057d0b970b2631602d36df3d4c352168 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="devices" fontname="Helvetica", fontsize="10", URL="dir_057d0b970b2631602d36df3d4c352168.html"]
+  dir_728dd898a83125addee12a9d36fa11a0 [shape=box, label="analog", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_728dd898a83125addee12a9d36fa11a0.html"];
+  }
+}

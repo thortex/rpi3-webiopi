@@ -1,0 +1,9 @@
+digraph "tutorials/4.serial-streaming" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_0d353d24d0afa59909efab6593124f6d {
+    graph [ bgcolor="#ddddee", pencolor="black", label="tutorials" fontname="Helvetica", fontsize="10", URL="dir_0d353d24d0afa59909efab6593124f6d.html"]
+  dir_b1fd4ab95c3fcf4701eec241821fcf48 [shape=box, label="4.serial-streaming", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_b1fd4ab95c3fcf4701eec241821fcf48.html"];
+  }
+}

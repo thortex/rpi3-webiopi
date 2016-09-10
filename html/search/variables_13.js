@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['unauthorized',['UNAUTHORIZED',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#abc67370e27fb55949ed835db4025e174',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['unencodedblocksize',['unencodedBlockSize',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1BaseNCodec.html#a97d985613c4ff14ca3fc1c4901bd4306',1,'org::apache::commons::codec::binary::BaseNCodec']]],
+  ['unsupported_5fcontent',['UNSUPPORTED_CONTENT',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#a8ab24d56294b8083010040fd92d73056',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['up',['up',['../structtspair.html#a1d05110cc9d2386adb66beeeef78e248',1,'tspair']]],
+  ['uri_5fhost',['URI_HOST',['../classwebiopi_1_1protocols_1_1coap_1_1COAPOption.html#a9fc82ba6d77ad5c97adb4facfbf130e2',1,'webiopi::protocols::coap::COAPOption']]],
+  ['uri_5fpath',['URI_PATH',['../classwebiopi_1_1protocols_1_1coap_1_1COAPOption.html#ae38412027a2a9fdc46204e727b572056',1,'webiopi.protocols.coap.COAPOption.URI_PATH()'],['../classwebiopi_1_1protocols_1_1coap_1_1COAPMessage.html#a599de85e9de782f928137df07ca46476',1,'webiopi.protocols.coap.COAPMessage.uri_path()']]],
+  ['uri_5fport',['URI_PORT',['../classwebiopi_1_1protocols_1_1coap_1_1COAPOption.html#afe8253233f06f2eecdd976e07b301c61',1,'webiopi::protocols::coap::COAPOption']]],
+  ['uri_5fquery',['URI_QUERY',['../classwebiopi_1_1protocols_1_1coap_1_1COAPOption.html#ab493764d2a0d23ab5f6456fad7424041',1,'webiopi::protocols::coap::COAPOption']]],
+  ['url',['url',['../namespacesetup.html#a3376e8b9735800b5b9e455914cee908d',1,'setup']]],
+  ['url_5fsafe_5fencode_5ftable',['URL_SAFE_ENCODE_TABLE',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a2f92e774533b55a1ce9b132be6d634b2',1,'org::apache::commons::codec::binary::Base64']]],
+  ['urlbase',['urlBase',['../classcom_1_1trouch_1_1webiopi_1_1client_1_1PiClient.html#a3a4c3f265ccbcdf42ca18d3f2aa93d42',1,'com::trouch::webiopi::client::PiClient']]],
+  ['us_5fascii',['US_ASCII',['../classorg_1_1apache_1_1commons_1_1codec_1_1CharEncoding.html#a3ab54e804669e5c82258c8d3071067d7',1,'org.apache.commons.codec.CharEncoding.US_ASCII()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1Charsets.html#a34095aed940e2d10aa3c568b4a3666d8',1,'org.apache.commons.codec.Charsets.US_ASCII()']]],
+  ['utf_5f16',['UTF_16',['../classorg_1_1apache_1_1commons_1_1codec_1_1CharEncoding.html#a5c6c7d4720c0034be722f06568647c79',1,'org.apache.commons.codec.CharEncoding.UTF_16()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1Charsets.html#a7f801ac1dcedda8e89899dba2c936605',1,'org.apache.commons.codec.Charsets.UTF_16()']]],
+  ['utf_5f16be',['UTF_16BE',['../classorg_1_1apache_1_1commons_1_1codec_1_1CharEncoding.html#a60bb610fdab16d80cd1bc567c4e7e349',1,'org.apache.commons.codec.CharEncoding.UTF_16BE()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1Charsets.html#ae74395d115d77f9da8fceb7ac536b847',1,'org.apache.commons.codec.Charsets.UTF_16BE()']]],
+  ['utf_5f16le',['UTF_16LE',['../classorg_1_1apache_1_1commons_1_1codec_1_1CharEncoding.html#adeaf37be6a38f1764f57d6b58f0d69c2',1,'org.apache.commons.codec.CharEncoding.UTF_16LE()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1Charsets.html#a14291050380a1bfe37388dd8fd4ff81f',1,'org.apache.commons.codec.Charsets.UTF_16LE()']]],
+  ['utf_5f8',['UTF_8',['../classorg_1_1apache_1_1commons_1_1codec_1_1CharEncoding.html#a3b7bf5578e5626d54b21426742a60be9',1,'org.apache.commons.codec.CharEncoding.UTF_8()'],['../classorg_1_1apache_1_1commons_1_1codec_1_1Charsets.html#a00bae7d8efd95ad37e39c122bdce0e2c',1,'org.apache.commons.codec.Charsets.UTF_8()']]]
+];

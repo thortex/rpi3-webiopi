@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['dac',['dac',['../namespacewebiopi-client.html#a85f82b6e5556b6e6ff789d944234b7e3',1,'webiopi-client']]],
+  ['davalue',['daValue',['../classwebiopi_1_1devices_1_1analog_1_1pcf8591_1_1PCF8591.html#a5e26263adb2677d440785860d2afd8a9',1,'webiopi::devices::analog::pcf8591::PCF8591']]],
+  ['day',['DAY',['../namespacewebiopi_1_1devices_1_1clock_1_1dsrtc.html#a7242f5c77483dc14ee561b69d6bf1c99',1,'webiopi.devices.clock.dsrtc.DAY()'],['../namespacewebiopi_1_1devices_1_1clock_1_1mcprtc.html#a3610c555406cceedaea47f47ca7b8e03',1,'webiopi.devices.clock.mcprtc.DAY()']]],
+  ['day_5fmask',['DAY_MASK',['../namespacewebiopi_1_1devices_1_1clock_1_1dsrtc.html#a88fc610fc2f2dc4559918c9c98dcd77f',1,'webiopi.devices.clock.dsrtc.DAY_MASK()'],['../namespacewebiopi_1_1devices_1_1clock_1_1mcprtc.html#af89577b3f3992733a35cd3a4773158b6',1,'webiopi.devices.clock.mcprtc.DAY_MASK()']]],
+  ['decode_5ftable',['DECODE_TABLE',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a906a11324ea68e502eefa5d1cdddd7c2',1,'org::apache::commons::codec::binary::Base64']]],
+  ['decodesize',['decodeSize',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#ae1c7e874bfe163af739f24c82e3cb7e9',1,'org::apache::commons::codec::binary::Base64']]],
+  ['decodetable',['decodeTable',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1Base64.html#a3fd83a6a36fa4e1dc01c70652f995d2c',1,'org::apache::commons::codec::binary::Base64']]],
+  ['default_5fbuffer_5fresize_5ffactor',['DEFAULT_BUFFER_RESIZE_FACTOR',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1BaseNCodec.html#a5a6a04c9d50b83a9422f3e04f335b139',1,'org::apache::commons::codec::binary::BaseNCodec']]],
+  ['default_5fbuffer_5fsize',['DEFAULT_BUFFER_SIZE',['../classorg_1_1apache_1_1commons_1_1codec_1_1binary_1_1BaseNCodec.html#ac369610f2525240c8bb82a3a9d8e1411',1,'org::apache::commons::codec::binary::BaseNCodec']]],
+  ['default_5fport',['DEFAULT_PORT',['../classcom_1_1trouch_1_1webiopi_1_1client_1_1PiCoapClient.html#ae472b1c451019adc6e4d534225e426bb',1,'com.trouch.webiopi.client.PiCoapClient.DEFAULT_PORT()'],['../classcom_1_1trouch_1_1webiopi_1_1client_1_1PiHttpClient.html#a08dff60bf49ce5c076e1a0500cca041c',1,'com.trouch.webiopi.client.PiHttpClient.DEFAULT_PORT()']]],
+  ['defval',['DEFVAL',['../classwebiopi_1_1devices_1_1digital_1_1mcp23XXX_1_1MCP23XXX.html#ae1b254f1d68bacd91f4c7651a808bdcf',1,'webiopi::devices::digital::mcp23XXX::MCP23XXX']]],
+  ['delete',['DELETE',['../classwebiopi_1_1protocols_1_1coap_1_1COAPRequest.html#a7bb0b1fc2ba341500fafacd97df8558c',1,'webiopi::protocols::coap::COAPRequest']]],
+  ['deleted',['DELETED',['../classwebiopi_1_1protocols_1_1coap_1_1COAPResponse.html#af0a9adc2f9a53b233a7c96877aa12479',1,'webiopi::protocols::coap::COAPResponse']]],
+  ['description',['description',['../namespacesetup.html#ade8aa54df2083113a10326ea2fe7934b',1,'setup']]],
+  ['device',['device',['../classwebiopi_1_1devices_1_1bus_1_1Bus.html#a8ca82da17d9499c907f8837bcbbb555d',1,'webiopi::devices::bus::Bus']]],
+  ['device_5fmapping',['device_mapping',['../classwebiopi_1_1protocols_1_1rest_1_1RESTHandler.html#ab129627504b3152d1f2d778ef19a1a5b',1,'webiopi::protocols::rest::RESTHandler']]],
+  ['devices',['DEVICES',['../namespacewebiopi_1_1devices_1_1instance.html#a0c5161691721ab8f2c6a4bdb6116c211',1,'webiopi::devices::instance']]],
+  ['digitalbankscount',['digitalBanksCount',['../classwebiopi_1_1devices_1_1digital_1_1GPIOPort.html#a9c6df899a3404dfb59dd1411000c598d',1,'webiopi::devices::digital::GPIOPort']]],
+  ['digitalchannelcount',['digitalChannelCount',['../classwebiopi_1_1devices_1_1digital_1_1GPIOPort.html#a27637bbe7e6668976c298dabdcbee8a4',1,'webiopi::devices::digital::GPIOPort']]],
+  ['docroot',['docroot',['../classwebiopi_1_1protocols_1_1http_1_1HTTPServer.html#a6250b46731f6dce961f75a6dccf40caa',1,'webiopi::protocols::http::HTTPServer']]],
+  ['dow',['DOW',['../namespacewebiopi_1_1devices_1_1clock_1_1dsrtc.html#a46a21ae21dc0acc854b768cc4baf9ea0',1,'webiopi.devices.clock.dsrtc.DOW()'],['../namespacewebiopi_1_1devices_1_1clock_1_1mcprtc.html#a2d45726b0bf7f6122b57548779bab97d',1,'webiopi.devices.clock.mcprtc.DOW()']]],
+  ['dow_5fmask',['DOW_MASK',['../namespacewebiopi_1_1devices_1_1clock_1_1dsrtc.html#ae4cbde83024328da1c2dcb7981dc31b1',1,'webiopi.devices.clock.dsrtc.DOW_MASK()'],['../namespacewebiopi_1_1devices_1_1clock_1_1mcprtc.html#af7721b05efca92cf8cf357c905129293',1,'webiopi.devices.clock.mcprtc.DOW_MASK()']]],
+  ['down',['down',['../structtspair.html#aae6a4cd4c2f6b0b3cf09a6f9eff71493',1,'tspair']]],
+  ['drivers',['DRIVERS',['../namespacewebiopi_1_1devices_1_1analog.html#a750895b94eabfd86b769a91e74269675',1,'webiopi.devices.analog.DRIVERS()'],['../namespacewebiopi_1_1devices_1_1clock.html#a2329bd34e8695e9c8424b7b6a48e536d',1,'webiopi.devices.clock.DRIVERS()'],['../namespacewebiopi_1_1devices_1_1digital.html#a71cd0443d1436f19a2e34f495d7ca880',1,'webiopi.devices.digital.DRIVERS()'],['../namespacewebiopi_1_1devices_1_1memory.html#a1ef034f2a309e98d99339547f78ba5d8',1,'webiopi.devices.memory.DRIVERS()'],['../namespacewebiopi_1_1devices_1_1sensor.html#a58df9c9e52dc7b291bae50c4b9849edd',1,'webiopi.devices.sensor.DRIVERS()'],['../namespacewebiopi_1_1devices_1_1shield.html#a3d47018d184480dbc5a800216d67ebac',1,'webiopi.devices.shield.DRIVERS()']]]
+];

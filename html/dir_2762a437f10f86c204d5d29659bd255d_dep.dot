@@ -1,0 +1,13 @@
+digraph "java/client/src/org/apache" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_6e289e9f832bd9332b813a4f1a604d29 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="org" fontname="Helvetica", fontsize="10", URL="dir_6e289e9f832bd9332b813a4f1a604d29.html"]
+  subgraph clusterdir_2762a437f10f86c204d5d29659bd255d {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_2762a437f10f86c204d5d29659bd255d.html"];
+    dir_2762a437f10f86c204d5d29659bd255d [shape=plaintext label="apache"];
+    dir_dd322ec048e22a6e907f7f5c404b42ea [shape=box label="commons" color="red" fillcolor="white" style="filled" URL="dir_dd322ec048e22a6e907f7f5c404b42ea.html"];
+  }
+  }
+}

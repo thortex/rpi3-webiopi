@@ -1,0 +1,11 @@
+digraph "python" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_7837fde3ab9c1fb2fc5be7b717af8d79 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_7837fde3ab9c1fb2fc5be7b717af8d79.html"];
+    dir_7837fde3ab9c1fb2fc5be7b717af8d79 [shape=plaintext label="python"];
+    dir_16e22eebe4633580bb34cb6c6535bd36 [shape=box label="native" color="black" fillcolor="white" style="filled" URL="dir_16e22eebe4633580bb34cb6c6535bd36.html"];
+    dir_55d8687928f7b3ee523bd828d976b84f [shape=box label="webiopi" color="red" fillcolor="white" style="filled" URL="dir_55d8687928f7b3ee523bd828d976b84f.html"];
+  }
+}

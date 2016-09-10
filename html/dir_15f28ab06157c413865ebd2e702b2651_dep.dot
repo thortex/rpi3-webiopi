@@ -1,0 +1,9 @@
+digraph "python/webiopi/decorators" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_55d8687928f7b3ee523bd828d976b84f {
+    graph [ bgcolor="#ddddee", pencolor="black", label="webiopi" fontname="Helvetica", fontsize="10", URL="dir_55d8687928f7b3ee523bd828d976b84f.html"]
+  dir_15f28ab06157c413865ebd2e702b2651 [shape=box, label="decorators", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_15f28ab06157c413865ebd2e702b2651.html"];
+  }
+}

@@ -1,0 +1,9 @@
+digraph "java/client/src/org/apache/commons/codec/binary" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_c2a1ead86233eacc7f246458bae9b162 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="codec" fontname="Helvetica", fontsize="10", URL="dir_c2a1ead86233eacc7f246458bae9b162.html"]
+  dir_a1570b66fdb1e6410ed9d8417f010968 [shape=box, label="binary", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_a1570b66fdb1e6410ed9d8417f010968.html"];
+  }
+}

@@ -1,0 +1,21 @@
+digraph "webiopi.devices.clock.Clock"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="webiopi.devices.clock.Clock",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="webiopi.devices.clock.dsrtc.\lDSclock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1dsrtc_1_1DSclock.html"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="webiopi.devices.clock.dsrtc.\lDS1307",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1dsrtc_1_1DS1307.html"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="webiopi.devices.clock.dsrtc.\lDS1338",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1dsrtc_1_1DS1338.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="webiopi.devices.clock.dsrtc.\lDS1337",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1dsrtc_1_1DS1337.html"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="webiopi.devices.clock.dsrtc.\lDS3231",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1dsrtc_1_1DS3231.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="webiopi.devices.clock.mcprtc.\lMCP7940",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1mcprtc_1_1MCP7940.html"];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="webiopi.devices.clock.osrtc.\lOsClock",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$classwebiopi_1_1devices_1_1clock_1_1osrtc_1_1OsClock.html"];
+}

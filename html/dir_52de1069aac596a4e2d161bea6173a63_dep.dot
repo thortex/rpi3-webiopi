@@ -1,0 +1,13 @@
+digraph "java/client/src/com/trouch/webiopi" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_ed5903331f5f9732f0eb8c43067e02e4 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="trouch" fontname="Helvetica", fontsize="10", URL="dir_ed5903331f5f9732f0eb8c43067e02e4.html"]
+  subgraph clusterdir_52de1069aac596a4e2d161bea6173a63 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_52de1069aac596a4e2d161bea6173a63.html"];
+    dir_52de1069aac596a4e2d161bea6173a63 [shape=plaintext label="webiopi"];
+    dir_7a98f74065309cd1029c7dd936df8dad [shape=box label="client" color="red" fillcolor="white" style="filled" URL="dir_7a98f74065309cd1029c7dd936df8dad.html"];
+  }
+  }
+}
