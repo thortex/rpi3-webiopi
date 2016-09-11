@@ -1400,7 +1400,7 @@ function PiFaceDigital(name) {
 }
 
 PiFaceDigital.prototype.toString = function() {
-	return "PiFaceDigital";
+	return this.name + "PiFaceDigital";
 }
 
 PiFaceDigital.prototype.input = function(channel, callback) {
