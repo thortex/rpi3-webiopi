@@ -26,8 +26,10 @@ from webiopi.utils.types import str2bool
 
 if PYTHON_MAJOR >= 3:
     import http.server as BaseHTTPServer
+    from urllib.parse import unquote as uqot # Added by Rgg to handle requests containing percent-encoded chars
 else:
     import BaseHTTPServer
+    from urllib import unquote as uqot # Added by Rgg to handle requests containing percent-encoded chars
 
 try :
     import _webiopi.GPIO as GPIO
@@ -208,6 +210,7 @@ class HTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         if not self.checkAuthentication():
             return self.requestAuthentication()
         
+        self.path =  uqot(self.path) # Added by Rgg to handle requests containing percent-encoded chars
         request = self.path.replace(self.server.context, "/").split('?')
         relativePath = request[0]
         if relativePath[0] == "/":
