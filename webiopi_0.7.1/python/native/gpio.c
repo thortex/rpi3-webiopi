@@ -31,10 +31,14 @@ SOFTWARE.
 #include "gpio.h"
 #include "cpuinfo.h"
 
-#define BCM2708_PERI_BASE   0x20000000
-#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
-#define BCM2709_PERI_BASE   0x3F000000
-#define BCM2709_GPIO_BASE   (BCM2709_PERI_BASE + 0x200000)
+//#define BCM2708_PERI_BASE   0x20000000
+//#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
+//#define BCM2709_PERI_BASE   0x3F000000
+//#define BCM2709_GPIO_BASE   (BCM2709_PERI_BASE + 0x200000)
+#define BCM2708_PERI_BASE_DEFAULT   0x20000000
+#define BCM2709_PERI_BASE_DEFAULT   0x3f000000
+#define GPIO_BASE_OFFSET            0x200000
+
 #define FSEL_OFFSET         0   // 0x0000
 #define SET_OFFSET          7   // 0x001c / 4
 #define CLR_OFFSET          10  // 0x0028 / 4
@@ -61,6 +65,8 @@ static struct pulse gpio_pulses[GPIO_COUNT];
 static struct tspair gpio_tspairs[GPIO_COUNT];
 static pthread_t *gpio_threads[GPIO_COUNT];
 
+int number_of_cores(void);
+
 void short_wait(void)
 {
     int i;
@@ -71,7 +77,7 @@ void short_wait(void)
     }
 }
 
-int setup(void)
+/*int setup(void)
 {
     int mem_fd;
     uint8_t *gpio_mem;
@@ -96,7 +102,84 @@ int setup(void)
         return SETUP_MMAP_FAIL;
 
     return SETUP_OK;
+}*/
+
+int setup(void)
+{
+    int mem_fd;
+    uint8_t *gpio_mem;
+    uint32_t peri_base;
+    uint32_t gpio_base;
+    unsigned char buf[4];
+    FILE *fp;
+    char buffer[1024];
+    char hardware[1024];
+    int found = 0;
+
+    // try /dev/gpiomem first - this does not require root privs
+    if ((mem_fd = open("/dev/gpiomem", O_RDWR|O_SYNC)) > 0)
+    {
+        gpio_map = (uint32_t *)mmap(NULL, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, mem_fd, 0);
+        if ((uint32_t)gpio_map < 0) {
+            return SETUP_MMAP_FAIL;
+        } else {
+            return SETUP_OK;
+        }
+    }
+
+    // revert to /dev/mem method - requires root
+
+    // determine peri_base
+    if ((fp = fopen("/proc/device-tree/soc/ranges", "rb")) != NULL) {
+        // get peri base from device tree
+        fseek(fp, 4, SEEK_SET);
+        if (fread(buf, 1, sizeof buf, fp) == sizeof buf) {
+            peri_base = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3] << 0;
+        }
+        fclose(fp);
+    } else {
+        // guess peri base based on /proc/cpuinfo hardware field
+        if ((fp = fopen("/proc/cpuinfo", "r")) == NULL)
+            return SETUP_CPUINFO_FAIL;
+
+        while(!feof(fp) && !found) {
+            fgets(buffer, sizeof(buffer), fp);
+            sscanf(buffer, "Hardware	: %s", hardware);
+            if (strcmp(hardware, "BCM2708") == 0 || strcmp(hardware, "BCM2835") == 0) {
+                // pi 1 hardware
+                peri_base = BCM2708_PERI_BASE_DEFAULT;
+                found = 1;
+            } else if (strcmp(hardware, "BCM2709") == 0 || strcmp(hardware, "BCM2836") == 0) {
+                // pi 2 hardware
+                peri_base = BCM2709_PERI_BASE_DEFAULT;
+                found = 1;
+            }
+        }
+        fclose(fp);
+        if (!found)
+            return SETUP_NOT_RPI_FAIL;
+    }
+
+    gpio_base = peri_base + GPIO_BASE_OFFSET;
+
+    // mmap the GPIO memory registers
+    if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0)
+        return SETUP_DEVMEM_FAIL;
+
+    if ((gpio_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
+        return SETUP_MALLOC_FAIL;
+
+    if ((uint32_t)gpio_mem % PAGE_SIZE)
+        gpio_mem += PAGE_SIZE - ((uint32_t)gpio_mem % PAGE_SIZE);
+
+    gpio_map = (uint32_t *)mmap( (void *)gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, gpio_base);
+
+    if ((uint32_t)gpio_map < 0)
+        return SETUP_MMAP_FAIL;
+
+    return SETUP_OK;
 }
+
 
 void set_pullupdn(int gpio, int pud)
 {

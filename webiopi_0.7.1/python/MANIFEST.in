@@ -1,2 +1,2 @@
-global-include *.h *.c 
+global-include *.py *.h *.c 
 
