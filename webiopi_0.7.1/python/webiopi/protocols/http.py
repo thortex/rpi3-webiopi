@@ -137,7 +137,7 @@ class HTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         
     
     def logRequest(self, code):
-        self.logger.debug('"%s %s %s" - %s %s (Client: %s <%s>)' % (self.command, self.path, self.request_version, code, self.responses[code][0], self.client_address[0], self.headers["User-Agent"]))
+        self.logger.debug('"%s %s %s" - %s %s (Client: %s)' % (self.command, self.path, self.request_version, code, self.responses[code][0], self.client_address[0] ))
     
     def sendResponse(self, code, body=None, contentType="text/plain"):
         if code >= 400:
