@@ -32,7 +32,10 @@ class PiFaceDigital():
 
     def __family__(self):
         return "PiFaceDigital"
-    
+
+    def close(self):
+        mcp.close()
+
     def checkChannel(self, channel):
         if not channel in range(8):
             raise ValueError("Channel %d invalid" % channel)
