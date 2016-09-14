@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-var _gaq = _gaq || [];
 var _webiopi;
 
 function w() {
@@ -136,16 +135,6 @@ function WebIOPi() {
 	}
 */
 
-	// GA
-	_gaq.push(['_setAccount', 'UA-33979593-2']);
-	_gaq.push(['_trackPageview']);
-		
-	var ga = document.createElement('script');
-	ga.type = 'text/javascript';
-	ga.async = false;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	head.appendChild(ga);
-	
 	var style = document.createElement('link');
 	style.rel = "stylesheet";
 	style.type = 'text/css';
@@ -305,7 +294,6 @@ WebIOPi.prototype.checkVersion = function () {
 	var version;
 	
 	$.get(w().context + "version", function(data) {
-		_gaq.push(['_trackEvent', 'version', data]);
 //		version = data.split("/")[2];
 //
 //		$.get("http://webiopi.trouch.com/version.php", function(data) {
