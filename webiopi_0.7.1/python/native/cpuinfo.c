@@ -35,7 +35,7 @@ int get_rpi_revision(void)
    ret = get_rpi_info(&info);
 
    if (0 == ret) {
-      return info->p1_revision;
+      return info.p1_revision;
    } else {
       return -1;
    }

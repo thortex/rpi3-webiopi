@@ -108,7 +108,7 @@ int setup(void)
 {
     int mem_fd;
     uint8_t *gpio_mem;
-    uint32_t peri_base;
+    uint32_t peri_base = BCM2709_PERI_BASE_DEFAULT;
     uint32_t gpio_base;
     unsigned char buf[4];
     FILE *fp;
@@ -143,8 +143,9 @@ int setup(void)
             return SETUP_CPUINFO_FAIL;
 
         while(!feof(fp) && !found) {
-            fgets(buffer, sizeof(buffer), fp);
-            sscanf(buffer, "Hardware	: %s", hardware);
+            if (fgets(buffer, sizeof(buffer), fp)) {
+                sscanf(buffer, "Hardware	: %s", hardware);
+            }
             if (strcmp(hardware, "BCM2708") == 0 || strcmp(hardware, "BCM2835") == 0) {
                 // pi 1 hardware
                 peri_base = BCM2708_PERI_BASE_DEFAULT;
