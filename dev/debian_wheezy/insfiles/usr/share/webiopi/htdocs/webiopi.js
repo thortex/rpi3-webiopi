@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2012-2013 Eric Ptak - trouch.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-var _gaq = _gaq || [];
 var _webiopi;
 
 function w() {
@@ -136,16 +135,6 @@ function WebIOPi() {
 	}
 */
 
-	// GA
-	_gaq.push(['_setAccount', 'UA-33979593-2']);
-	_gaq.push(['_trackPageview']);
-		
-	var ga = document.createElement('script');
-	ga.type = 'text/javascript';
-	ga.async = false;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-	head.appendChild(ga);
-	
 	var style = document.createElement('link');
 	style.rel = "stylesheet";
 	style.type = 'text/css';
@@ -305,7 +294,6 @@ WebIOPi.prototype.checkVersion = function () {
 	var version;
 	
 	$.get(w().context + "version", function(data) {
-		_gaq.push(['_trackEvent', 'version', data]);
 //		version = data.split("/")[2];
 //
 //		$.get("http://webiopi.trouch.com/version.php", function(data) {
@@ -698,11 +686,19 @@ WebIOPi.prototype.newDevice = function(type, name) {
 		return new Humidity(name);
 	}
 
+	if (type == "Clock") {
+		return new Clock(name);
+	}
+
+	if (type == "Memory") {
+		return new Memory(name);
+	}
+
 	return undefined;
 }
 
 function GPIOPort(name) {
-	this.name = name;
+	this.name = name + "_gpio";
 	this.url = "/devices/" + name;
 	this.onready = null;
 	this.channelCount = 0;
@@ -720,9 +716,10 @@ GPIOPort.prototype.isReady = function() {
 }
 
 GPIOPort.prototype.toString = function() {
+    var name = this.name.replace("_gpio","");
 	if (this.channelCount > 0)
-		return this.name + ": GPIO Port (" + this.channelCount + "-bits)";
-	return this.name + ": GPIO Port";
+		return name + ": GPIO Port (" + this.channelCount + "-bits)";
+	return name + ": GPIO Port";
 }
 
 GPIOPort.prototype.digitalRead = function(channel, callback) {
@@ -834,7 +831,7 @@ GPIOPort.prototype.refreshUI = function() {
 }
 
 function ADC(name) {
-	this.name = name;
+	this.name = name + "_adc";
 	this.url = "/devices/" + name + "/analog";
 	this.channelCount = 0;
 	this.maxInteger = 0;
@@ -860,9 +857,10 @@ ADC.prototype.isReady = function() {
 }
 
 ADC.prototype.toString = function() {
+    var name = this.name.replace("_adc","");
 	if (this.channelCount > 0 && this.resolution> 0)
-		return this.name + ": ADC (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
-	return this.name + ": ADC";
+		return name + ": ADC (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
+	return name + ": ADC";
 }
 
 ADC.prototype.readInteger = function(channel, callback) {
@@ -940,7 +938,7 @@ ADC.prototype.refreshUI = function () {
 
 
 function DAC(name) {
-	this.name = name;
+	this.name = name + "_dac";
 	this.url = "/devices/" + name + "/analog";
 	this.channelCount = 0;
 	this.maxInteger = 0;
@@ -970,9 +968,10 @@ DAC.prototype.isReady = function() {
 }
 
 DAC.prototype.toString = function() {
+    var name = this.name.replace("_dac","");
 	if (this.channelCount > 0 && this.resolution> 0)
-		return this.name + ": DAC (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
-	return this.name + ": DAC";
+		return name + ": DAC (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
+	return name + ": DAC";
 }
 
 DAC.prototype.writeInteger = function(channel, value, callback) {
@@ -1063,7 +1062,7 @@ DAC.prototype.refreshUI = function() {
 }
 
 function PWM(name) {
-	this.name = name;
+	this.name = name + "_pwm";
 	this.url = "/devices/" + name + "/pwm";
 	this.channelCount = 0;
 	this.maxInteger = 0;
@@ -1089,9 +1088,10 @@ PWM.prototype.isReady = function() {
 }
 
 PWM.prototype.toString = function() {
+    var name = this.name.replace("_pwm","");
 	if (this.channelCount > 0 && this.resolution> 0)
-		return this.name + ": PWM (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
-	return this.name + ": PWM";
+		return name + ": PWM (" + this.resolution + "-bits, " + this.channelCount  + "-channels)";
+	return name + ": PWM";
 }
 
 PWM.prototype.writeInteger = function(channel, value, callback) {
@@ -1388,7 +1388,7 @@ function PiFaceDigital(name) {
 }
 
 PiFaceDigital.prototype.toString = function() {
-	return "PiFaceDigital";
+	return this.name + "PiFaceDigital";
 }
 
 PiFaceDigital.prototype.input = function(channel, callback) {
@@ -1516,3 +1516,201 @@ Humidity.prototype.refreshUI = function() {
 		setTimeout(function(){temp.refreshUI()}, temp.refreshTime);
 	});
 }
+
+function Clock(name) {
+	this.name = name;
+	this.url = "/devices/" + name + "/clock";
+	this.refreshTime = 1000;
+}
+
+Clock.prototype.toString = function() {
+	return this.name + ": Clock";
+}
+
+Clock.prototype.getDateTime = function(callback) {
+	$.get(this.url + "/datetime", function(data) {
+		callback(this.name, data);
+	});
+}
+
+
+Clock.prototype.getDate = function(callback) {
+	$.get(this.url + "/date", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getTime = function(callback) {
+	$.get(this.url + "/time", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getSec = function(callback) {
+	$.get(this.url + "/second", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getMin = function(callback) {
+	$.get(this.url + "/minute", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getHrs = function(callback) {
+	$.get(this.url + "/hour", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getDow = function(callback) {
+	$.get(this.url + "/dow", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getDay = function(callback) {
+	$.get(this.url + "/day", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getMon = function(callback) {
+	$.get(this.url + "/month", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.getYrs = function(callback) {
+	$.get(this.url + "/year", function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setDate = function(value, callback) {
+	$.post(this.url + "/date/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setTime = function(value, callback) {
+	$.post(this.url + "/time/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.setDow = function(value, callback) {
+	$.post(this.url + "/dow/" + value, function(data) {
+		callback(this.name, data);
+	});
+}
+
+Clock.prototype.refreshUI = function() {
+	var clock = this;
+	var element = this.element;
+	if ((element != undefined) && (element.header == undefined)) {
+		element.header = $("<h3>" + this + "</h3>");
+		element.append(element.header);
+	}
+	
+	this.getDateTime(function(name, data){
+		if (element != undefined) {
+			element.header.text(clock + ": " + data);
+		}
+		setTimeout(function(){clock.refreshUI()}, clock.refreshTime);
+	});
+}
+
+function Memory(name) {
+	this.name = name;
+	this.url = "/devices/" + name + "/memory";
+	this.refreshTime = 2000;
+	this.byteCount = 0;
+	
+	var memory = this;
+	$.get(this.url + "/byte/count", function(data) {
+		memory.byteCount = parseInt(data);
+	});
+}
+
+Memory.prototype.isReady = function() {
+	return (this.byteCount > 0);
+}
+
+
+Memory.prototype.toString = function() {
+	return this.name + ": Memory (" + this.byteCount + " bytes):";
+}
+
+Memory.prototype.memoryByteWildcard = function(callback) {
+	var name = this.name
+	$.get(this.url + "/byte/*", function(data) {
+		callback(name, data);
+	});
+}
+
+
+Memory.prototype.refreshUI = function() {
+	var memory = this;
+	var element = this.element;
+	if ((element != undefined) && (element.header == undefined)) {
+		element.header = $("<h3>" + this + "</h3>");
+		element.append(element.header);
+	}
+	
+	if ((element != undefined) && (element.table == undefined) && this.isReady()) {
+		element.header.text(this);
+		element.table = $("<table>");
+		element.append(element.table);
+
+		var columns = this.byteCount;
+		var maxColumns = 16;
+		if (columns > maxColumns) {
+			columns = maxColumns;
+		}
+
+		var headerLine = $("<tr>");
+		var cell = $("<th>");
+		headerLine.append(cell);
+
+		for (var i = 0; i<columns; i++) {
+			var cell = $("<th>");
+			cell.text(i.toString(16).toUpperCase());
+			cell.attr("align", "right");
+			headerLine.append(cell);
+		}
+		element.table.append(headerLine);
+
+		for (var i = 0; i<(this.byteCount / maxColumns) ; i++) {
+			var dataLine= $("<tr>");
+			var firstCell = $("<th>");
+			firstCell.attr("align", "right");
+                        firstCell.attr("font", "monospace");
+			firstCell.text("0x" + ("000" + (i*maxColumns).toString(16).toUpperCase()).substr(-4) + ":");
+
+			dataLine.append(firstCell);
+			for (var k = 0; k<maxColumns; k++) {
+				var cell = $("<td>");
+				cell.attr("align", "right");
+				var span = $('<span>');
+				span.attr("id", "span_" + this.name + "_" + (i*maxColumns + k));
+				cell.append(span);
+				dataLine.append(cell);
+			}
+			element.table.append(dataLine);
+		}
+	}
+
+	this.memoryByteWildcard(function(name, data) {
+		for (i in data) {
+			var span = $("#span_" + name + "_" + i);
+			val = parseInt(data[i]).toString(16).toUpperCase();
+			span.text(("0" + val).substr(-2));
+		}
+		setTimeout(function(){memory.refreshUI()}, memory.refreshTime);
+	});
+}
+
+
+
