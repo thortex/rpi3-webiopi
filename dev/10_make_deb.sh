@@ -14,8 +14,10 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 WORKDIR=~/build.${NAME}
 set -e
 
+
 cd ../${NAME}_${VERSION}/python
 rm -fr ./WebIOPi.egg-info  
+find . -type f -name '*.pyc' | sed -e 's/^/rm /;' | sh -x
 python setup.py sdist
 
 rm -rf ${WORKDIR}
@@ -28,7 +30,14 @@ cp ./python/dist/${ORIG_NAME}-${VERSION}.tar.gz \
 
 cd ${WORKDIR}
 tar xvfz ${NAME}_${VERSION}.orig.tar.gz
-cp -a ${SCRIPTPATH}/debian_${DISTRO} ${WORKDIR}/${ORIG_NAME}-${VERSION}/debian
+
+cd  ${SCRIPTPATH}
+tar cjhf ${WORKDIR}/debian.tbz debian_${DISTRO}
+cd ${WORKDIR}/${ORIG_NAME}-${VERSION}/
+tar xjf ${WORKDIR}/debian.tbz 
+mv debian_${DISTRO} debian 
+cd ${WORKDIR} 
+
 mkdir -p ${WORKDIR}/doc
 cp ${SCRIPTPATH}/../${NAME}_${VERSION}/doc/README ${WORKDIR}/doc
 
@@ -37,9 +46,3 @@ cd ${WORKDIR}/${ORIG_NAME}-$VERSION
 debuild -us -uc
 ##debuild clean
 
-#cp ~/build_rpi.gpio/python*deb $SCRIPTPATH/dist
-#cp ~/build_rpi.gpio/rpi.gpio_$VERSION~$DISTRO.orig.tar.gz $SCRIPTPATH/dist
-#cp ~/build_rpi.gpio/rpi.gpio_$VERSION~$DISTRO*.dsc $SCRIPTPATH/dist
-#cp ~/build_rpi.gpio/rpi.gpio_$VERSION~$DISTRO*.debian.tar.* $SCRIPTPATH/dist
-#rm -rf ~/build_rpi.gpio
-#rm $SCRIPTPATH/MANIFEST

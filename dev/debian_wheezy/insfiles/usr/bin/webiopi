@@ -1,2 +1,1 @@
-#!/bin/sh
-python -m webiopi $*
+../../../../../webiopi_0.7.1/python/webiopi.sh
