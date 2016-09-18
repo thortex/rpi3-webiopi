@@ -3,6 +3,7 @@ debian/insfiles/etc/webiopi/config /etc/webiopi
 debian/insfiles/etc/webiopi/passwd /etc/webiopi
 debian/insfiles/usr/bin/webiopi-passwd /usr/bin
 debian/insfiles/usr/bin/webiopi /usr/bin
+debian/insfiles/usr/bin/webiopi-select-python /usr/bin
 debian/insfiles/usr/share/webiopi/htdocs/app/devices-monitor/index.html /usr/share/webiopi/htdocs/app/devices-monitor
 debian/insfiles/usr/share/webiopi/htdocs/app/gpio-list/index.html /usr/share/webiopi/htdocs/app/gpio-list
 debian/insfiles/usr/share/webiopi/htdocs/app/serial-monitor/index.html /usr/share/webiopi/htdocs/app/serial-monitor

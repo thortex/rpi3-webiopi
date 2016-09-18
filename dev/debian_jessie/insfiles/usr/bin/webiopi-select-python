@@ -1,0 +1,24 @@
+#!/bin/sh 
+
+ver=$1
+
+if [ -f "/etc/init.d/webiopi" ] ; then 
+   sudo perl -pi.bak -e "s/python.*/python$ver/;" /etc/init.d/webiopi
+   grep python /etc/init.d/webiopi
+fi
+
+if [ -f "/usr/bin/webiopi" ] ; then
+   sudo perl -pi.bak -e "s/python.*? /python$ver /;" /usr/bin/webiopi
+   grep python /usr/bin/webiopi
+fi
+
+if [ -f "/usr/bin/webiopi-passwd" ] ; then
+  sudo perl -pi.bak -e "s/python.*/python$ver/;" /usr/bin/webiopi-passwd
+  grep python /usr/bin/webiopi-passwd 
+fi
+
+if [ -f "/etc/systemd/system/webiopi.service" ] ; then
+  sudo perl -pi.bak -e "s/python.*? /python$ver /;" /etc/systemd/system/webiopi.service
+  grep python /etc/systemd/system/webiopi.service
+fi
+ 
