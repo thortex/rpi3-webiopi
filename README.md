@@ -3,12 +3,6 @@
 a forked WebIOPi, the original one is written by Eric PTAK (trouch).
 Please refer to http://webiopi.trouch.com/ for the original one.
 
-
-## WebIOPi-0.7.1 Patch for B+, Pi 2, and Pi 3
-
-Merged a patch for B+, Pi 2, and Pi 3 by Keisuke Seya (doublebind).
-Please refer to https://github.com/doublebind/raspi for more details.
-
 ## Differences
 
 Please refer to the following pages for more details.
@@ -18,5 +12,4 @@ Please refer to the following pages for more details.
 * [Issues](https://github.com/thortex/rpi3-webiopi/wiki/Issues)
 * [API Reference](https://thortex.github.io/rpi3-webiopi/)
 * [Installation](https://github.com/thortex/rpi3-webiopi/wiki/HowToBuild)
- 
-
+* [Supported RPis](https://githu.com/thortex/rpi3-webiopi/wiki/RPis)
