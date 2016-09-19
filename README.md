@@ -12,4 +12,4 @@ Please refer to the following pages for more details.
 * [Issues](https://github.com/thortex/rpi3-webiopi/wiki/Issues)
 * [API Reference](https://thortex.github.io/rpi3-webiopi/)
 * [Installation](https://github.com/thortex/rpi3-webiopi/wiki/HowToBuild)
-* [Supported RPis](https://githu.com/thortex/rpi3-webiopi/wiki/RPis)
+* [Supported RPis](https://github.com/thortex/rpi3-webiopi/wiki/RPis)
