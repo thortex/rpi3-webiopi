@@ -146,7 +146,7 @@ class NativeGPIO(GPIOPort):
         return values
 
     
-    @request("GET", "%(channel)d/pulse", "%s")
+    @request("GET", "%(channel)d/pulse")
     def getPulse(self, channel):
         self.checkDigitalChannelExported(channel)
         self.checkDigitalChannel(channel)

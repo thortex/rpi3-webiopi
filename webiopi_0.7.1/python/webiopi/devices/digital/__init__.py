@@ -18,6 +18,7 @@ from webiopi.utils.types import M_JSON
 class GPIOPort():
     IN  = 0
     OUT = 1
+    PWM = 8
     
     LOW  = False
     HIGH = True
@@ -81,8 +82,8 @@ class GPIOPort():
             return "IN"
         elif func == self.OUT:
             return "OUT"
-#        elif func == GPIO.PWM:
-#            return "PWM"
+        elif func == self.PWM:
+            return "PWM"
         else:
             return "UNKNOWN"
         
@@ -98,8 +99,8 @@ class GPIOPort():
             self.setFunction(channel, self.IN)
         elif value == "out":
             self.setFunction(channel, self.OUT)
-#        elif value == "pwm":
-#            self.setFunction(channel, GPIO.PWM)
+        elif value == "pwm":
+            self.setFunction(channel, self.PWM)
         else:
             raise ValueError("Bad Function")
         return self.getFunctionString(channel)  
