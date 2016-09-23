@@ -52,6 +52,7 @@ SOFTWARE.
 struct pulse {
 	int type;
 	float value;
+	float freq;
 };
 
 int setup(void);
@@ -70,6 +71,9 @@ void pulseRatio(int gpio, float ratio);
 void enablePWM(int gpio);
 void disablePWM(int gpio);
 int isPWMEnabled(int gpio);
+
+void setFrequency(int gpio, float freq);
+float getFrequency(int gpio);
 
 void cleanup(void);
 

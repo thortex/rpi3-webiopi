@@ -560,6 +560,75 @@ static PyObject *py_isPWMEnabled(PyObject *self, PyObject *args)
 		Py_RETURN_FALSE;
 }
 
+
+
+static PyObject *py_getFrequency(PyObject *self, PyObject *args)
+{
+	if (module_setup() != SETUP_OK) {
+		return NULL;
+	}
+
+	int channel;
+	char str[256];
+	float freq;
+
+	if (!PyArg_ParseTuple(args, "i", &channel))
+		return NULL;
+
+	if (channel < 0 || channel >= GPIO_COUNT)
+	{
+		PyErr_SetString(_InvalidChannelException, "The GPIO channel is invalid");
+		return NULL;
+	}
+
+	freq = getFrequency(channel);
+
+	sprintf(str, "%s:%.2f", "freq", freq);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
+}
+
+static PyObject *py_setFrequency(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+	if (module_setup() != SETUP_OK) {
+		return NULL;
+	}
+
+	int channel, function;
+	float freq;
+	static char *kwlist[] = {"channel", "freq", NULL};
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "if", kwlist, &channel, &freq))
+		return NULL;
+
+	if (channel < 0 || channel >= GPIO_COUNT)
+	{
+		PyErr_SetString(_InvalidChannelException, "The GPIO channel is invalid");
+		return NULL;
+	}
+
+	function = get_function(channel);
+	if ((function != OUT) && (function != PWM))
+	{
+		PyErr_SetString(_InvalidDirectionException, "The GPIO channel is not an OUTPUT or PWM");
+		return NULL;
+	}
+
+	if ((freq < 0.00998) || (freq > 100.0)) {
+		PyErr_SetString(_InvalidDirectionException, "The specified frequency  is in invalid range. [0.01 through 100.0]Hz is valid range.");
+		return NULL;
+	}
+
+	setFrequency(channel, freq);
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+
 PyMethodDef python_methods[] = {
 	{"getFunction", py_get_function, METH_VARARGS, "Return the current GPIO setup (IN, OUT, ALT0)"},
 	{"getSetup", py_get_function, METH_VARARGS, "Return the current GPIO setup (IN, OUT, ALT0)"},
@@ -597,6 +666,9 @@ PyMethodDef python_methods[] = {
 	{"enablePWM", py_enablePWM, METH_VARARGS, "Enable software PWM loop for a GPIO channel"},
 	{"disablePWM", py_disablePWM, METH_VARARGS, "Disable software PWM loop of a GPIO channel"},
 	{"isPWMEnabled", py_isPWMEnabled, METH_VARARGS, "Returns software PWM state"},
+
+	{"getFrequency", py_getFrequency, METH_VARARGS, "Read current PWM frequency in Hz"},
+	{"setFrequency", (PyCFunction)py_setFrequency, METH_VARARGS | METH_KEYWORDS, "set PWM frequency 0.01 through 100 [Hz] to a GPIO channel. default is 50Hz. - Deprecated, use pwmWrite instead"},
 
 	{NULL, NULL, 0, NULL}
 };

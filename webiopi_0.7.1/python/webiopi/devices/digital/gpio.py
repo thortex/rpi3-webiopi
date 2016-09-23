@@ -151,6 +151,12 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannelExported(channel)
         self.checkDigitalChannel(channel)
         return GPIO.getPulse(channel)
+
+    @request("GET", "%(channel)d/freq")
+    def getFrequency(self, channel):
+        self.checkDigitalChannelExported(channel)
+        self.checkDigitalChannel(channel)
+        return GPIO.getFrequency(channel)
     
     @request("POST", "%(channel)d/sequence/%(args)s")
     @response("%d")
@@ -178,6 +184,14 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannel(channel)
         GPIO.pulseRatio(channel, value)
         return GPIO.getPulse(channel)
+
+    @request("POST", "%(channel)d/pulseFreq/%(value)f")
+    def pulseFreq(self, channel, value):
+        self.checkDigitalChannelExported(channel)
+        self.checkPostingValueAllowed()
+        self.checkDigitalChannel(channel)
+        GPIO.setFrequency(channel, value)
+        return GPIO.getFrequency(channel)
         
     @request("POST", "%(channel)d/pulseAngle/%(value)f")
     def pulseAngle(self, channel, value):

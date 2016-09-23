@@ -280,6 +280,7 @@ void outputSequence(int gpio, int period, char* sequence) {
 void resetPWM(int gpio) {
 	gpio_pulses[gpio].type = 0;
 	gpio_pulses[gpio].value = 0;
+	gpio_pulses[gpio].freq = 50.0; // Hz
 
 	gpio_tspairs[gpio].up.tv_sec = 0;
 	gpio_tspairs[gpio].up.tv_nsec = 0;
@@ -353,8 +354,9 @@ void pulseMicroRatio(int gpio, int width, float ratio) {
 void pulseAngle(int gpio, float angle) {
 	gpio_pulses[gpio].type = ANGLE;
 	gpio_pulses[gpio].value = angle;
+	int t = ((1000*1000)/gpio_pulses[gpio].freq) ;
 	int up = 1520 + (angle*400)/45;
-	int down = 20000-up;
+	int down = t - up;
 	pulseMicro(gpio, up, down);
 }
 
@@ -362,8 +364,9 @@ void pulseAngle(int gpio, float angle) {
 void pulseRatio(int gpio, float ratio) {
 	gpio_pulses[gpio].type = RATIO;
 	gpio_pulses[gpio].value = ratio;
-	int up = ratio * 20000;
-	int down = 20000 - up;
+	int t = ((1000*1000)/gpio_pulses[gpio].freq) ;
+	int up = ratio * t;
+	int down = t - up;
 	pulseMicro(gpio, up, down);
 }
 
@@ -421,21 +424,29 @@ void cleanup(void)
 
 int number_of_cores(void)
 {
-char str[256];
-int procCount = 0;
-FILE *fp;
+  char str[256];
+  int procCount = 0;
+  FILE *fp;
+  
+  if( (fp = fopen("/proc/cpuinfo", "r")) ) {
+    while(fgets(str, sizeof str, fp))
+      if( !memcmp(str, "processor", 9) ) procCount++;
+  }
+  
+  if ( !procCount ) { 
+    printf("Unable to get proc count. Defaulting to 2");
+    procCount=2;
+  }
+  
+  return procCount;
+}
 
-if( (fp = fopen("/proc/cpuinfo", "r")) )
+void setFrequency(int gpio, float freq)
 {
-  while(fgets(str, sizeof str, fp))
-  if( !memcmp(str, "processor", 9) ) procCount++;
+  gpio_pulses[gpio].freq = freq;
 }
 
-if ( !procCount ) 
-{ 
-printf("Unable to get proc count. Defaulting to 2");
-procCount=2;
-}
-
-return procCount;
+float getFrequency(int gpio) 
+{
+  return gpio_pulses[gpio].freq;
 }
