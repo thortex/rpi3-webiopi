@@ -36,3 +36,6 @@ typedef struct
 int get_rpi_info(rpi_info *info);
 
 int get_rpi_revision(void);
+
+// thor 
+float get_rpi_cpu_temp(void);

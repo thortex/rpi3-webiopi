@@ -8,6 +8,7 @@ port=8000           # webiopi server port number
 pin=4               # GPIO port number
 freq=0.01           # frequency [100s]
 wait=300            # sec
+ratio=0.5           # ratio 
 
 if [ "$1" != "" ] ; then
     freq=$1
@@ -16,7 +17,11 @@ echo "Frequency is $freq [Hz]"
 if [ "$2" != "" ] ; then
     wait=$2
 fi
-
+echo "delay is $wait [sec]"
+if [ "$3" != "" ] ; then
+    ratio=$3
+fi
+echo "ratio is $ratio"
 # function
 curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$pin/function/pwm && echo
 curl -u $user:$pass http://$ipadr:$port/GPIO/$pin/function && echo 
@@ -24,9 +29,9 @@ curl -u $user:$pass http://$ipadr:$port/GPIO/$pin/function && echo
 curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$pin/pulseFreq/$freq && echo
 curl -u $user:$pass http://$ipadr:$port/GPIO/$pin/freq && echo
 # pulse ratio
-curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$pin/pulseRatio/0.5 && echo
+curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$pin/pulseRatio/$ratio && echo
 curl -u $user:$pass http://$ipadr:$port/GPIO/$pin/pulse && echo
-# wait for 300sec
+# wait for x sec
 sleep $wait
 # disable pwm.
 curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$pin/function/in && echo

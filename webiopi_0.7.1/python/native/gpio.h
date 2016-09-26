@@ -72,6 +72,7 @@ void enablePWM(int gpio);
 void disablePWM(int gpio);
 int isPWMEnabled(int gpio);
 
+// thor
 void setFrequency(int gpio, float freq);
 float getFrequency(int gpio);
 

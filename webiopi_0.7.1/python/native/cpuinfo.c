@@ -230,3 +230,19 @@ T type (0='A', 1='B', 2='A+', 3='B+', 4='Pi 2 B', 5='Alpha', 6='Compute Module')
 V revision (0-15)
 
 */
+
+// thor 
+float get_rpi_cpu_temp(void)
+{
+  FILE *fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  int iTemp = 0;
+  if (NULL != fp) {
+    fscanf(fp, "%d", &iTemp);
+    fclose(fp);
+    fp = NULL;
+    return ((float)iTemp) / 1000.0 ;
+  } else {
+    return 0.0;
+  }
+}
+

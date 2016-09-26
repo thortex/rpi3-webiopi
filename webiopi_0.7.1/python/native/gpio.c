@@ -354,7 +354,7 @@ void pulseMicroRatio(int gpio, int width, float ratio) {
 void pulseAngle(int gpio, float angle) {
 	gpio_pulses[gpio].type = ANGLE;
 	gpio_pulses[gpio].value = angle;
-	int t = ((1000*1000)/gpio_pulses[gpio].freq) ;
+	int t = (float)(1000.0 * 1000.0) / gpio_pulses[gpio].freq ;
 	int up = 1520 + (angle*400)/45;
 	int down = t - up;
 	pulseMicro(gpio, up, down);
@@ -364,7 +364,7 @@ void pulseAngle(int gpio, float angle) {
 void pulseRatio(int gpio, float ratio) {
 	gpio_pulses[gpio].type = RATIO;
 	gpio_pulses[gpio].value = ratio;
-	int t = ((1000*1000)/gpio_pulses[gpio].freq) ;
+	int t = (float)(1000.0 * 1000.0) / gpio_pulses[gpio].freq ;
 	int up = ratio * t;
 	int down = t - up;
 	pulseMicro(gpio, up, down);
