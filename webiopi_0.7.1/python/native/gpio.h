@@ -49,6 +49,13 @@ SOFTWARE.
 #define RATIO 1
 #define ANGLE 2
 
+//thor
+#define BCM2708_PERI_BASE_DEFAULT   0x20000000
+#define BCM2709_PERI_BASE_DEFAULT   0x3f000000
+//thor
+#define PAGE_SIZE  (4*1024)
+#define BLOCK_SIZE (4*1024)
+
 struct pulse {
 	int type;
 	float value;

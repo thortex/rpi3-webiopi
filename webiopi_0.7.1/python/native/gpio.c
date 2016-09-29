@@ -35,8 +35,9 @@ SOFTWARE.
 //#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
 //#define BCM2709_PERI_BASE   0x3F000000
 //#define BCM2709_GPIO_BASE   (BCM2709_PERI_BASE + 0x200000)
-#define BCM2708_PERI_BASE_DEFAULT   0x20000000
-#define BCM2709_PERI_BASE_DEFAULT   0x3f000000
+//thor
+//#define BCM2708_PERI_BASE_DEFAULT   0x20000000
+//#define BCM2709_PERI_BASE_DEFAULT   0x3f000000
 #define GPIO_BASE_OFFSET            0x200000
 
 #define FSEL_OFFSET         0   // 0x0000
@@ -51,8 +52,9 @@ SOFTWARE.
 #define PULLUPDN_OFFSET     37  // 0x0094 / 4
 #define PULLUPDNCLK_OFFSET  38  // 0x0098 / 4
 
-#define PAGE_SIZE  (4*1024)
-#define BLOCK_SIZE (4*1024)
+//thor
+//#define PAGE_SIZE  (4*1024)
+//#define BLOCK_SIZE (4*1024)
 
 static volatile uint32_t *gpio_map;
 
@@ -420,6 +422,7 @@ void cleanup(void)
 {
     // fixme - set all gpios back to input
     munmap((caddr_t)gpio_map, BLOCK_SIZE);
+
 }
 
 int number_of_cores(void)
