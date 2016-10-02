@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifdef _UT_MODE
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -33,7 +32,6 @@ SOFTWARE.
 #include "gpio.h"
 #include "cpuinfo.h"
 #include "pwm.h"
-#endif // _UT_MODE
 
 /*
 Rereferences:

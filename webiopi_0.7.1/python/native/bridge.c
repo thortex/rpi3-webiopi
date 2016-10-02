@@ -715,6 +715,7 @@ static PyObject *py_HWPWM_getFrequency(PyObject *self, PyObject *args)
   }
   
   float freq;
+  char str[256]; 
   
   freq = wip_cm_get_freq();
   
@@ -749,7 +750,7 @@ static PyObject *py_HWPWM_setFrequency(PyObject *self, PyObject *args, PyObject 
 }
 
 //thor
-static PyObject *py_HWPWM_setMSMode(PyObject *self, PyObject *args)
+static PyObject *py_HWPWM_setMSMode(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   if (module_setup() != SETUP_OK) {
     return NULL;
@@ -811,7 +812,7 @@ static PyObject *py_HWPWM_getMSMode(PyObject *self, PyObject *args)
 }
 
 //thor
-static PyObject *py_HWPWM_setPolarity(PyObject *self, PyObject *args)
+static PyObject *py_HWPWM_setPolarity(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   if (module_setup() != SETUP_OK) {
     return NULL;
@@ -836,7 +837,7 @@ static PyObject *py_HWPWM_setPolarity(PyObject *self, PyObject *args)
     return NULL;
   }
 
-  if (wip_pwm_set_polarity(channel, msmode) < 0) {
+  if (wip_pwm_set_polarity(channel, polarity) < 0) {
     PyErr_SetString(_InvalidChannelException, "Failed to set polarity");    
     return NULL;
   }
@@ -937,7 +938,7 @@ static PyObject *py_HWPWM_isEnabled(PyObject *self, PyObject *args)
     return NULL;
   }
 
-  ret wip_pwm_is_enabled(channel);
+  ret = wip_pwm_is_enabled(channel);
   if (ret < 0) {
     PyErr_SetString(_InvalidChannelException, "Failed to get HWPWM info");
     return NULL;
@@ -950,7 +951,7 @@ static PyObject *py_HWPWM_isEnabled(PyObject *self, PyObject *args)
 }
 
 //thor
-static PyObject *py_HWPWM_setPort(PyObject *self, PyObject *args)
+static PyObject *py_HWPWM_setPort(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   if (module_setup() != SETUP_OK) {
     return NULL;
@@ -1012,7 +1013,7 @@ static PyObject *py_HWPWM_getPort(PyObject *self, PyObject *args)
 }
 
 //thor
-static PyObject *py_HWPWM_setPeriod(PyObject *self, PyObject *args)
+static PyObject *py_HWPWM_setPeriod(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   if (module_setup() != SETUP_OK) {
     return NULL;
@@ -1073,7 +1074,7 @@ static PyObject *py_HWPWM_getPeriod(PyObject *self, PyObject *args)
 }
 
 //thor
-static PyObject *py_HWPWM_setDuty(PyObject *self, PyObject *args)
+static PyObject *py_HWPWM_setDuty(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   if (module_setup() != SETUP_OK) {
     return NULL;

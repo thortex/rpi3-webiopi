@@ -30,6 +30,8 @@ SOFTWARE.
 #include <pthread.h>
 #include "gpio.h"
 #include "cpuinfo.h"
+//thor
+#include "pwm.h"
 
 //#define BCM2708_PERI_BASE   0x20000000
 //#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
