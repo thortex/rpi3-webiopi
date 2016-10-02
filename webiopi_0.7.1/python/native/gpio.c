@@ -180,6 +180,11 @@ int setup(void)
     if ((uint32_t)gpio_map < 0)
         return SETUP_MMAP_FAIL;
 
+    // thor
+    if (wip_pwm_setup(mem_fd) < 0){
+      return SETUP_MMAP_FAIL;
+    }
+
     return SETUP_OK;
 }
 

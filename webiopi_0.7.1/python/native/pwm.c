@@ -146,9 +146,6 @@ static volatile uint32_t *wip_clk_map = (uint32_t *)-1;
 //#define WIP_PWM_REG_FIF1   0x18 // PWM FIFO Input
 #define WIP_PWM_REG_OFFSET 0x10 // Ch2 Register Offset
 
-// Maximum number of PWM channels
-#define WIP_PWM_NUM_OF_CH 2
-
 typedef struct _gpio_pwm_map_table_t {
   int gpio_port;
   int pwm_ch;
@@ -165,6 +162,7 @@ const wip_pwm_map_table_t wip_pwm_map_table[WIP_PWM_GPIO_PORTS] = {
   {18, 0, 12, ALT5, 0, PUD_DOWN},
   {19, 1, 35, ALT5, 3, PUD_DOWN}
 };
+
 
 // --------------------------------------------------
 // prototype definitions
@@ -185,7 +183,6 @@ static int wip_cm_calc_divf(float div);
 int wip_pwm_set_period_ns(int ch, uint32_t period);
 int wip_pwm_set_duty_ns(int ch, uint32_t duty);
 // validator
-static inline int wip_pwm_validate_ch(int ch);
 static inline int wip_pwm_validate_map(volatile uint32_t *ptr);
 
 // --------------------------------------------------
@@ -358,15 +355,7 @@ int wip_cm_get_clk_src(void)
 
 char *wip_cm_get_clk_src_name(int clk_src)
 {
-  if (wip_pwm_validate_map(wip_clk_map) < 0) {
-    return NULL;
-  }
-
-  uint32_t val = wip_reg_read(wip_clk_map, WIP_CM_REG_PWM_CTL);
-
-  val &= WIP_CM_MSK_CSRC;
-  
-  return (char *)g_wip_cm_clk_name[val];
+  return (char *)g_wip_cm_clk_name[clk_src];
 }
 
 int wip_cm_set_freq(float freq)
@@ -647,9 +636,16 @@ int wip_pwm_is_enabled(int ch)
 int wip_pwm_set_port(int ch, int port)
 {
   int i;
+  int cur_port;
 
   if (wip_pwm_validate_ch(ch) < 0) {
     return -1;
+  }
+
+  // set current HWPWM output port to in, if next port is different. 
+  cur_port = wip_pwm_get_port(ch);
+  if ((-1 != cur_port) && (port != cur_port)) {
+    set_function(cur_port, IN, PUD_DOWN);
   }
 
   int rev = get_rpi_revision();
@@ -784,7 +780,7 @@ int wip_pwm_set_duty_ns(int ch, uint32_t duty)
 }
 
 // validator
-static inline int wip_pwm_validate_ch(int ch)
+int wip_pwm_validate_ch(int ch)
 {
   // check channel number
   if ( (ch < 0) || (ch >= WIP_PWM_NUM_OF_CH) ) {

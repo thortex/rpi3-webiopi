@@ -53,6 +53,10 @@ char *wip_cm_get_clk_src_name(int clk_src);
 int wip_cm_set_freq(float freq);
 float wip_cm_get_freq(void);
 
+// validator
+#define WIP_PWM_NUM_OF_CH 2 // Maximum number of PWM channels
+int wip_pwm_validate_ch(int ch);
+
 // M/S mode
 #define WIP_PWM_PWM_MODE 0
 #define WIP_PWM_MS_MODE  1

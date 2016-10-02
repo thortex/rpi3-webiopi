@@ -23,6 +23,8 @@ SOFTWARE.
 #include "Python.h"
 #include "gpio.h"
 #include "cpuinfo.h"
+// thor
+#include "pwm.h"
 
 static PyObject *_SetupException;
 static PyObject *_InvalidDirectionException;
@@ -50,6 +52,13 @@ static PyObject *_pud_up;
 static PyObject *_pud_down;
 
 static PyObject *_board_revision;
+
+// thor
+static PyObject *_osc;
+static PyObject *_plla;
+static PyObject *_pllc;
+static PyObject *_plld;
+static PyObject *_pllh;
 
 static char* FUNCTIONS[] = {"IN", "OUT", "ALT5", "ALT4", "ALT0", "ALT1", "ALT2", "ALT3", "PWM"};
 static char* PWM_MODES[] = {"none", "ratio", "angle"};
@@ -560,8 +569,7 @@ static PyObject *py_isPWMEnabled(PyObject *self, PyObject *args)
 		Py_RETURN_FALSE;
 }
 
-
-
+// thor
 static PyObject *py_getFrequency(PyObject *self, PyObject *args)
 {
 	if (module_setup() != SETUP_OK) {
@@ -591,6 +599,7 @@ static PyObject *py_getFrequency(PyObject *self, PyObject *args)
 #endif
 }
 
+//thor
 static PyObject *py_setFrequency(PyObject *self, PyObject *args, PyObject *kwargs)
 {
 	if (module_setup() != SETUP_OK) {
@@ -626,6 +635,502 @@ static PyObject *py_setFrequency(PyObject *self, PyObject *args, PyObject *kwarg
 
 	Py_INCREF(Py_None);
 	return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getClockSource(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int clk_src; 
+  char str[256];
+  char *pstr = NULL;
+  
+  memset(str, 0x00, sizeof(str));
+  
+  clk_src = wip_cm_get_clk_src();
+  pstr = wip_cm_get_clk_src_name(clk_src);
+  
+  sprintf(str, "%s:%s", "src", pstr);
+#if PY_MAJOR_VERSION > 2
+  return PyUnicode_FromString(str);
+#else
+  return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_setClockSource(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int notFound = 1;
+  int i;
+  int clk_src;
+  char *psrc = NULL;
+  
+  static char *kwlist[] = {"src", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s", kwlist, &psrc))
+    return NULL;
+  
+  if (psrc == NULL) {
+    PyErr_SetString(_InvalidChannelException, "Clock cource is invalid");
+    return NULL;
+  }
+  
+  for (i = 0; i < WIP_CM_SIZE_CLK_SRC; i++) {
+    char *pstr = wip_cm_get_clk_src_name(i);
+    if (pstr != NULL) {
+      if (!strcmp(psrc, pstr)) {
+	notFound = 0;
+	clk_src  = i;
+      }
+    }
+  }
+  
+  if (notFound) {
+    PyErr_SetString(_InvalidChannelException, "Not found such clock source found");
+    return NULL;
+  }
+  
+  if (wip_cm_set_clk_src(clk_src) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set clock source");
+    return NULL;	  
+  }
+  
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getFrequency(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  float freq;
+  
+  freq = wip_cm_get_freq();
+  
+  sprintf(str, "%s:%.2f", "freq", freq);
+#if PY_MAJOR_VERSION > 2
+  return PyUnicode_FromString(str);
+#else
+  return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_setFrequency(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  float freq;
+  static char *kwlist[] = {"freq", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "f", kwlist, &freq))
+    return NULL;
+  
+  if (wip_cm_set_freq(freq) < 0) {
+    PyErr_SetString(_InvalidDirectionException, "The specified frequency is in invalid range.");
+    return NULL;
+  }
+  
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_setMSMode(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int msmode;
+
+  static char *kwlist[] = {"channel", "msmode", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &msmode))
+    return NULL;
+  
+  if ((WIP_PWM_PWM_MODE != msmode) && (WIP_PWM_MS_MODE != msmode)) {
+    PyErr_SetString(_InvalidChannelException, "M/S mode is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_set_msmode(channel, msmode) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set M/S mode");    
+    return NULL;
+  }
+  
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getMSMode(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int msmode;
+  char str[256];
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  msmode = wip_pwm_get_msmode(channel);
+
+  sprintf(str, "%s:%d", "msmode", msmode);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_setPolarity(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int polarity;
+
+  static char *kwlist[] = {"channel", "polarity", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &polarity))
+    return NULL;
+  
+  if ((WIP_PWM_POLARITY_NORMAL != polarity) && 
+      (WIP_PWM_POLARITY_REVERSE != polarity)) {
+    PyErr_SetString(_InvalidChannelException, "Polarity is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_set_polarity(channel, msmode) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set polarity");    
+    return NULL;
+  }
+  
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getPolarity(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int polarity;
+  char str[256];
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  polarity = wip_pwm_get_polarity(channel);
+
+  sprintf(str, "%s:%d", "polarity", polarity);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_enable(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+  
+  if (wip_pwm_enable(channel) > 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to enabling PWM");
+  }
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_disable(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+ 
+  if (wip_pwm_disable(channel) > 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to disabling PWM");
+  }
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_isEnabled(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int ret;
+  int channel;
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  ret wip_pwm_is_enabled(channel);
+  if (ret < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to get HWPWM info");
+    return NULL;
+  }
+
+  if (ret)
+    Py_RETURN_TRUE;
+  else
+    Py_RETURN_FALSE;
+}
+
+//thor
+static PyObject *py_HWPWM_setPort(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel; // PWM ch
+  int port; // GPIO port
+
+  static char *kwlist[] = {"channel", "port", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &port))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  if (port < 0 || port >= GPIO_COUNT) { 
+    PyErr_SetString(_InvalidChannelException, "The GPIO channel is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_set_port(channel, port) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set HW-PWM output port");
+    return NULL;
+  }
+  
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getPort(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int port;
+  char str[256];
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  port = wip_pwm_get_port(channel);
+
+  sprintf(str, "%s:%d", "port", port);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_setPeriod(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel; // PWM ch
+  int period; // GPIO port
+
+  static char *kwlist[] = {"channel", "period", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &period))
+    return NULL;
+
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_set_period(channel, period) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set HW-PWM period");
+    return NULL;
+  }
+  
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getPeriod(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int period;
+  char str[256];
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  period = wip_pwm_get_period(channel);
+  if (period < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to get HW-PWM period");
+    return NULL;
+  }
+
+  sprintf(str, "%s:%d", "period", period);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
+}
+
+//thor
+static PyObject *py_HWPWM_setDuty(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel; // PWM ch
+  int duty; // duty
+
+  static char *kwlist[] = {"channel", "duty", NULL};
+  
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &duty))
+    return NULL;
+
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  if (wip_pwm_set_duty(channel, duty) < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to set HW-PWM duty");
+    return NULL;
+  }
+  
+  return Py_None;
+}
+
+//thor
+static PyObject *py_HWPWM_getDuty(PyObject *self, PyObject *args)
+{
+  if (module_setup() != SETUP_OK) {
+    return NULL;
+  }
+  
+  int channel;
+  int duty;
+  char str[256];
+  
+  if (!PyArg_ParseTuple(args, "i", &channel))
+    return NULL;
+  
+  if (wip_pwm_validate_ch(channel) < 0) {
+    PyErr_SetString(_InvalidChannelException, "PWM channel is invalid");
+    return NULL;
+  }
+
+  duty = wip_pwm_get_duty(channel);
+  if (duty < 0) {
+    PyErr_SetString(_InvalidChannelException, "Failed to get HW-PWM duty");
+    return NULL;
+  }
+
+  sprintf(str, "%s:%d", "duty", duty);
+#if PY_MAJOR_VERSION > 2
+	return PyUnicode_FromString(str);
+#else
+	return PyString_FromString(str);
+#endif
 }
 
 
@@ -669,7 +1174,24 @@ PyMethodDef python_methods[] = {
 
 	{"getFrequency", py_getFrequency, METH_VARARGS, "Read current PWM frequency in Hz"},
 	{"setFrequency", (PyCFunction)py_setFrequency, METH_VARARGS | METH_KEYWORDS, "set PWM frequency 0.01 through 100 [Hz] to a GPIO channel. default is 50Hz. - Deprecated, use pwmWrite instead"},
-
+	//thor
+	{"HWPWMgetClockSource", py_HWPWM_getClockSource, METH_VARARGS, "Get current hardware PWM clock source"},
+	{"HWPWMsetClockSource", (PyCFunction)py_HWPWM_setClockSource, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM clock source"},
+	{"HWPWMgetFrequency", py_HWPWM_getFrequency, METH_VARARGS, "Get current hardware PWM frequency"}, 
+	{"HWPWMsetFrequency", (PyCFunction)py_HWPWM_setFrequency, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM frequency"},
+	{"HWPWMgetMSMode", py_HWPWM_getMSMode, METH_VARARGS, "Get hardware PWM M/Smode"},
+	{"HWPWMsetMSMode", (PyCFunction)py_HWPWM_setMSMode, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM M/S mode"},
+	{"HWPWMgetPolarity", py_HWPWM_getPolarity, METH_VARARGS, "Get hardware PWM polarity"},
+	{"HWPWMsetPolarity", (PyCFunction)py_HWPWM_setPolarity, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM polarity"},
+	{"HWPWMenable", py_HWPWM_enable, METH_VARARGS, "Enable hardware PWM"},
+	{"HWPWMdisable", py_HWPWM_disable, METH_VARARGS, "Disable hardware PWM"},
+	{"HWPWMisEnabled", py_HWPWM_isEnabled, METH_VARARGS, "Returns hardware PWM state"},
+	{"HWPWMgetPort", py_HWPWM_getPort, METH_VARARGS, "Get hardware PWM GPIO port"},
+	{"HWPWMsetPort", (PyCFunction)py_HWPWM_setPort, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM GPIO port"},
+	{"HWPWMsetPeriod", (PyCFunction)py_HWPWM_setPeriod, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM period"},
+	{"HWPWMgetPeriod", py_HWPWM_getPeriod, METH_VARARGS, "Get hardware PWM period"},
+	{"HWPWMsetDuty", (PyCFunction)py_HWPWM_setDuty, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM duty"},
+	{"HWPWMgetDuty", py_HWPWM_getDuty, METH_VARARGS, "Get hardware PWM duty"},
 	{NULL, NULL, 0, NULL}
 };
 
@@ -757,6 +1279,18 @@ PyMODINIT_FUNC initGPIO(void)
 
 	_pud_down = Py_BuildValue("i", PUD_DOWN);
 	PyModule_AddObject(module, "PUD_DOWN", _pud_down);
+
+	//thor
+	_osc = Py_BuildValue("i", WIP_CM_CLK_SRC_OSC);
+	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_OSC), _osc);
+	_plla = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLA);
+	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLA), _plla);
+	_pllc = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLC);
+	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLC), _pllc);
+	_plld = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLD);
+	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLD), _plld);
+	_pllh = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLH);
+	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLH), _pllh);
 
 	// detect board revision and set up accordingly
 	revision = get_rpi_revision();
