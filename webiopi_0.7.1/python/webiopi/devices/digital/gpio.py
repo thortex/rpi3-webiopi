@@ -152,6 +152,7 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannel(channel)
         return GPIO.getPulse(channel)
 
+    #thor
     @request("GET", "%(channel)d/freq")
     def getFrequency(self, channel):
         self.checkDigitalChannelExported(channel)
@@ -185,6 +186,7 @@ class NativeGPIO(GPIOPort):
         GPIO.pulseRatio(channel, value)
         return GPIO.getPulse(channel)
 
+    #thor
     @request("POST", "%(channel)d/pulseFreq/%(value)f")
     def pulseFreq(self, channel, value):
         self.checkDigitalChannelExported(channel)
@@ -200,4 +202,35 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannel(channel)
         GPIO.pulseAngle(channel, value)
         return GPIO.getPulse(channel)
-    
+
+    #thor    
+    @request("GET",  "%(port)d/hwpwm/clock")
+    def getHWPWMclockSource(self, port):
+        debug("hwpwm/clock %d" % (port))
+        return GPIO.HWPWMgetClockSource()
+
+    #thor
+    @request("POST", "%(port)d/hwpwm/clock/%(src)s")
+    def setHWPWMclockSource(self, port, src):
+        debug("hwpwm/clockSource/%s %d" % (src, port))
+        self.checkPostingValueAllowed()
+        debug("hwpwm/clockSource/%s X" % src)
+        GPIO.HWPWMsetClockSource(src)
+        debug("hwpwm/clockSource/%s Y" % src)
+        return GPIO.HWPWMgetClockSource()
+
+    #thor
+    @request("GET",  "%(port)d/hwpwm/freq")
+    def getHWPWMfrequency(self, port):
+        debug("hwpwm/freq %d" % (port))
+        return GPIO.HWPWMgetFrequency()
+
+    #thor
+    @request("POST", "%(port)d/hwpwm/freq/%(value)f")
+    def setHWPWMfrequency(self, port, value):
+        debug("hwpwm/freq/%f %d" % (value, port))
+        self.checkPostingValueAllowed()
+        debug("hwpwm/freq/%f " % value)
+        GPIO.HWPWMsetFrequency(value)
+        debug("hwpwm/freq/%f Y" % value)
+        return GPIO.HWPWMgetFrequency()

@@ -212,7 +212,7 @@ int wip_pwm_setup(int mem_fd)
   wip_clk_map = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, 
 				 MAP_SHARED, mem_fd, clk_base);
   if (wip_pwm_validate_map(wip_clk_map) < 0) {
-    ret = -1;
+    ret = -2;
     goto cleanup;
   }
 
@@ -296,11 +296,11 @@ int wip_cm_set_clk_src(int clk_src)
   }
 
   if (wip_pwm_validate_map(wip_clk_map) < 0) {
-    return -1;
+    return -2;
   }
 
   if (wip_pwm_validate_map(wip_pwm_map) < 0) {
-    return -1;
+    return -3;
   }
 
   uint32_t timeout = 100 * 1000;
@@ -332,7 +332,7 @@ int wip_cm_set_clk_src(int clk_src)
   wip_reg_write(wip_pwm_map, WIP_PWM_REG_CTL, orig_pwm);
 
   if (timeout <= 0) {
-    return -1;
+    return -4;
   }
 
   return 0;
@@ -363,7 +363,7 @@ int wip_cm_set_freq(float freq)
   }
 
   if (wip_pwm_validate_map(wip_pwm_map) < 0) {
-    return -1;
+    return -2;
   }
 
   uint32_t timeout = 100 * 1000;
@@ -409,7 +409,7 @@ int wip_cm_set_freq(float freq)
   wip_reg_write(wip_pwm_map, WIP_PWM_REG_CTL, orig_pwm);
 
   if (timeout <= 0) {
-    return -1;
+    return -4;
   }
 
   return 0;

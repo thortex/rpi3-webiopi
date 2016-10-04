@@ -667,7 +667,8 @@ static PyObject *py_HWPWM_setClockSource(PyObject *self, PyObject *args, PyObjec
   if (module_setup() != SETUP_OK) {
     return NULL;
   }
-  
+
+  int ret = 0;
   int notFound = 1;
   int i;
   int clk_src;
@@ -679,7 +680,7 @@ static PyObject *py_HWPWM_setClockSource(PyObject *self, PyObject *args, PyObjec
     return NULL;
   
   if (psrc == NULL) {
-    PyErr_SetString(_InvalidChannelException, "Clock cource is invalid");
+    PyErr_SetString(_InvalidChannelException, "Clock source is invalid");
     return NULL;
   }
   
@@ -694,13 +695,25 @@ static PyObject *py_HWPWM_setClockSource(PyObject *self, PyObject *args, PyObjec
   }
   
   if (notFound) {
-    PyErr_SetString(_InvalidChannelException, "Not found such clock source found");
+    PyErr_SetString(_InvalidChannelException, "Not found such clock source");
     return NULL;
   }
   
-  if (wip_cm_set_clk_src(clk_src) < 0) {
-    PyErr_SetString(_InvalidChannelException, "Failed to set clock source");
-    return NULL;	  
+  ret = wip_cm_set_clk_src(clk_src);
+  switch (ret) {
+  case 0: break;
+  case -1: 
+    PyErr_SetString(_InvalidChannelException, "Failed to set clock source: out of range");
+    return NULL;
+  case -2: 
+    PyErr_SetString(_InvalidChannelException, "Failed to set clock source: clock register is not mapped");
+    return NULL;
+  case -3: 
+    PyErr_SetString(_InvalidChannelException, "Failed to set clock source: pwm register is not mapped");
+    return NULL;
+  case -4: 
+    PyErr_SetString(_InvalidChannelException, "Failed to set clock source: timeout occurred");
+    return NULL;
   }
   
   Py_INCREF(Py_None);
@@ -1284,6 +1297,7 @@ PyMODINIT_FUNC initGPIO(void)
 	//thor
 	_osc = Py_BuildValue("i", WIP_CM_CLK_SRC_OSC);
 	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_OSC), _osc);
+
 	_plla = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLA);
 	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLA), _plla);
 	_pllc = Py_BuildValue("i", WIP_CM_CLK_SRC_PLLC);
