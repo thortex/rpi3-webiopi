@@ -76,6 +76,8 @@ const char g_wip_cm_clk_name[WIP_CM_SIZE_CLK_SRC][8] = {
 // global variables 
 static volatile uint32_t *wip_pwm_map = (uint32_t *)-1;
 static volatile uint32_t *wip_clk_map = (uint32_t *)-1;
+static volatile uint8_t *wip_clk_mem = NULL;
+static volatile uint8_t *wip_pwm_mem = NULL;
 
 // ----------------------------------------------------------------------
 // Clock Manager 
@@ -202,15 +204,30 @@ int wip_pwm_setup(int mem_fd)
     clk_base += BCM2708_PERI_BASE_DEFAULT;
   }
 
-  wip_pwm_map = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, 
-				 MAP_SHARED, mem_fd, pwm_base);
+  if ((wip_pwm_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
+    return SETUP_MALLOC_FAIL;
+
+  if ((uint32_t)wip_pwm_mem % PAGE_SIZE)
+    wip_pwm_mem += PAGE_SIZE - ((uint32_t)wip_pwm_mem % PAGE_SIZE);
+  
+    wip_pwm_map = (uint32_t *)mmap((caddr_t)wip_pwm_mem, BLOCK_SIZE, 
+				   PROT_READ | PROT_WRITE, 
+				   MAP_SHARED|MAP_FIXED, mem_fd, pwm_base);
   if (wip_pwm_validate_map(wip_pwm_map) < 0) {
     ret = -1;
     goto cleanup;
   }
 
-  wip_clk_map = (uint32_t *)mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, 
-				 MAP_SHARED, mem_fd, clk_base);
+  if ((wip_clk_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
+    ret = -1;
+    goto cleanup;
+
+  if ((uint32_t)wip_clk_mem % PAGE_SIZE)
+    wip_clk_mem += PAGE_SIZE - ((uint32_t)wip_clk_mem % PAGE_SIZE);
+
+  wip_clk_map = (uint32_t *)mmap((caddr_t)wip_clk_mem, BLOCK_SIZE, 
+				 PROT_READ | PROT_WRITE, 
+				 MAP_SHARED|MAP_FIXED, mem_fd, clk_base);
   if (wip_pwm_validate_map(wip_clk_map) < 0) {
     ret = -2;
     goto cleanup;
@@ -259,6 +276,16 @@ int wip_pwm_cleanup(void)
   if (wip_pwm_validate_map(wip_clk_map) >= 0) {
     munmap((void *)wip_clk_map, BLOCK_SIZE);
     wip_clk_map = (uint32_t *)-1;
+  }
+
+  if (wip_clk_mem != NULL) {
+    free(wip_clk_mem);
+    wip_clk_mem = NULL;
+  }
+
+  if (wip_pwm_mem != NULL) {
+    free(wip_pwm_mem);
+    wip_pwm_mem = NULL;
   }
   
   return 0;
