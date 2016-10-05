@@ -248,23 +248,23 @@ class NativeGPIO(GPIOPort):
         return GPIO.HWPWMgetPolarity(channel)
 
     @request("GET",  "%(channel)d/hwpwm/output")
-    def HWPWMisEnabled(self, channel):
+    def getHWPWMoutput(self, channel):
         value = GPIO.HWPWMisEnabled(channel)
         if value == True:
             return "enable"
         else:
             return "disable"
 
-    @request("POST", "%(channel)d/hwpwm/output/%(value)d")
-    def HWPWMdisable(self, channel, value):
+    @request("POST", "%(channel)d/hwpwm/output/%(value)s")
+    def setHWPWMoutput(self, channel, value):
         self.checkPostingValueAllowed()
         if value == "enable":
             GPIO.HWPWMenable(channel)
-        elif vale == "disable":
+        elif value == "disable":
             GPIO.HWPWMdisable(channel)
         else:
             raise ValueError("Bad Function")
-        return self.HWPWMisEnabled(self, channel))
+        return self.getHWPWMoutput(channel)
 
     @request("GET",  "%(channel)d/hwpwm/port")
     def get(self, channel):
