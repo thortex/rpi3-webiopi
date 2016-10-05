@@ -202,35 +202,96 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannel(channel)
         GPIO.pulseAngle(channel, value)
         return GPIO.getPulse(channel)
-
-    #thor    
-    @request("GET",  "%(port)d/hwpwm/clock")
-    def getHWPWMclockSource(self, port):
-        debug("hwpwm/clock %d" % (port))
+    
+    # 
+    # for hardware PWM control
+    # 
+    #thor
+    @request("GET",  "%(channel)d/hwpwm/clock")
+    def getHWPWMclockSource(self, channel):
         return GPIO.HWPWMgetClockSource()
 
-    #thor
-    @request("POST", "%(port)d/hwpwm/clock/%(src)s")
-    def setHWPWMclockSource(self, port, src):
-        debug("hwpwm/clockSource/%s %d" % (src, port))
+    @request("POST", "%(channel)d/hwpwm/clock/%(src)s")
+    def setHWPWMclockSource(self, channel, src):
         self.checkPostingValueAllowed()
-        debug("hwpwm/clockSource/%s X" % src)
         GPIO.HWPWMsetClockSource(src)
-        debug("hwpwm/clockSource/%s Y" % src)
         return GPIO.HWPWMgetClockSource()
 
-    #thor
-    @request("GET",  "%(port)d/hwpwm/freq")
-    def getHWPWMfrequency(self, port):
-        debug("hwpwm/freq %d" % (port))
+    @request("GET",  "%(channel)d/hwpwm/freq")
+    def getHWPWMfrequency(self, channel):
         return GPIO.HWPWMgetFrequency()
 
-    #thor
-    @request("POST", "%(port)d/hwpwm/freq/%(value)f")
-    def setHWPWMfrequency(self, port, value):
-        debug("hwpwm/freq/%f %d" % (value, port))
+    @request("POST", "%(channel)d/hwpwm/freq/%(value)f")
+    def setHWPWMfrequency(self, channel, value):
         self.checkPostingValueAllowed()
-        debug("hwpwm/freq/%f " % value)
         GPIO.HWPWMsetFrequency(value)
-        debug("hwpwm/freq/%f Y" % value)
         return GPIO.HWPWMgetFrequency()
+
+    @request("GET",  "%(channel)d/hwpwm/msmode")
+    def getHWPWMmSMode(self, channel):
+        return GPIO.HWPWMgetMSMode(channel)
+
+    @request("POST", "%(channel)d/hwpwm/msmode/%(msmode)d")
+    def setHWPWMmSMode(self, channel, msmode):
+        self.checkPostingValueAllowed()
+        GPIO.HWPWMsetMSMode(channel, msmode)
+        return GPIO.HWPWMgetMSMode(channel)
+
+    @request("GET",  "%(channel)d/hwpwm/polarity")
+    def getHWPWMpolarity(self, channel):
+        return GPIO.HWPWMgetPolarity(channel)
+
+    @request("POST", "%(channel)d/hwpwm/polarity/%(polarity)d")
+    def setHWPWMpolarity(self, channel, polarity):
+        self.checkPostingValueAllowed()
+        GPIO.HWPWMsetPolarity(channel, polarity)
+        return GPIO.HWPWMgetPolarity(channel)
+
+    @request("GET",  "%(channel)d/hwpwm/output")
+    def HWPWMisEnabled(self, channel):
+        value = GPIO.HWPWMisEnabled(channel)
+        if value == True:
+            return "enable"
+        else:
+            return "disable"
+
+    @request("POST", "%(channel)d/hwpwm/output/%(value)d")
+    def HWPWMdisable(self, channel, value):
+        self.checkPostingValueAllowed()
+        if value == "enable":
+            GPIO.HWPWMenable(channel)
+        elif vale == "disable":
+            GPIO.HWPWMdisable(channel)
+        else:
+            raise ValueError("Bad Function")
+        return self.HWPWMisEnabled(self, channel))
+
+    @request("GET",  "%(channel)d/hwpwm/port")
+    def get(self, channel):
+        return GPIO.HWPWMgetPort(x)
+
+    @request("POST", "%(channel)d/hwpwm/port/%(port)d")
+    def setHWPWMport(self, channel, port):
+        self.checkPostingValueAllowed()
+        GPIO.HWPWMsetPort(channel, port)
+        return GPIO.HWPWMgetPort(channel)
+
+    @request("GET",  "%(channel)d/hwpwm/period")
+    def getHWPWMperiod(self, channel):
+        return GPIO.HWPWMgetPeriod(channel)
+
+    @request("POST", "%(channel)d/hwpwm/period/%(period)d")
+    def setHWPWMperiod(self, channel, period):
+        self.checkPostingValueAllowed()
+        GPIO.HWPWMsetPeriod(channel, period)
+        return GPIO.HWPWMgetPeriod(channel)
+
+    @request("GET",  "%(channel)d/hwpwm/duty")
+    def getHWPWMDuty(self, channel):
+        return GPIO.HWPWMgetDuty(channel)
+
+    @request("POST", "%(channel)d/hwpwm/duty/%(duty)d")
+    def setHWPWMDuty(self, channel, duty):
+        self.checkPostingValueAllowed()
+        GPIO.HWPWMsetDuty(channel, duty)
+        return GPIO.HWPWMgetDuty(channel)
