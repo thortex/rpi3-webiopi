@@ -196,7 +196,7 @@ int wip_pwm_setup(int mem_fd)
 
   int rev = get_rpi_revision();
 
-  if (rev >= 2) {
+  if (rev > 2) {
     pwm_base += BCM2709_PERI_BASE_DEFAULT;
     clk_base += BCM2709_PERI_BASE_DEFAULT;
   } else {
@@ -204,32 +204,34 @@ int wip_pwm_setup(int mem_fd)
     clk_base += BCM2708_PERI_BASE_DEFAULT;
   }
 
-  if ((wip_pwm_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
+  if ((wip_pwm_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
     return SETUP_MALLOC_FAIL;
+  }
 
-  if ((uint32_t)wip_pwm_mem % PAGE_SIZE)
+  if ((uint32_t)wip_pwm_mem % PAGE_SIZE) {
     wip_pwm_mem += PAGE_SIZE - ((uint32_t)wip_pwm_mem % PAGE_SIZE);
-  
-    wip_pwm_map = (uint32_t *)mmap((caddr_t)wip_pwm_mem, BLOCK_SIZE, 
-				   PROT_READ | PROT_WRITE, 
-				   MAP_SHARED|MAP_FIXED, mem_fd, pwm_base);
+  }
+  wip_pwm_map = (uint32_t *)mmap((caddr_t)wip_pwm_mem, BLOCK_SIZE, 
+				 PROT_READ | PROT_WRITE, 
+				 MAP_SHARED|MAP_FIXED, mem_fd, pwm_base);
   if (wip_pwm_validate_map(wip_pwm_map) < 0) {
     ret = -1;
     goto cleanup;
   }
 
-  if ((wip_clk_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
-    ret = -1;
+  if ((wip_clk_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
+    ret = -2;
     goto cleanup;
+  }
 
-  if ((uint32_t)wip_clk_mem % PAGE_SIZE)
+  if ((uint32_t)wip_clk_mem % PAGE_SIZE) {
     wip_clk_mem += PAGE_SIZE - ((uint32_t)wip_clk_mem % PAGE_SIZE);
-
+  }
   wip_clk_map = (uint32_t *)mmap((caddr_t)wip_clk_mem, BLOCK_SIZE, 
 				 PROT_READ | PROT_WRITE, 
 				 MAP_SHARED|MAP_FIXED, mem_fd, clk_base);
   if (wip_pwm_validate_map(wip_clk_map) < 0) {
-    ret = -2;
+    ret = -3;
     goto cleanup;
   }
 

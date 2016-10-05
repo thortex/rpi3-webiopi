@@ -120,6 +120,8 @@ int setup(void)
     char hardware[1024];
     int found = 0;
 
+    // thor: we can't use gpiomem fd for others.
+    /* 
     // try /dev/gpiomem first - this does not require root privs
     if ((mem_fd = open("/dev/gpiomem", O_RDWR|O_SYNC)) > 0)
     {
@@ -130,6 +132,7 @@ int setup(void)
             return SETUP_OK;
         }
     }
+    */
 
     // revert to /dev/mem method - requires root
 
