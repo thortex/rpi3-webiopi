@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash -x 
 
 # configuration
 user=webiopi            # login username 
