@@ -268,7 +268,7 @@ class NativeGPIO(GPIOPort):
 
     @request("GET",  "%(channel)d/hwpwm/port")
     def get(self, channel):
-        return GPIO.HWPWMgetPort(x)
+        return GPIO.HWPWMgetPort(channel)
 
     @request("POST", "%(channel)d/hwpwm/port/%(port)d")
     def setHWPWMport(self, channel, port):
