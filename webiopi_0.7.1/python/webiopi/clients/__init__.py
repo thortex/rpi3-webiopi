@@ -207,3 +207,10 @@ class Distance(Sensor):
     def getInch(self):
         return float(self.sendRequest("GET", "/distance/in"))
 
+class Humidity(Sensor):
+    def getHumidity(self):
+        return float(self.sendRequest("GET", "/humidity/float"))
+    def getHumidityPercent(self):
+        return float(self.sendRequest("GET", "/humidity/percent"))
+
+
