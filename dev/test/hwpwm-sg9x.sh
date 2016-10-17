@@ -65,7 +65,7 @@ curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$ch/hwpwm/duty/$duty
 curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$ch/hwpwm/output/enable
 
 # set duty
-for ((i=p090; i<m090; i+=1)); do
+for ((i=$p090; i<$m090; i+=1)); do
  curl -X POST -u $user:$pass http://$ipadr:$port/GPIO/$ch/hwpwm/duty/$i
  sleep $wait 
 done
