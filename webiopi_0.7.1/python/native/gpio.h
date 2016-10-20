@@ -83,5 +83,8 @@ int isPWMEnabled(int gpio);
 void setFrequency(int gpio, float freq);
 float getFrequency(int gpio);
 
+// thor
+void set_pullupdn(int gpio, int pud);
+
 void cleanup(void);
 

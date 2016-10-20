@@ -174,7 +174,7 @@ static PyObject *py_set_function(PyObject *self, PyObject *args, PyObject *kwarg
 
 //thor
 // python function setPullUpDn(channel, pull_up_down)
-static PyObject *py_set_upllupdn(PyObject *self, PyObject *args, PyObject *kwargs)
+static PyObject *py_set_pullupdn(PyObject *self, PyObject *args, PyObject *kwargs)
 {
 	if (module_setup() != SETUP_OK) {
 		return NULL;
