@@ -202,6 +202,20 @@ class NativeGPIO(GPIOPort):
         self.checkDigitalChannel(channel)
         GPIO.pulseAngle(channel, value)
         return GPIO.getPulse(channel)
+
+    # thor GPIO internal pull up/down control
+    @request("POST", "%(channel)d/pullupdn/%(value)s")
+    def setPullUpDnControl(self, channel, value):
+        value = value.lower()
+        if value == "up":
+            GPIO.setPullUpDn(channel, GPIO.PUD_UP)
+        elif value == "down":
+            GPIO.setPullUpDn(channel, GPIO.PUD_DOWN)
+        elif value == "off":
+            GPIO.setPullUpDn(channel, GPIO.PUD_OFF)
+        else:
+            raise ValueError("Bad Pull up/down control")
+        return "OK"
     
     # 
     # for hardware PWM control

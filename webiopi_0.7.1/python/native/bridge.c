@@ -172,6 +172,41 @@ static PyObject *py_set_function(PyObject *self, PyObject *args, PyObject *kwarg
 	return Py_None;
 }
 
+//thor
+// python function setPullUpDn(channel, pull_up_down)
+static PyObject *py_set_upllupdn(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+	if (module_setup() != SETUP_OK) {
+		return NULL;
+	}
+
+	int channel;
+	int function;
+	int pud = PUD_OFF;
+	static char *kwlist[] = {"channel", "pull_up_down", NULL};
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "ii", kwlist, &channel, &pud))
+		return NULL;
+
+	if (pud != PUD_OFF && pud != PUD_DOWN && pud != PUD_UP)
+	{
+		PyErr_SetString(_InvalidPullException, "Invalid value for pull_up_down - should be either PUD_OFF, PUD_UP or PUD_DOWN");
+		return NULL;
+	}
+
+	if (channel < 0 || channel >= GPIO_COUNT)
+	{
+		PyErr_SetString(_InvalidChannelException, "The GPIO channel is invalid");
+		return NULL;
+	}
+
+	set_pullupdn(channel, pud);
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+//thor
+
 // python function value = input(channel)
 static PyObject *py_input(PyObject *self, PyObject *args)
 {
@@ -1206,6 +1241,7 @@ PyMethodDef python_methods[] = {
 	{"HWPWMgetPeriod", py_HWPWM_getPeriod, METH_VARARGS, "Get hardware PWM period"},
 	{"HWPWMsetDuty", (PyCFunction)py_HWPWM_setDuty, METH_VARARGS | METH_KEYWORDS, "Set hardware PWM duty"},
 	{"HWPWMgetDuty", py_HWPWM_getDuty, METH_VARARGS, "Get hardware PWM duty"},
+	{"setPullUpDn", (PyCFunction)py_set_pullupdn, METH_VARARGS | METH_KEYWORDS, "Setup the GPIO pull/up down control\nchannel   - BCM GPIO number\n\npull_up_down - PUD_OFF, PUD_UP or PUD_DOWN"},	
 	{NULL, NULL, 0, NULL}
 };
 
