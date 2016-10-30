@@ -50,12 +50,16 @@ int get_rpi_info(rpi_info *info)
    char *rev;
    int found = 0;
    int len;
+   char *pbuf;
 
    if ((fp = fopen("/proc/cpuinfo", "r")) == NULL)
       return -1;
    while(!feof(fp)) {
-      fgets(buffer, sizeof(buffer), fp);
-      sscanf(buffer, "Hardware	: %s", hardware);
+      memset(buffer, 0x00, sizeof(buffer));
+      pbuf = fgets(buffer, sizeof(buffer), fp);
+      if (pbuf != NULL ) {
+         sscanf(buffer, "Hardware	: %s", hardware);
+      }
       if (strcmp(hardware, "BCM2708") == 0 ||
           strcmp(hardware, "BCM2709") == 0 ||
           strcmp(hardware, "BCM2835") == 0 ||
@@ -236,10 +240,14 @@ float get_rpi_cpu_temp(void)
 {
   FILE *fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   int iTemp = 0;
+  int ret = 0;
   if (NULL != fp) {
-    fscanf(fp, "%d", &iTemp);
+    ret = fscanf(fp, "%d", &iTemp);
     fclose(fp);
     fp = NULL;
+    if (ret < 0) {
+      return 0.0;
+    }      
     return ((float)iTemp) / 1000.0 ;
   } else {
     return 0.0;
