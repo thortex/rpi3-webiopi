@@ -281,12 +281,12 @@ int wip_pwm_cleanup(void)
   }
 
   if (wip_clk_mem != NULL) {
-    free(wip_clk_mem);
+    free((void *)wip_clk_mem);
     wip_clk_mem = NULL;
   }
 
   if (wip_pwm_mem != NULL) {
-    free(wip_pwm_mem);
+    free((void *)wip_pwm_mem);
     wip_pwm_mem = NULL;
   }
   

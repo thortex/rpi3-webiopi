@@ -181,7 +181,6 @@ static PyObject *py_set_pullupdn(PyObject *self, PyObject *args, PyObject *kwarg
 	}
 
 	int channel;
-	int function;
 	int pud = PUD_OFF;
 	static char *kwlist[] = {"channel", "pull_up_down", NULL};
 
