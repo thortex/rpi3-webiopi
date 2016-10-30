@@ -73,7 +73,7 @@ static int module_setup(void)
 		return SETUP_OK;
 	}
 
-	openlog("webiopi", LOG_PID, LOG_USER);
+//	openlog("webiopi", LOG_PID, LOG_USER);
 	syslog(LOG_INFO, "Opened syslog in webiopi native GPIO library.");
 	module_state = setup();
 	if (module_state == SETUP_DEVMEM_FAIL)
