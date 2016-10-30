@@ -32,6 +32,7 @@ SOFTWARE.
 #include "gpio.h"
 #include "cpuinfo.h"
 #include "pwm.h"
+#include <syslog.h>
 
 /*
 Rereferences:
@@ -194,6 +195,7 @@ int wip_pwm_setup(int mem_fd)
   uint32_t clk_base = WIP_CM_ADR_OFFSET;
   uint32_t pwm_base = WIP_PWM_ADR_OFFSET;
 
+  syslog(LOG_INFO, "Initializing PWM features...");
   int rev = get_rpi_revision();
 
   if (rev > 2) {
@@ -235,6 +237,7 @@ int wip_pwm_setup(int mem_fd)
     goto cleanup;
   }
 
+  syslog(LOG_INFO, "Finished setting up PWM features.");
   return 0;
   
  cleanup:
@@ -253,6 +256,8 @@ int wip_pwm_setup(int mem_fd)
 
 int wip_pwm_cleanup(void)
 {
+  syslog(LOG_INFO, "Cleaning up PWM featrures...");
+
   // disable all PWM channels
   if (wip_pwm_validate_map(wip_pwm_map) >= 0) {
     uint32_t value = wip_reg_read(wip_pwm_map, WIP_PWM_REG_CTL);
@@ -289,7 +294,8 @@ int wip_pwm_cleanup(void)
     free((void *)wip_pwm_mem);
     wip_pwm_mem = NULL;
   }
-  
+
+  syslog(LOG_INFO, "Finished cleaning up PWM features.");
   return 0;
 }
 

@@ -25,6 +25,7 @@ SOFTWARE.
 #include "cpuinfo.h"
 // thor
 #include "pwm.h"
+#include <syslog.h>
 
 static PyObject *_SetupException;
 static PyObject *_InvalidDirectionException;
@@ -72,6 +73,8 @@ static int module_setup(void)
 		return SETUP_OK;
 	}
 
+	openlog("webiopi", LOG_PID, LOG_USER);
+	syslog(LOG_INFO, "Opened syslog in webiopi native GPIO library.");
 	module_state = setup();
 	if (module_state == SETUP_DEVMEM_FAIL)
 	{
@@ -81,7 +84,6 @@ static int module_setup(void)
 	} else if (module_state == SETUP_MMAP_FAIL) {
 		PyErr_SetString(_SetupException, "Mmap failed on module import");
 	}
-
 	return module_state;
 }
 
@@ -1263,7 +1265,8 @@ PyMODINIT_FUNC initGPIO(void)
 {
 	PyObject *module = NULL;
 	int revision = -1;
-
+	
+	syslog(LOG_INFO, "Creating Python module...");
 #if PY_MAJOR_VERSION > 2
 	if ((module = PyModule_Create(&python_module)) == NULL)
 		goto exit;
@@ -1343,6 +1346,7 @@ PyMODINIT_FUNC initGPIO(void)
 	PyModule_AddObject(module, wip_cm_get_clk_src_name(WIP_CM_CLK_SRC_PLLH), _pllh);
 
 	// detect board revision and set up accordingly
+	syslog(LOG_INFO, "Detecting board revision...");
 	revision = get_rpi_revision();
 	if (revision == -1)
 	{

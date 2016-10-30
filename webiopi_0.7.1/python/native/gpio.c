@@ -32,6 +32,7 @@ SOFTWARE.
 #include "cpuinfo.h"
 //thor
 #include "pwm.h"
+#include <syslog.h>
 
 //#define BCM2708_PERI_BASE   0x20000000
 //#define BCM2708_GPIO_BASE   (BCM2708_PERI_BASE + 0x200000)
@@ -144,6 +145,7 @@ int setup(void)
             peri_base = buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3] << 0;
         }
         fclose(fp);
+	syslog(LOG_INFO, "Using peripheral base address from device tree.");
     } else {
         // guess peri base based on /proc/cpuinfo hardware field
         if ((fp = fopen("/proc/cpuinfo", "r")) == NULL)
@@ -166,30 +168,36 @@ int setup(void)
         fclose(fp);
         if (!found)
             return SETUP_NOT_RPI_FAIL;
+	syslog(LOG_INFO, "Using peripheral base address from /proc/cpuinfo hardware field.");
     }
 
     gpio_base = peri_base + GPIO_BASE_OFFSET;
 
     // mmap the GPIO memory registers
+    syslog(LOG_INFO, "Mapping GPIO memory register by opeing /dev/mem...");
     if ((mem_fd = open("/dev/mem", O_RDWR|O_SYNC) ) < 0)
         return SETUP_DEVMEM_FAIL;
 
+    syslog(LOG_INFO, "Allocating GPIO memory region area...");
     if ((gpio_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
         return SETUP_MALLOC_FAIL;
 
     if ((uint32_t)gpio_mem % PAGE_SIZE)
         gpio_mem += PAGE_SIZE - ((uint32_t)gpio_mem % PAGE_SIZE);
 
+    syslog(LOG_INFO, "Mapping aligned GPIO memory region area...");
     gpio_map = (uint32_t *)mmap( (void *)gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, gpio_base);
 
     if ((uint32_t)gpio_map < 0)
         return SETUP_MMAP_FAIL;
 
     // thor
+    syslog(LOG_INFO, "Setting up PWM functions...");
     if (wip_pwm_setup(mem_fd) < 0){
       return SETUP_MMAP_FAIL;
     }
 
+    syslog(LOG_INFO, "Finished setting up native GPIO library.");
     return SETUP_OK;
 }
 
@@ -430,6 +438,7 @@ int isPWMEnabled(int gpio) {
 
 void cleanup(void)
 {
+    syslog(LOG_INFO, "Running Cleanup...");
     // fixme - set all gpios back to input
     munmap((caddr_t)gpio_map, BLOCK_SIZE);
 
