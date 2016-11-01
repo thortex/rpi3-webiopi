@@ -1,0 +1,7 @@
+#!/bin/sh 
+
+logname=`date +"webiopi-diag-log-%Y%m%d-%H%M%S.txt"`
+
+webiopi-diag.sh $1 $2 2>&1 | tee $logname
+
+
