@@ -1,7 +1,5 @@
 #!/bin/sh 
 
-user=webiopi
-pass=raspberry
 MY_VERSION="1.0.0"
 MY_NAME="webiopi-diag"
 MY_AUTHOR="Thor Watanabe"
@@ -17,19 +15,24 @@ print_hr(){
 
 print_usage(){
     echo "Usage: "
-    echo "$MY_NAME <webiopi_username> <webiopi_password>"
+    echo "$MY_NAME"
 }
 
-user=$1
-pass=$2
+user=
+pass=
+
+echo "Input your WebIOPi user name"
+read user
+
+echo "Input your WebIOPi password"
+read pass
+
 if [ "x$user" = "x" ] ; then
-    print_usage;
-    exit;
+    user=webiopi
 fi
 
 if [ "x$pass" = "x" ] ; then
-    print_usage;
-    exit;
+    pass=raspberry
 fi
 
 # ------------------------------------------------------------
