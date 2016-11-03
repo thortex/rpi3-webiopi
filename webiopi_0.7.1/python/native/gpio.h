@@ -85,6 +85,7 @@ float getFrequency(int gpio);
 
 // thor
 void set_pullupdn(int gpio, int pud);
+int number_of_cores(void);
 
 void cleanup(void);
 
