@@ -77,8 +77,10 @@ const char g_wip_cm_clk_name[WIP_CM_SIZE_CLK_SRC][8] = {
 // global variables 
 static volatile uint32_t *wip_pwm_map = (uint32_t *)-1;
 static volatile uint32_t *wip_clk_map = (uint32_t *)-1;
-static volatile uint8_t *wip_clk_mem = NULL;
-static volatile uint8_t *wip_pwm_mem = NULL;
+
+//thor
+static volatile uint8_t *wip_clk_mem_orig = NULL;
+static volatile uint8_t *wip_pwm_mem_orig = NULL;
 
 // ----------------------------------------------------------------------
 // Clock Manager 
@@ -194,6 +196,8 @@ int wip_pwm_setup(int mem_fd)
   int ret = 0; 
   uint32_t clk_base = WIP_CM_ADR_OFFSET;
   uint32_t pwm_base = WIP_PWM_ADR_OFFSET;
+  uint8_t *wip_clk_mem = NULL;
+  uint8_t *wip_pwm_mem = NULL;
 
   syslog(LOG_INFO, "Initializing PWM features...");
   int rev = get_rpi_revision();
@@ -209,6 +213,8 @@ int wip_pwm_setup(int mem_fd)
   if ((wip_pwm_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL) {
     return SETUP_MALLOC_FAIL;
   }
+  wip_pwm_mem_orig = wip_pwm_mem;
+  
 
   if ((uint32_t)wip_pwm_mem % PAGE_SIZE) {
     wip_pwm_mem += PAGE_SIZE - ((uint32_t)wip_pwm_mem % PAGE_SIZE);
@@ -225,6 +231,7 @@ int wip_pwm_setup(int mem_fd)
     ret = -2;
     goto cleanup;
   }
+  wip_clk_mem_orig = wip_clk_mem;
 
   if ((uint32_t)wip_clk_mem % PAGE_SIZE) {
     wip_clk_mem += PAGE_SIZE - ((uint32_t)wip_clk_mem % PAGE_SIZE);
@@ -285,14 +292,14 @@ int wip_pwm_cleanup(void)
     wip_clk_map = (uint32_t *)-1;
   }
 
-  if (wip_clk_mem != NULL) {
-    free((void *)wip_clk_mem);
-    wip_clk_mem = NULL;
+  if (wip_clk_mem_orig != NULL) {
+    free((void *)wip_clk_mem_orig);
+    wip_clk_mem_orig = NULL;
   }
 
-  if (wip_pwm_mem != NULL) {
-    free((void *)wip_pwm_mem);
-    wip_pwm_mem = NULL;
+  if (wip_pwm_mem_orig != NULL) {
+    free((void *)wip_pwm_mem_orig);
+    wip_pwm_mem_orig = NULL;
   }
 
   syslog(LOG_INFO, "Finished cleaning up PWM features.");

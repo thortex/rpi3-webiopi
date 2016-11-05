@@ -52,6 +52,9 @@ int get_rpi_info(rpi_info *info)
    int len;
    char *pbuf;
 
+   memset(hardware, 0x00, sizeof(hardware));
+   memset(revision, 0x00, sizeof(revision));
+
    if ((fp = fopen("/proc/cpuinfo", "r")) == NULL)
       return -1;
    while(!feof(fp)) {

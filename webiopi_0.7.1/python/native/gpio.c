@@ -60,6 +60,7 @@ SOFTWARE.
 //#define BLOCK_SIZE (4*1024)
 
 static volatile uint32_t *gpio_map;
+static volatile uint8_t *gpio_mem_orig = NULL ;
 
 struct tspair {
 	struct timespec up;
@@ -181,6 +182,7 @@ int setup(void)
     syslog(LOG_INFO, "Allocating GPIO memory region area...");
     if ((gpio_mem = malloc(BLOCK_SIZE + (PAGE_SIZE-1))) == NULL)
         return SETUP_MALLOC_FAIL;
+    gpio_mem_orig = gpio_mem;
 
     if ((uint32_t)gpio_mem % PAGE_SIZE)
         gpio_mem += PAGE_SIZE - ((uint32_t)gpio_mem % PAGE_SIZE);
@@ -439,28 +441,44 @@ int isPWMEnabled(int gpio) {
 void cleanup(void)
 {
     syslog(LOG_INFO, "Running Cleanup...");
+
     // fixme - set all gpios back to input
     munmap((caddr_t)gpio_map, BLOCK_SIZE);
 
+    if (gpio_mem_orig != NULL) {
+      free((void *)gpio_mem_orig);
+      gpio_mem_orig = NULL;
+    }
+
+    wip_pwm_cleanup();
 }
 
 int number_of_cores(void)
 {
-  char str[256];
-  int procCount = 0;
-  FILE *fp;
-  
-  if( (fp = fopen("/proc/cpuinfo", "r")) ) {
-    while(fgets(str, sizeof str, fp))
-      if( !memcmp(str, "processor", 9) ) procCount++;
+  FILE *cmd = popen("grep '^processor' /proc/cpuinfo | wc -l", "r");
+
+  if (cmd == NULL) {
+    return 2;
   }
-  
-  if ( !procCount ) { 
-    printf("Unable to get proc count. Defaulting to 2");
-    procCount=2;
+
+  unsigned nprocs;
+  size_t n;
+  char buff[8];
+
+  memset(buff, 0x00, sizeof(buff));
+
+  if ((n = fread(buff, 1, sizeof(buff)-1, cmd)) <= 0) {
+    return 2;
   }
-  
-  return procCount;
+
+  buff[n] = '\0';
+  if (sscanf(buff, "%u", &nprocs) != 1) { 
+    return 2;
+  }
+
+  pclose(cmd);
+
+  return nprocs;
 }
 
 void setFrequency(int gpio, float freq)
