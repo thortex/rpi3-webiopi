@@ -716,7 +716,9 @@ int wip_pwm_get_port(int ch)
     int port = wip_pwm_map_table[i].gpio_port;
     int func = get_function(port);
     if (func == wip_pwm_map_table[i].alt_func) {
-      return port;
+      if (ch == wip_pwm_map_table[i].pwm_ch) {
+	return port;
+      }
     }
   }
 
