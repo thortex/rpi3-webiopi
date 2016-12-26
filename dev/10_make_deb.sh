@@ -43,6 +43,6 @@ cp ${SCRIPTPATH}/../${NAME}_${VERSION}/doc/README ${WORKDIR}/doc
 
 ## build .deb files
 cd ${WORKDIR}/${ORIG_NAME}-$VERSION
-debuild -us -uc
+debuild --no-lintian -us -uc
 ##debuild clean
 

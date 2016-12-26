@@ -407,21 +407,29 @@ class COAPResponse(COAPMessage):
 class COAPClient():
     def __init__(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.socket.settimeout(1.0)
+        self.socket.settimeout(3.0)
         self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 2)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.socket.bind(('', 0))
         
     def sendRequest(self, message):
         data = message.getBytes();
         sent = 0
         while sent<4:
             try:
+                #self.logger.debug("Sending Request:\n")
+                #print ("Sending Request: %d\n" % sent)
                 self.socket.sendto(data, (message.host, message.port))
-                data = self.socket.recv(1500)
+                (data, remote_adr) = self.socket.recvfrom(1500)
                 response = COAPResponse()
                 response.parseByteArray(bytearray(data))
+                #self.logger.debug("Received Response:\n%s" % response)
+                #print ("Received Response: %d\n" % sent)
                 return response
             except socket.timeout:
                 sent+=1
+                #self.logger.debug("Receiving response timeout\n")
+                #print ("Failed to receive response: %d\n" % sent)
         return None
 
 class COAPServer(threading.Thread):
@@ -441,8 +449,9 @@ class COAPServer(threading.Thread):
             self.socket = socket.socket(address_family, socket.SOCK_DGRAM)
         except:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind(('', port))
-        self.socket.settimeout(1)
+        self.socket.settimeout(3)
         self.running = True
         self.start()
         
@@ -455,9 +464,9 @@ class COAPServer(threading.Thread):
                 coapRequest = COAPRequest()
                 coapRequest.parseByteArray(requestBytes)
                 coapResponse = COAPResponse()
-                #self.logger.debug("Received Request:\n%s" % coapRequest)
+                self.logger.debug("Received Request:\n%s" % coapRequest)
                 self.processMessage(coapRequest, coapResponse)
-                #self.logger.debug("Sending Response:\n%s" % coapResponse)
+                self.logger.debug("Sending Response:\n%s" % coapResponse)
                 responseBytes = coapResponse.getBytes()
                 self.socket.sendto(responseBytes, client)
                 self.logger.debug('"%s %s CoAP/%.1f" - %s (Client: %s)' % (coapRequest.CODES[coapRequest.code], coapRequest.uri_path, coapRequest.version, coapResponse.CODES[coapResponse.code], client[0]))
