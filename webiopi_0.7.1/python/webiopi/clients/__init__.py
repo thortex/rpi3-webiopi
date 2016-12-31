@@ -50,7 +50,11 @@ class PiMixedClient():
                 response = self.coapclient.sendRequest(COAPPost("coap://%s:%d%s" % (self.host, self.coapport, uri)))
 
             if response:
-                return str(response.payload)
+                if PYTHON_MAJOR >= 3:
+                    return response.payload.decode()
+                else:
+                    return str(response.payload)
+
             elif self.httpclient != None:
                 self.coapfailure += 1
                 print("No CoAP response, fall-back to HTTP")
