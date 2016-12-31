@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 from webiopi.clients import *
 from time import sleep
 
@@ -15,7 +16,7 @@ client.setCredentials("webiopi", "raspberry")
 # RPi native GPIO
 gpio = NativeGPIO(client)
 gpio.setFunction(25, "out")
-state = True
+state = 1
 
 # DAC named "dac1"
 dac = DAC(client, "dac1")
@@ -29,7 +30,10 @@ temp = Temperature(client, "temp0")
 
 while True:
     # toggle digital state
-    state = not state
+    if state != 0:
+        state = 0
+    else:
+        state = 1
     gpio.digitalWrite(25, state)
 
     # increase analog value

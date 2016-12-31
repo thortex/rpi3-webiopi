@@ -1,4 +1,5 @@
 #!/usr/bin/python 
+
 from webiopi.protocols.coap import *
 from time import sleep
 
@@ -8,7 +9,7 @@ client = COAPClient()
 client.sendRequest(COAPPost("coap://224.0.1.123/GPIO/25/function/out"))
 # unicast
 #client.sendRequest(COAPPost("coap://192.168.0.4/GPIO/25/function/out"))
-state = True
+state = 1
 
 while True: 
     #print "Sending value change request...\n"
@@ -18,7 +19,10 @@ while True:
     #response = client.sendRequest(COAPPost("coap://192.168.0.4/GPIO/25/value/%d" % state))
     if response:
         print("Received response:\n%s" % response)
-        state = not state
+        if state != 0:
+            state = 0
+        else:
+            state = 1
     else:
         print("No response received")
     sleep(0.5)
