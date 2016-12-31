@@ -2,6 +2,7 @@
 # -*- makefile -*-
 
 export DH_VERBOSE=1
+export DEB_BUILD_HARDENING_STACKPROTECTOR=0
 
 %:
 	dh $@ --with python2,python3 --buildsystem=python_distutils
