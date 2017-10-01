@@ -195,7 +195,7 @@ class HTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             return self.sendResponse(403, "Not Authorized")
         
         (contentType, encoding) = mime.guess_type(path)
-        f = codecs.open(path, encoding=encoding)
+        f = codecs.open(path, 'rb')
         data = f.read()
         f.close()
         self.send_response(200)
