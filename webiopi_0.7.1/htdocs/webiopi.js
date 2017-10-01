@@ -46,8 +46,8 @@ function isMobile() {
 */
 
 var isTouchDevice = "ontouchstart" in document.documentElement ? true : false;
-var BUTTON_DOWN   = isTouchDevice ? "touchstart" : "mousedown";
-var BUTTON_UP     = isTouchDevice ? "touchend"   : "mouseup";
+var BUTTON_DOWN   = isTouchDevice ? "touchstart mousedown" : "mousedown";
+var BUTTON_UP     = isTouchDevice ? "touchend mouseup"     : "mouseup";
 
 /*
 var deviceAgent = navigator.userAgent.toLowerCase();
