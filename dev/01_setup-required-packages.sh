@@ -1,10 +1,18 @@
 #!/bin/sh -x
 
+x=`cat /etc/os-release | grep stretch`
+if [ "x$x" != "x" ] ; then
+   extras=""   
+else
+   extras="hardening-includes"
+fi
+
+
 sudo apt-get install \
  build-essential dh-make fakeroot devscripts pbuilder cdbs \
  at autotools-dev cdbs dctrl-tools debian-keyring debootstrap \
  devscripts dh-make diffstat distro-info-data dput equivs \
- exim4-base exim4-config exim4-daemon-light hardening-includes \
+ exim4-base exim4-config exim4-daemon-light \
  libapt-pkg-perl libarchive-zip-perl libclass-accessor-perl \
  libclass-inspector-perl libclone-perl libcommon-sense-perl \
  libconvert-binhex-perl libcrypt-ssleay-perl libdigest-hmac-perl \
@@ -25,4 +33,4 @@ sudo apt-get install \
  libxml-namespacesupport-perl libxml-parser-perl libxml-sax-base-perl \
  libxml-sax-expat-perl libxml-sax-perl libxml-simple-perl lintian \
  lsb-release patchutils pbuilder python-apt python-apt-common \
- python-chardet python-debian python-magic wdiff
+ python-chardet python-debian python-magic wdiff ${extras}
