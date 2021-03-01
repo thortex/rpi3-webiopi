@@ -101,9 +101,9 @@ int get_rpi_info(rpi_info *info)
             case 0x0d: info->type = "Pi 3 Model B+"; info->p1_revision = 3; break;
             case 0x0e: info->type = "Pi 3 Model A+"; info->p1_revision = 3; break;
             case 0x10: info->type = "CM 3+"; info->p1_revision = 3; break;
-            case 0x11: info->type = "Pi 4 Model B"; info->p1_revision = 4; break;
-            case 0x13: info->type = "Pi 400"; info->p1_revision = 4; break;
-            case 0x14: info->type = "CM 4"; info->p1_revision = 4; break;
+            case 0x11: info->type = "Pi 4 Model B"; info->p1_revision = 3; break;
+            case 0x13: info->type = "Pi 400"; info->p1_revision = 0; break;
+            case 0x14: info->type = "CM 4"; info->p1_revision = 0; break;
             default : info->type = "Unknown"; info->p1_revision = 3; break;
       }
       switch (revision[len-4]) {
