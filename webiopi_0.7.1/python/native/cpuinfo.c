@@ -65,6 +65,7 @@ int get_rpi_info(rpi_info *info)
       }
       if (strcmp(hardware, "BCM2708") == 0 ||
           strcmp(hardware, "BCM2709") == 0 ||
+          strcmp(hardware, "BCM2711") == 0 ||
           strcmp(hardware, "BCM2835") == 0 ||
           strcmp(hardware, "BCM2836") == 0 ||
           strcmp(hardware, "BCM2837") == 0 ) {
@@ -84,36 +85,51 @@ int get_rpi_info(rpi_info *info)
       // new scheme
       //info->rev = revision[len-1]-'0';
       strcpy(info->revision, revision);
-      switch (revision[len-2]) {
-		  case '0': info->type = "Model A"; info->p1_revision = 2; break;
-		  case '1': info->type = "Model B"; info->p1_revision = 2; break;
-		  case '2': info->type = "Model A+"; info->p1_revision = 3; break;
-		  case '3': info->type = "Model B+"; info->p1_revision = 3; break;
-		  case '4': info->type = "Pi 2 Model B"; info->p1_revision = 3; break;
-		  case '5': info->type = "Alpha"; info->p1_revision = 3; break;
-		  case '6': info->type = "Compute"; info->p1_revision = 0; break;
-                  case '8': info->type = "Pi 3 Model B"; info->p1_revision = 3; break;
-                  case '9': info->type = "Zero"; info->p1_revision = 3; break;
-		  default : info->type = "Unknown"; info->p1_revision = 3; break;
-	  }
-	  switch (revision[len-4]) {
-		  case '0': info->processor = "BCM2835"; break;
-		  case '1': info->processor = "BCM2836"; break;
-                  case '2': info->processor = "BCM2837"; break;
-		  default : info->processor = "Unknown"; break;
-	  }
-	  switch (revision[len-5]) {
-		  case '0': info->manufacturer = "Sony"; break;
-		  case '1': info->manufacturer = "Egoman"; break;
-		  case '2': info->manufacturer = "Embest"; break;
-		  case '4': info->manufacturer = "Embest"; break;
-		  default : info->manufacturer = "Unknown"; break;
-	  }
-	  switch (strtol((char[]){revision[len-6],0}, NULL, 16) & 7) {
-		  case 0: info->ram = "256M"; break;
-		  case 1: info->ram = "512M"; break;
-		  case 2: info->ram = "1024M"; break;
-		  default: info->ram = "Unknown"; break;
+      //switch (revision[len-2]) {
+      switch (strtol((char[]){revision[len-3],revision[len-2],0}, NULL, 16)) {
+            case 0x00: info->type = "Model A"; info->p1_revision = 2; break;
+            case 0x01: info->type = "Model B"; info->p1_revision = 2; break;
+            case 0x02: info->type = "Model A+"; info->p1_revision = 3; break;
+            case 0x03: info->type = "Model B+"; info->p1_revision = 3; break;
+            case 0x04: info->type = "Pi 2 Model B"; info->p1_revision = 3; break;
+            case 0x05: info->type = "Alpha"; info->p1_revision = 3; break;
+            case 0x06: info->type = "CM 1"; info->p1_revision = 0; break;
+            case 0x08: info->type = "Pi 3 Model B"; info->p1_revision = 3; break;
+            case 0x09: info->type = "Zero"; info->p1_revision = 3; break;
+            case 0x0a: info->type = "CM 3"; info->p1_revision = 3; break;
+            case 0x0c: info->type = "Zero W"; info->p1_revision = 0; break;
+            case 0x0d: info->type = "Pi 3 Model B+"; info->p1_revision = 3; break;
+            case 0x0e: info->type = "Pi 3 Model A+"; info->p1_revision = 3; break;
+            case 0x10: info->type = "CM 3+"; info->p1_revision = 3; break;
+            case 0x11: info->type = "Pi 4 Model B"; info->p1_revision = 3; break;
+            case 0x13: info->type = "Pi 400"; info->p1_revision = 0; break;
+            case 0x14: info->type = "CM 4"; info->p1_revision = 0; break;
+            default : info->type = "Unknown"; info->p1_revision = 3; break;
+      }
+      switch (revision[len-4]) {
+            case '0': info->processor = "BCM2835"; break;
+            case '1': info->processor = "BCM2836"; break;
+            case '2': info->processor = "BCM2837"; break;
+            case '3': info->processor = "BCM2711"; break;
+            default : info->processor = "Unknown"; break;
+      }
+      switch (revision[len-5]) {
+            case '0': info->manufacturer = "Sony"; break;
+            case '1': info->manufacturer = "Egoman"; break;
+            case '2': info->manufacturer = "Embest"; break;
+            case '3': info->manufacturer = "Sony Japan"; break;
+            case '4': info->manufacturer = "Embest"; break;
+            case '5': info->manufacturer = "Stadium"; break;
+            default : info->manufacturer = "Unknown"; break;
+      }
+      switch (strtol((char[]){revision[len-6],0}, NULL, 16) & 7) {
+            case 0: info->ram = "256M"; break;
+            case 1: info->ram = "512M"; break;
+            case 2: info->ram = "1024M"; break;
+            case 3: info->ram = "2048M"; break;
+            case 4: info->ram = "4096M"; break;
+            case 5: info->ram = "8192M"; break;
+            default: info->ram = "Unknown"; break;
       }
    } else {
       // old scheme
